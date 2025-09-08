@@ -1,9 +1,10 @@
+<!-- TODO: Add comments. -->
 <!DOCTYPE html>
 
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Genshin Calculator</title>
+        <title>Umamusume Wish Planning Calculator</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="description" content="" />
@@ -25,11 +26,11 @@
         <script type="text/javascript">
             let NewWishPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
 
-            const WishModes = {
-                'Simple':   {value: 1, text: 'Simple'},
-                'Normal':   {value: 2, text: 'Normal'},
-                'Advanced': {value: 3, text: 'Advanced'}
-            };
+            // const WishModes = {
+            //     'Simple':   {value: 1, text: 'Simple'},
+            //     'Normal':   {value: 2, text: 'Normal'},
+            //     'Advanced': {value: 3, text: 'Advanced'}
+            // };
         </script>
     </head>
     <body>
@@ -126,7 +127,7 @@
             }
         </style>
 
-        <center><h1>Genshin Wish Planning Calculator</h1></center>
+        <center><h1>Umamusume Wish Planning Calculator</h1></center>
 
         <form id="form" data-parsley-validate="true">
             <div class="container">
@@ -166,7 +167,7 @@
                 <br>
 
                 <center>
-                    <label for="WishMode" class="form-label">Wish Mode</label>
+                    <!-- <label for="WishMode" class="form-label">Wish Mode</label>
                     <a data-toggle="tooltip"
                         title="
                             <ul>
@@ -184,19 +185,19 @@
                             $('#WishMode').append($('<option>', Mode));
                         };
                         $(`#WishMode option[value=${WishModes.Advanced.value}]`).prop('selected', true); // We want advanced to be selected by default but also be the last option.
-                    </script>
-                    <br>
+                    </script> -->
+                    <!-- <br> -->
 
-                    <div class="SimpleModeSkipGroup form-check form-check-inline form-switch">
+                    <!-- <div class="SimpleModeSkipGroup form-check form-check-inline form-switch">
                         <input type="checkbox" id="EnableEventCalcs" class="form-check-input">
                         <label for="EnableEventCalcs" class="form-label">Factor in events</label>
                         <a data-toggle="tooltip"
-                            title="If checked, then the calculator will assume that each patch there will be 1 flagship event, awarding <b>900 Primogems</b> and 3 secondary events, each awarding <b>420 Primogems</b>."
+                            title="If checked, then the calculator will assume that each patch there will be 1 flagship event, awarding <b>900 Free Carrots</b> and 3 secondary events, each awarding <b>420 Free Carrots</b>."
                         >
                             <i class="bi bi-question-circle"></i>
                         </a>
                         <br>
-                    </div>
+                    </div> -->
 
                     <div class="form-check form-check-inline form-switch">
                         <input type="checkbox" id="DisableUnsavedChangesWarning" class="form-check-input">
@@ -208,22 +209,27 @@
                     <hr><h2>Currency</h2><br>
 
                     <div class="row">
-                        <div class="CurrencyTopRow">
-                            <label for="Primos" class="form-label">Primogems</label><br>
-                            <input type="number" id="Primos" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
-                        </div>
-                    
-                        <div class="CurrencyTopRow">
-                            <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
-                            <input type="number" id="IntertwinedFates" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        <div class="col-md-3">
+                            <label for="FC" class="form-label">Free Carrots</label><br>
+                            <input type="number" id="FC" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
                         </div>
 
-                        <div class="CurrencyTopRow">
-                            <label for="GenesisCrystals" class="form-label">Genesis Crystals</label><br>
-                            <input type="number" id="GenesisCrystals" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        <div class="col-md-3">
+                            <label for="PC" class="form-label">Paid Carrots</label><br>
+                            <input type="number" id="PC" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
 
-                        <div class="CurrencyTopRow SimpleModeSkipGroup">
+                        <div class="col-md-3">
+                            <label for="UmaTicket" class="form-label">Trainee Scout Ticket</label><br>
+                            <input type="number" id="UmaTicket" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="CardTicket" class="form-label">Support Card Scout Ticket</label><br>
+                            <input type="number" id="CardTicket" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        </div>
+
+                       <!--  <div class="CurrencyTopRow SimpleModeSkipGroup">
                             <label for="Stardust" class="form-label">Masterless Stardust</label>
                             <a data-toggle="tooltip"
                                 title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available <b>Intertwined Fates</b> can be purchased. It is assumed that this month's <b>Intertwined Fates</b> have already been purchased."
@@ -232,16 +238,16 @@
                             </a>
                             <br>
                             <input type="number" id="Stardust" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-min="0" min="0"><br>
-                        </div>
+                        </div> -->
                     </div>
                     <br>
 
-                    <div class="form-check form-check-inline form-switch">
+                    <!-- <div class="form-check form-check-inline form-switch">
                         <input type="checkbox" id="UsingStarglitter" class="form-check-input">
                         <label for="UsingStarglitter" class="form-label">Using Masterless Starglitter</label><br>
-                    </div>
+                    </div> -->
 
-                    <div class="row" id="StarglitterSkipGroup" style="display: none;">
+                    <!-- <div class="row" id="StarglitterSkipGroup" style="display: none;">
                         <div class="col-sm-4">
                             <label for="Starglitter" class="form-label">Masterless Starglitter</label>
                             <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
@@ -268,31 +274,37 @@
                             <br>
                             <input type="number" id="MissingStandardFiveStarCharacters" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="8"><br>
                         </div>
-                    </div>
+                    </div> -->
 
                     <hr><h2>Wishing Info</h2><br>
 
-                    <div class="SimpleModeSkipGroup BasicWishPlanningSkipGroup">
+                    <!-- TODO: Using this as a basis for the banner dropdown to be copied off of -->
+                    <select id="BannerEnd" class="form-select" style="max-width: 300px; display: none;"></select>
+                    <script type="text/javascript">
+                        $(function() {
+                            for (let i = 0; i < GlobalBanners.length; i++) {
+                                if (GlobalBanners[i].EndDate >= Today) {
+                                // console.log('yo')
+                                    $('#BannerEnd').append($('<option>', {
+                                        value: i,
+                                        // ${moment(GlobalBanners[i].BannerEndDate, "YYYY-MM-DD").format('L')}
+                                        text: `${GlobalBanners[i].Name}: ${moment(GlobalBanners[i].StartDate, "YYYY-MM-DD").format('L')} - ${moment(GlobalBanners[i].EndDate, "YYYY-MM-DD").format('L')}`,
+                                    }));
+                                }
+                            };
+                        });
+                    </script>
+                    <!-- <div class="SimpleModeSkipGroup BasicWishPlanningSkipGroup">
                         <label for="EndPatch" class="form-label">Wishing End Date</label>
                         <a data-toggle="tooltip"
                             title="Dates are in American server time. The calculator currently assumes that banners end at 12:00 AM (0:00) on the banner end date."
                         >
                             <i class="bi bi-question-circle"></i>
                         </a>
-                        <select id="BannerEnd" class="form-select" style="max-width: 300px;"></select>
-                        <script type="text/javascript">
-                            $(function() {
-                                for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
-                                    $('#BannerEnd').append($('<option>', {
-                                        value: i,
-                                        text: `${BannerInfo[i].Patch} Phase ${BannerInfo[i].Phase} (Ends on ${moment(BannerInfo[i].BannerEndDate, "YYYY-MM-DD").format('L')})`,
-                                    }));
-                                };
-                            });
-                        </script>
                         <br>
-                    </div>
+                    </div> -->
 
+                    <!----
                     <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 100%;">
                         <thead>
                             <tr>
@@ -376,8 +388,8 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div id="CapturingRadiancePitySkipGroup"> <!-- Wrapping this in a div so parsley validations will also be hidden. -->
-                                        <input type="number" id="CapturingRadiancePity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
+                                    <div id="CapturingRadiancePitySkipGroup">---> <!-- Wrapping this in a div so parsley validations will also be hidden. -->
+                                        <!---<input type="number" id="CapturingRadiancePity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
                                     </div>
                                 </td>
                                 <td></td>
@@ -385,21 +397,22 @@
                             </tr>
                         </tbody>
                     </table>
+                    --->
 
                     <div style="overflow-x: auto;">
                         <table id="WishPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
                             <thead>
                                 <tr>
-                                    <th style="width: 5%;">
+                                    <th style="width: 10%;">
                                         <!-- Veritcal Grip -->
                                     </th>
-                                    <th style="width: 30%; min-width: 175px;">
+                                    <!-- <th style="width: 30%; min-width: 175px;">
                                         Name
-                                    </th>
-                                    <th style="width: 15%; min-width: 155px;">
+                                    </th> -->
+                                    <!-- <th style="width: 15%; min-width: 155px;">
                                         Banner Type
-                                    </th>
-                                    <th style="width: 30%; min-width: 125px;">
+                                    </th> -->
+                                    <th style="width: 60%; min-width: 125px;">
                                         Wishing End Date
                                         <a data-toggle="tooltip"
                                             title="Dates are in American server time. The calculator currently assumes that banners end at 12:00 AM (0:00) on the banner end date."
@@ -410,10 +423,10 @@
                                     <th style="width: 10%; min-width: 80px;">
                                         Copies
                                     </th>
-                                    <th style="width: 5%;">
+                                    <th style="width: 10%;">
                                         Enabled
                                     </th>
-                                    <th style="width: 5%;">
+                                    <th style="width: 10%;">
                                         <!-- Remove Button -->
                                     </th>
                                 </tr>
@@ -438,21 +451,21 @@
                             let NewRow = $(
                                 `<tr id="WishPlanRow${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}">`+
                                     `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
-                                    `<td>`+
-                                        `<input type="text" class="WishPlanItem form-control" style="width: 100%;">`+
-                                    `</td>`+
+                                    // `<td>`+
+                                    //     `<input type="text" class="WishPlanItem form-control" style="width: 100%;">`+
+                                    // `</td>`+
+                                    // `<td>`+
+                                    //     `<center>`+
+                                    //         `<select class="WishPlanType form-select">`+ // TODO: See about generating this dynamically.
+                                    //             // `<option value=${BannerTypes.Character.value}>      ${BannerTypes.Character.text}      </option>`+
+                                    //             // `<option value=${BannerTypes.Weapon.value}>         ${BannerTypes.Weapon.text}         </option>`+
+                                    //             // `<option value=${BannerTypes.ChronicledWish.value}> ${BannerTypes.ChronicledWish.text} </option>`+
+                                    //         `</select>`+
+                                    //     `</center>`+
+                                    // `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<select class="WishPlanType form-select">`+ // TODO: See about generating this dynamically.
-                                                `<option value=${BannerTypes.Character.value}>      ${BannerTypes.Character.text}      </option>`+
-                                                `<option value=${BannerTypes.Weapon.value}>         ${BannerTypes.Weapon.text}         </option>`+
-                                                `<option value=${BannerTypes.ChronicledWish.value}> ${BannerTypes.ChronicledWish.text} </option>`+
-                                            `</select>`+
-                                        `</center>`+
-                                    `</td>`+
-                                    `<td>`+
-                                        `<center>`+
-                                            `<select class="WishPlanBannerEnd form-select" style="max-width: 300px;"></select>`+
+                                            `<select class="WishPlanBannerEnd form-select"></select>`+
                                         `</center>`+
                                     `</td>`+
                                     `<td>`+
@@ -496,78 +509,42 @@
                         });
                     </script>
 
-                    <div class="SimpleModeSkipGroup">
-                        <hr><h2>Spiral Abyss</h2><br>
-                        <h3>Expected Stars:</h3>
+                    <hr><h2>PVP</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="TeamTrialsClass" class="form-label">Team Trials Class</label>
+                            <input type="number" id="TeamTrialsClass" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[1,6]" min="1" max="6" Value="1">
+                        </div>
 
-                        <!-- TODO: See if there is a way to generate these iteratively since they are basically all the same. -->
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label>
-                                <select id="ExpectedStarsFloor9" class="form-select" style="max-width: 300px;">
-                                    <option value="0"> 0-2&#x2736; </option>
-                                    <option value="1"> 3-5&#x2736; </option>
-                                    <option value="2"> 6-8&#x2736; </option>
-                                    <option value="3"> 9&#x2736; </option>
-                                </select>
-                            </div>
+                        <div class="col-md-6">
+                            <label for="ExpectedClubRank" class="form-label">Expected Club Ranking</label>
+                            <!-- <input type="number" id="ExpectedAct" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0"> -->
+                            <select id="ExpectedClubRank" class="form-select" style="max-width: 300px;">
+                                <option value="1">SS (1-10)</option>
+                                <option value="2">S+ (11-30)</option>
+                                <option value="3">S &nbsp;&nbsp;(31-100)</option>
+                                <option value="4">A+ (101-500)</option>
+                                <option value="5">A &nbsp;&nbsp;(501-100)</option>
+                                <option value="6">B+ (1001-3000)</option>
+                                <option value="7">B &nbsp;&nbsp;(3001-5000)</option>
+                                <option value="8">C+ (5001-7000)</option>
+                                <option value="9">C &nbsp;&nbsp;(7001-10000)</option>
+                                <option value="10">D+ (10001-30000)</option>
+                                <option value="11">D</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- <div class="SimpleModeSkipGroup"> -->
                         
-                            <div class="col-sm-3">
-                                <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label>
-                                <select id="ExpectedStarsFloor10" class="form-select" style="max-width: 300px;">
-                                    <option value="0"> 0-2&#x2736; </option>
-                                    <option value="1"> 3-5&#x2736; </option>
-                                    <option value="2"> 6-8&#x2736; </option>
-                                    <option value="3"> 9&#x2736; </option>
-                                </select>
-                            </div>
-
-                            <div class="col-sm-3">
-                                <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label>
-                                <select id="ExpectedStarsFloor11" class="form-select" style="max-width: 300px;">
-                                    <option value="0"> 0-2&#x2736; </option>
-                                    <option value="1"> 3-5&#x2736; </option>
-                                    <option value="2"> 6-8&#x2736; </option>
-                                    <option value="3"> 9&#x2736; </option>
-                                </select>
-                            </div>
-
-                            <div class="col-sm-3">
-                                <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label>
-                                <select id="ExpectedStarsFloor12" class="form-select" style="max-width: 300px;">
-                                    <option value="0"> 0-2&#x2736; </option>
-                                    <option value="1"> 3-5&#x2736; </option>
-                                    <option value="2"> 6-8&#x2736; </option>
-                                    <option value="3"> 9&#x2736; </option>
-                                </select>
-                            </div>
-                        </div>
-                        <br>
-
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" id="AbyssCurrentCycleCompleted" class="form-check-input">
-                            <label for="AbyssCurrentCycleCompleted" class="form-label">Current cycle completed</label><br>
-                        </div>
-                    </div>
-
-                    <div class="SimpleModeSkipGroup">
-                        <hr><h2>Imaginarium Theater</h2><br>
-
-                        <label for="ExpectedAct" class="form-label">Expected Act</label>
-                        <input type="number" id="ExpectedAct" class="form-control" style="max-width: 100px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0">
-                        <br>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
-                            <label for="ITCurrentCycleCompleted" class="form-label">Current cycle completed</label>
-                        </div>
-                    </div>
+                    <!-- </div> -->
 
                     <div class="SimpleModeSkipGroup">
                         <hr>
                         <h2>
-                            Battle Pass & Welkin
+                            Daily Carrot Pack
                             <a data-toggle="tooltip"
-                                title="This calculator will assume that the <b>Blessing of the Welkin Moon</b>/<b>Battle Pass</b> will either be purchased from now until the <b>Wishing End Date</b> or not at all."
+                                title="This calculator will assume that the <b>Daily Carrot Pack</b> will either be purchased from now until continuously or not at all."
                             >
                                 <i class="bi bi-question-circle"></i>
                             </a>
@@ -575,10 +552,10 @@
                         <br>
 
                         <div class="form-check form-check-inline">
-                            <input type="checkbox" id="HasWelkin" class="form-check-input">
-                            <label for="HasWelkin" class="form-label">Purchasing Blessing of the Welking Moon</label>
+                            <input type="checkbox" id="HasDailyCarrotPack" class="form-check-input">
+                            <label for="HasDailyCarrotPack" class="form-label">Purchasing Daily Carrot Pack</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <!-- <div class="form-check form-check-inline">
                             <input type="checkbox" id="BPPurchased" class="form-check-input">
                             <label for="BPPurchased" class="form-label">Purchasing Battle Pass</label>
                         </div>
@@ -593,10 +570,10 @@
                                 <option value="4"> 40-49 </option>
                                 <option value="5"> 50    </option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
 
-                    <div id="EventCalcs">
+                    <!-- <div id="EventCalcs">
                         <hr><h2>Events</h2><br>
 
                         <div class="row">
@@ -632,12 +609,12 @@
                             <input type="checkbox" id="UsingHoyoLabCheckin" class="form-check-input">
                             <label for="UsingHoyoLabCheckin" class="form-label">Using <b>HoYoLAB Community Daily Check-In</b></label>
                             <a data-toggle="tooltip"
-                                title="The check-in will award 20 <b>Primogems</b> on the 4th, 11th, & 18th of every month."
+                                title="The check-in will award 20 <b>Free Carrots</b> on the 4th, 11th, & 18th of every month."
                             >
                                 <i class="bi bi-question-circle"></i>
                             </a>
                         </div>
-                    </div>
+                    </div> -->
 
                     <hr><h2>Wish Results</h2><br>
 
@@ -682,7 +659,7 @@
                 </table>
 
                 <hr>
-                <p>&#xA9; All rights reserved by HoYoverse. Other properties belong to their respective owners.</p>
+                <p>&#xA9; All rights reserved by Cygames, Inc. Other properties belong to their respective owners.</p>
                 <a href="MoreInfo.html" style="color: #054295; margin: 5px;">More info</a>
                 <a target="_blank" href="https://github.com/MattG129/Genshin-Wish-Calculator/issues" style="color: #054295; margin: 5px;">Report an issue</a>
             </center>
@@ -698,6 +675,7 @@
                 let SessionState = localStorage.getItem("SessionState");
 
                 if (SessionState != null) {
+                    // TODO: Add a toggle to turn this off.
                     Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
                 };
             });
@@ -718,16 +696,7 @@
             function UpdateCalculateButton() {
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
-                if ( 
-                    (
-                        $('#WishMode').val() != WishModes.Advanced.value
-                        && ($('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 || $('#ChronicledGoal').val() > 0)
-                    )
-                    || (
-                        $('#WishMode').val() == WishModes.Advanced.value
-                        && $('tr[data-wishplan-rowid]:not(.DisabledWishPlanRow)').length > 0
-                    )
-                ) {
+                if ( $('tr[data-wishplan-rowid]:not(.DisabledWishPlanRow)').length > 0 ) {
                     $("#Calculate").html(CalculateText);
                     $("#Calculate").removeClass('disabled');
                 }
@@ -771,53 +740,53 @@
                 };
             });
 
-            $(function() { // All events will be completable by the second half of the patch.
-                if (BannerInfo[CurrentBannerVal].Phase == 2) {
-                    $('.FlagshipEventCompletableSkipGroup').hide();
-                    $('.SecondaryEventsCompletableSkipGroup').hide();
-                    $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-3').addClass('col-sm-6');
-                }
-            });
+            // $(function() { // All events will be completable by the second half of the patch.
+            //     if (BannerInfo[CurrentBannerVal].Phase == 2) {
+            //         $('.FlagshipEventCompletableSkipGroup').hide();
+            //         $('.SecondaryEventsCompletableSkipGroup').hide();
+            //         $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-3').addClass('col-sm-6');
+            //     }
+            // });
 
-            $('#FlagshipEventCompletable').on('change', function () {
-                if (BannerInfo[CurrentBannerVal].Phase == 1 && !$('#FlagshipEventCompletable').is(':checked')) {
-                    $('#FlagshipEventCompleted').attr('disabled', true).prop('checked', false);
-                    $('label[for="FlagshipEventCompleted"]').css('color', '#505050');
-                }
-                else {
-                    $('#FlagshipEventCompleted').attr('disabled', false);
-                    $('label[for="FlagshipEventCompleted"]').css('color', 'black');
-                };
-            });
+            // $('#FlagshipEventCompletable').on('change', function () {
+            //     if (BannerInfo[CurrentBannerVal].Phase == 1 && !$('#FlagshipEventCompletable').is(':checked')) {
+            //         $('#FlagshipEventCompleted').attr('disabled', true).prop('checked', false);
+            //         $('label[for="FlagshipEventCompleted"]').css('color', '#505050');
+            //     }
+            //     else {
+            //         $('#FlagshipEventCompleted').attr('disabled', false);
+            //         $('label[for="FlagshipEventCompleted"]').css('color', 'black');
+            //     };
+            // });
 
-            $('#SecondaryEventsCompletable').on('change', function() {
-                let SecondaryEventsMax;
-                if (BannerInfo[CurrentBannerVal].Phase == 1 && $('#SecondaryEventsCompletable').parsley().isValid()) {
-                    SecondaryEventsMax = $('#SecondaryEventsCompletable').val();
-                }
-                else {
-                    SecondaryEventsMax = 3;
-                };
+            // $('#SecondaryEventsCompletable').on('change', function() {
+            //     let SecondaryEventsMax;
+            //     if (BannerInfo[CurrentBannerVal].Phase == 1 && $('#SecondaryEventsCompletable').parsley().isValid()) {
+            //         SecondaryEventsMax = $('#SecondaryEventsCompletable').val();
+            //     }
+            //     else {
+            //         SecondaryEventsMax = 3;
+            //     };
 
-                $('#SecondaryEventsCompleted').attr('max', SecondaryEventsMax).parsley({range: `[0, ${SecondaryEventsMax}]`});
-                $('#SecondaryEventsCompleted').trigger('input');
-            });
+            //     $('#SecondaryEventsCompleted').attr('max', SecondaryEventsMax).parsley({range: `[0, ${SecondaryEventsMax}]`});
+            //     $('#SecondaryEventsCompleted').trigger('input');
+            // });
 
-            $('#WishMode').on('change', function () {
-                $('.CurrencyTopRow').removeClass('col-sm-4').addClass('col-sm-3');
-                $('.SimpleModeSkipGroup').show();
-                $('.BasicWishPlanningSkipGroup').show();
-                $('#WishPlanningTable').hide();
+            // $('#WishMode').on('change', function () {
+                // $('.CurrencyTopRow').removeClass('col-sm-4').addClass('col-sm-3');
+                // $('.SimpleModeSkipGroup').show();
+                // $('.BasicWishPlanningSkipGroup').show();
+                // $('#WishPlanningTable').hide();
 
-                if ($('#WishMode').val() == WishModes.Simple.value) {
-                    $('.SimpleModeSkipGroup').hide();
-                    $('.CurrencyTopRow').removeClass('col-sm-3').addClass('col-sm-4');
-                }
-                else if ($('#WishMode').val() == WishModes.Advanced.value) {
-                    $('.BasicWishPlanningSkipGroup').hide();
-                    $('#WishPlanningTable').show();
-                };
-            });
+                // if ($('#WishMode').val() == WishModes.Simple.value) {
+                    // $('.SimpleModeSkipGroup').hide();
+                    // $('.CurrencyTopRow').removeClass('col-sm-3').addClass('col-sm-4');
+                // }
+                // else if ($('#WishMode').val() == WishModes.Advanced.value) {
+                    // $('.BasicWishPlanningSkipGroup').hide();
+                    // $('#WishPlanningTable').show();
+                // };
+            // });
 
             function ToggleWishPlanRow(caller, WishPlanRowID) {
                 if ($(caller).is(':checked')) {
@@ -828,43 +797,43 @@
                 };
             };
 
-            $('#EnableEventCalcs, #WishMode').on('change', function () {
-                if ($('#EnableEventCalcs').is(':checked') && $('#WishMode').val() != WishModes.Simple.value) {
-                    $('#EventCalcs').show();
-                }
-                else {
-                    $('#EventCalcs').hide();
-                };
-            });
+            // $('#EnableEventCalcs, #WishMode').on('change', function () {
+            //     if ($('#EnableEventCalcs').is(':checked') && $('#WishMode').val() != WishModes.Simple.value) {
+            //         $('#EventCalcs').show();
+            //     }
+            //     else {
+            //         $('#EventCalcs').hide();
+            //     };
+            // });
 
-            $('#EnableCapturingRadiance').on('change', function () {
-                if ($('#EnableCapturingRadiance').is(':checked')) {
-                    $('#CapturingRadianceLabel').css('color', 'black');
-                    $('#CapturingRadiancePitySkipGroup').show();
-                }
-                else {
-                    $('#CapturingRadianceLabel').css('color', 'gray');
-                    $('#CapturingRadiancePitySkipGroup').hide();
-                };
-            });
+            // $('#EnableCapturingRadiance').on('change', function () {
+            //     if ($('#EnableCapturingRadiance').is(':checked')) {
+            //         $('#CapturingRadianceLabel').css('color', 'black');
+            //         $('#CapturingRadiancePitySkipGroup').show();
+            //     }
+            //     else {
+            //         $('#CapturingRadianceLabel').css('color', 'gray');
+            //         $('#CapturingRadiancePitySkipGroup').hide();
+            //     };
+            // });
 
-            $('#UsingStarglitter').on('change', function(){
-                if ($('#UsingStarglitter').is(':checked')) {
-                    $('#StarglitterSkipGroup').show();
-                }
-                else {
-                    $('#StarglitterSkipGroup').hide();
-                };
-            });
+            // $('#UsingStarglitter').on('change', function(){
+            //     if ($('#UsingStarglitter').is(':checked')) {
+            //         $('#StarglitterSkipGroup').show();
+            //     }
+            //     else {
+            //         $('#StarglitterSkipGroup').hide();
+            //     };
+            // });
 
-            $('#BPPurchased').on('change', function(){
-                if ($('#BPPurchased').is(':checked')) {
-                    $('#BPLevelSkipGroup').show();
-                }
-                else {
-                    $('#BPLevelSkipGroup').hide();
-                };
-            });
+            // $('#BPPurchased').on('change', function(){
+            //     if ($('#BPPurchased').is(':checked')) {
+            //         $('#BPLevelSkipGroup').show();
+            //     }
+            //     else {
+            //         $('#BPLevelSkipGroup').hide();
+            //     };
+            // });
 
             function CompileForm(){
                 let FormValues = {};
@@ -913,20 +882,21 @@
                 else {
                     $('#InvalidImportMessage').hide();
 
-                    if (JSONImport.BannerEnd < CurrentBannerVal) {
-                        if (JSONImport.WishMode != WishModes.Advanced.value) {
-                            swal({icon: 'info', text: 'Banner end date was not imported as it has already passed. All other fields have been successfully imported.'});
-                        };
+                    // TODO: This part needs to be revisted once we figure out how to handle banner date inaccuracies.
+                    // if (JSONImport.BannerEnd < CurrentBannerVal) {
+                    //     if (JSONImport.WishMode != WishModes.Advanced.value) {
+                    //         swal({icon: 'info', text: 'Banner end date was not imported as it has already passed. All other fields have been successfully imported.'});
+                    //     };
 
-                        JSONImport.BannerEnd = CurrentBannerVal;
-                    }
-                    else if (JSONImport.BannerEnd >= BannerInfo.length) {
-                        if (JSONImport.WishMode != WishModes.Advanced.value) {
-                            swal({icon: 'info', text: 'Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.'});
-                        };
+                    //     JSONImport.BannerEnd = CurrentBannerVal;
+                    // }
+                    // else if (JSONImport.BannerEnd >= BannerInfo.length) {
+                    //     if (JSONImport.WishMode != WishModes.Advanced.value) {
+                    //         swal({icon: 'info', text: 'Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.'});
+                    //     };
 
-                        JSONImport.BannerEnd = CurrentBannerVal;
-                    };
+                    //     JSONImport.BannerEnd = CurrentBannerVal;
+                    // };
 
                     $('#form input:not(.WishPlanField), #form select:not(.WishPlanField)').each(function() {
                         if ($(this).is(':checkbox')) {
@@ -949,18 +919,18 @@
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanType`).val(JSONImport.WishPlanArray[i].WishPlanType);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
-                        if (JSONImport.WishPlanArray[i].WishPlanBannerEnd >= CurrentBannerVal) {
-                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(JSONImport.WishPlanArray[i].WishPlanBannerEnd);
-                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
-                        }
-                        else {
-                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(CurrentBannerVal);
-                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
+                        // if (JSONImport.WishPlanArray[i].WishPlanBannerEnd >= CurrentBannerVal) {
+                        //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(JSONImport.WishPlanArray[i].WishPlanBannerEnd);
+                        //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
+                        // }
+                        // else {
+                        //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(CurrentBannerVal);
+                        //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
 
-                            if (JSONImport.WishMode == WishModes.Advanced.value && JSONImport.WishPlanArray[i].WishPlanEnabled) {
-                                AnnounceExpiredWishPlanRows = true;
-                            };
-                        };
+                        //     if (JSONImport.WishMode == WishModes.Advanced.value && JSONImport.WishPlanArray[i].WishPlanEnabled) {
+                        //         AnnounceExpiredWishPlanRows = true;
+                        //     };
+                        // };
                     };
                     
                     if (AnnounceExpiredWishPlanRows) {
