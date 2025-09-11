@@ -1,11 +1,12 @@
 <!-- TODO: Add comments. -->
 <!-- TODO: Wishing is scouting in this game. -->
+<!-- TODO: Pity should be exchange points. -->
 <!DOCTYPE html>
 
 <html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Umamusume Wish Planning Calculator</title>
+        <title>Umamusume Scout Planning Calculator</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="description" content="" />
@@ -18,7 +19,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
         <script src="BannersInfo.js" type="text/javascript"></script>
-        <script src="Wish_Calculator_JS.mjs" type="text/javascript"></script>
+        <script src="ScoutCalcs.mjs" type="text/javascript"></script>
 
         <script src="https://parsleyjs.org/dist/parsley.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -123,7 +124,13 @@
             }
         </style>
 
-        <center><h1>Umamusume Wish Planning Calculator</h1></center>
+        <center><h1>Umamusume Scout Planning Calculator</h1></center>
+
+        <center>
+            <div class="alert alert-warning" role="alert" style="max-width: 80%;">
+                Due to upcoming changes in rewards given from the Login Bonus, Daily Missions, Team Trials, and Club Rankings, the estimates provided by this calculator may vary drastically over the next few weeks.
+            </div>
+        </center>
 
         <form id="form" data-parsley-validate="true">
             <div class="container">
@@ -221,7 +228,7 @@
                                     <th style="width: 10%;">
                                         <!-- Veritcal Grip -->
                                     </th>
-                                    <th style="width: 60%; min-width: 125px;">
+                                    <th style="width: 40%; min-width: 125px;">
                                         Wishing End Date
                                         <a data-toggle="tooltip"
                                             title="Dates are in American server time. The calculator currently assumes that banners end at 12:00 AM (0:00) on the banner end date."
@@ -229,7 +236,10 @@
                                             <i class="bi bi-question-circle" style="color: black;"></i>
                                         </a>
                                     </th>
-                                    <th style="width: 10%; min-width: 80px;">
+                                    <th style="width: 15%; min-width: 80px;">
+                                        Exchange Points
+                                    </th>
+                                    <th style="width: 15%; min-width: 80px;">
                                         Copies
                                     </th>
                                     <th style="width: 10%;">
@@ -263,6 +273,11 @@
                                     `<td>`+
                                         `<center>`+
                                             `<select class="WishPlanBannerEnd form-select"></select>`+
+                                        `</center>`+
+                                    `</td>`+
+                                    `<td>`+
+                                        `<center>`+
+                                            `<input type="number" class="WishPlanPity form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
                                         `</center>`+
                                     `</td>`+
                                     `<td>`+
@@ -398,11 +413,11 @@
                 <table id="WishPlanningResultsTable" class="table table-bordered table-striped WishResults" style="font-size: min(3vw, 16px); text-align: center; border: 1px; display: none;">
                     <thead>
                         <tr>
-                            <th style="width: 35%">Name</th>
-                            <th style="width: 35%">Wishing End Date</th>
-                            <th style="width: 10%">Copies</th>
-                            <th style="width: 10%">Max Wishes</th>
-                            <th style="width: 10%">Chance of Success</th>
+                            <th style="width: 40%">Banner</th>
+                            <!-- <th style="width: 35%">Wishing End Date</th> -->
+                            <th style="width: 20%">Copies</th>
+                            <th style="width: 20%">Max Scouts</th>
+                            <th style="width: 20%">Chance of Success</th>
                         </tr>
                     </thead>
                     <tbody id="WishPlanningResultsBody"> <!--- Will be filled in by WishCalcs. ---> </tbody>
@@ -518,6 +533,7 @@
                         WishPlanItem:             $(this).find('td .WishPlanItem').val(),
                         WishPlanType:      Number($(this).find('td .WishPlanType').val()),
                         WishPlanBannerEnd: Number($(this).find('td .WishPlanBannerEnd').val()),
+                        WishPlanPity:      Number($(this).find('td .WishPlanPity').val()),
                         WishPlanGoal:      Number($(this).find('td .WishPlanGoal').val()),
                         WishPlanEnabled:          $(this).find('td .WishPlanEnabled').is(':checked')
                     });
@@ -582,6 +598,7 @@
 
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanItem`).val(JSONImport.WishPlanArray[i].WishPlanItem);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanType`).val(JSONImport.WishPlanArray[i].WishPlanType);
+                        $(`tr[data-wishplan-rowid=${i}] td .WishPlanPity`).val(JSONImport.WishPlanArray[i].WishPlanPity);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
                         // if (JSONImport.WishPlanArray[i].WishPlanBannerEnd >= CurrentBannerVal) {
