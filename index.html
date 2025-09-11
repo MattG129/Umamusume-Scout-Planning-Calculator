@@ -27,12 +27,6 @@
 
         <script type="text/javascript">
             let NewWishPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
-
-            // const WishModes = {
-            //     'Simple':   {value: 1, text: 'Simple'},
-            //     'Normal':   {value: 2, text: 'Normal'},
-            //     'Advanced': {value: 3, text: 'Advanced'}
-            // };
         </script>
     </head>
     <body>
@@ -169,38 +163,6 @@
                 <br>
 
                 <center>
-                    <!-- <label for="WishMode" class="form-label">Wish Mode</label>
-                    <a data-toggle="tooltip"
-                        title="
-                            <ul>
-                                <li><b>Simple Mode:</b> Allows you to run the calculator with just your current resources.</li>
-                                <li><b>Normal Mode:</b> Allows you to specify how many characters, weapons, and chronicled wish items you will be wishing for and when you will complete your wishing by.</li>
-                                <li><b>Advanced Mode:</b> Allows you to specify which items you want to wish for, when you will wish for them by, and in what order.</li>
-                            </ul>
-                        "
-                    >
-                        <i class="bi bi-question-circle"></i>
-                    </a>
-                    <select id="WishMode" class="form-select" style="max-width: 125px;"></select>
-                    <script type="text/javascript">
-                        for (const [Key, Mode] of Object.entries(WishModes)) {
-                            $('#WishMode').append($('<option>', Mode));
-                        };
-                        $(`#WishMode option[value=${WishModes.Advanced.value}]`).prop('selected', true); // We want advanced to be selected by default but also be the last option.
-                    </script> -->
-                    <!-- <br> -->
-
-                    <!-- <div class="SimpleModeSkipGroup form-check form-check-inline form-switch">
-                        <input type="checkbox" id="EnableEventCalcs" class="form-check-input">
-                        <label for="EnableEventCalcs" class="form-label">Factor in events</label>
-                        <a data-toggle="tooltip"
-                            title="If checked, then the calculator will assume that each patch there will be 1 flagship event, awarding <b>900 Free Carrots</b> and 3 secondary events, each awarding <b>420 Free Carrots</b>."
-                        >
-                            <i class="bi bi-question-circle"></i>
-                        </a>
-                        <br>
-                    </div> -->
-
                     <div class="form-check form-check-inline form-switch">
                         <input type="checkbox" id="DisableUnsavedChangesWarning" class="form-check-input">
                         <label for="DisableUnsavedChangesWarning" class="form-label">Disable unsaved changes warning</label>
@@ -230,53 +192,8 @@
                             <label for="CardTicket" class="form-label">Support Card Scout Ticket</label>
                             <input type="number" id="CardTicket" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
-
-                       <!--  <div class="CurrencyTopRow SimpleModeSkipGroup">
-                            <label for="Stardust" class="form-label">Masterless Stardust</label>
-                            <a data-toggle="tooltip"
-                                title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available <b>Intertwined Fates</b> can be purchased. It is assumed that this month's <b>Intertwined Fates</b> have already been purchased."
-                            >
-                                <i class="bi bi-question-circle"></i>
-                            </a>
-                            <br>
-                            <input type="number" id="Stardust" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-min="0" min="0"><br>
-                        </div> -->
                     </div>
                     <br>
-
-                    <!-- <div class="form-check form-check-inline form-switch">
-                        <input type="checkbox" id="UsingStarglitter" class="form-check-input">
-                        <label for="UsingStarglitter" class="form-label">Using Masterless Starglitter</label><br>
-                    </div> -->
-
-                    <!-- <div class="row" id="StarglitterSkipGroup" style="display: none;">
-                        <div class="col-sm-4">
-                            <label for="Starglitter" class="form-label">Masterless Starglitter</label>
-                            <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
-                        </div>
-                    
-                        <div class="col-sm-4">
-                            <label for="MissingFourStarCharacters" class="form-label">Missing 4&#9733; Characters</label>
-                            <a data-toggle="tooltip"
-                                title="If all 4&#9733; characters have been acquired then every 4&#9733; pulled should give at least 2 Masterless Starglitter. The calculator will assume that a 4&#9733; is given once every 10 wishes, and so if all 4&#9733;s are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
-                            >
-                                <i class="bi bi-question-circle"></i>
-                            </a>
-                            <br>
-                            <input type="number" id="MissingFourStarCharacters" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="40"><br>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <label for="MissingStandardFiveStarCharacters" class="form-label">Missing Standard Banner 5&#9733; Characters</label>
-                            <a data-toggle="tooltip"
-                                title="5&#9733; character constellations will award 10 Masterless Starglitter and so if all standard banner 5&#9733;s are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you pull a standard banner 5&#9733;. Additional wishes gained from this won't be reflected in the <b>Max Number of Wishes</b>."
-                            >
-                                <i class="bi bi-question-circle"></i>
-                            </a>
-                            <br>
-                            <input type="number" id="MissingStandardFiveStarCharacters" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="8"><br>
-                        </div>
-                    </div> -->
 
                     <hr><h2>Wishing Info</h2><br>
 
@@ -296,110 +213,6 @@
                             };
                         });
                     </script>
-                    <!-- <div class="SimpleModeSkipGroup BasicWishPlanningSkipGroup">
-                        <label for="EndPatch" class="form-label">Wishing End Date</label>
-                        <a data-toggle="tooltip"
-                            title="Dates are in American server time. The calculator currently assumes that banners end at 12:00 AM (0:00) on the banner end date."
-                        >
-                            <i class="bi bi-question-circle"></i>
-                        </a>
-                        <br>
-                    </div> -->
-
-                    <!----
-                    <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 100%;">
-                        <thead>
-                            <tr>
-                                <td></td>
-                                <td><b>Character Banner</b></td>
-                                <td><b>Weapon Banner</b></td>
-                                <td><b>Chronicled Wish</b></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class='BasicWishPlanningSkipGroup'>
-                                <td style="vertical-align: middle;"><b>Number of 5&#9733;s Wishing For</b></td>
-                                <td>
-                                    <input type="number" id="CharacterGoal" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="WeaponGoal" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="ChronicledGoal" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle;"><b>Pity</b></td>
-                                <td>
-                                    <input type="number" id="CharacterPity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="WeaponPity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="ChronicledPity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle;"><b>Event 5&#9733; Guarantee</b></td>
-                                <td class="td-label">
-                                    <label class="td-label">
-                                        <input type="checkbox" id="EventCharacterGuarantee" class="form-check-input TableField align-middle">
-                                    </label>
-                                </td>
-                                <td class="td-label">
-                                    <label class="td-label">
-                                        <input type="checkbox" id="EventWeaponGuarantee" class="form-check-input TableField align-middle">
-                                    </label>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle;"><b>Fate Points</b></td>
-                                <td></td>
-                                <td>
-                                    <input type="number" id="WeaponFatePoints" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="ChronicledFatePoints" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle;">
-                                    <b id="CapturingRadianceLabel">Capturing Radiance Pity</b>
-                                    <a data-toggle="tooltip"
-                                        title="
-                                            When pulling on a character banner, if you obtain a 5&#9733; character and they are not the event character, you will gain one <b>Capturing Radiance Pity</b>. If you obtain the event character without the <b>Guarantee</b>, then your <b>Capturing Radiance Pity</b> will be reset to 0. Your <b>Capturing Radiance Pity</b> will alter your chances of obtaining the event character, without the <b>Guarantee</b>, as follows:
-                                            <br><br>
-                                            <ul>
-                                                <li> 0 Pity: 50% Chance   </li>
-                                                <li> 1 Pity: 52.5% Chance </li>
-                                                <li> 2 Pity: 75% Chance   </li>
-                                                <li> 3 Pity: 100% Chance  </li>
-                                            </ul>
-                                            These numbers come from a speculative model, based on wish results observed following this mechanics addition to the game, and as such may not be entirely accurate.
-                                        "
-                                    >
-                                        <i class="bi bi-question-circle" style="color: black;"></i>
-                                    </a>
-                                    <br>
-                                    <div class="form-check form-check-inline form-switch">
-                                        <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableField">
-                                        <label for="EnableCapturingRadiance" class="form-label">Enable</label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div id="CapturingRadiancePitySkipGroup">---> <!-- Wrapping this in a div so parsley validations will also be hidden. -->
-                                        <!---<input type="number" id="CapturingRadiancePity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
-                                    </div>
-                                </td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    --->
 
                     <div style="overflow-x: auto;">
                         <table id="WishPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
@@ -408,12 +221,6 @@
                                     <th style="width: 10%;">
                                         <!-- Veritcal Grip -->
                                     </th>
-                                    <!-- <th style="width: 30%; min-width: 175px;">
-                                        Name
-                                    </th> -->
-                                    <!-- <th style="width: 15%; min-width: 155px;">
-                                        Banner Type
-                                    </th> -->
                                     <th style="width: 60%; min-width: 125px;">
                                         Wishing End Date
                                         <a data-toggle="tooltip"
@@ -453,18 +260,6 @@
                             let NewRow = $(
                                 `<tr id="WishPlanRow${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}">`+
                                     `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
-                                    // `<td>`+
-                                    //     `<input type="text" class="WishPlanItem form-control" style="width: 100%;">`+
-                                    // `</td>`+
-                                    // `<td>`+
-                                    //     `<center>`+
-                                    //         `<select class="WishPlanType form-select">`+ // TODO: See about generating this dynamically.
-                                    //             // `<option value=${BannerTypes.Character.value}>      ${BannerTypes.Character.text}      </option>`+
-                                    //             // `<option value=${BannerTypes.Weapon.value}>         ${BannerTypes.Weapon.text}         </option>`+
-                                    //             // `<option value=${BannerTypes.ChronicledWish.value}> ${BannerTypes.ChronicledWish.text} </option>`+
-                                    //         `</select>`+
-                                    //     `</center>`+
-                                    // `</td>`+
                                     `<td>`+
                                         `<center>`+
                                             `<select class="WishPlanBannerEnd form-select"></select>`+
@@ -582,49 +377,6 @@
                         </div> -->
                     </div>
 
-                    <!-- <div id="EventCalcs">
-                        <hr><h2>Events</h2><br>
-
-                        <div class="row">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-3 SecondaryEventsCompletableSkipGroup">
-                                <label for="SecondaryEventsCompletable" class="form-label">Secondary Events Completable in First Half</label>
-                                <input type="number" id="SecondaryEventsCompletable" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
-                            </div>
-                            <div class="col-sm-3 SecondaryEventsCompletedCtrlGroup">
-                                <label for="SecondaryEventsCompleted" class="form-label">Secondary Events Completed</label>
-                                <input type="number" id="SecondaryEventsCompleted" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
-                            </div>
-                            <div class="col-sm-3"></div>
-                        </div>
-                        <br>
-
-                        <div class="form-check form-check-inline FlagshipEventCompletableSkipGroup">
-                            <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
-                            <label for="FlagshipEventCompletable" class="form-label">Flagship Event Completable in First Half</label>
-                            <a data-toggle="tooltip"
-                                title="The calculator will assume this is false, and the secondary events completable is 1, for any patches after this one."
-                            >
-                                <i class="bi bi-question-circle"></i>
-                            </a>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" id="FlagshipEventCompleted" class="form-check-input">
-                            <label for="FlagshipEventCompleted" class="form-label">Flagship Event Completed</label>
-                        </div>
-                        <br><br>
-
-                        <div class="form-check form-check-inline">
-                            <input type="checkbox" id="UsingHoyoLabCheckin" class="form-check-input">
-                            <label for="UsingHoyoLabCheckin" class="form-label">Using <b>HoYoLAB Community Daily Check-In</b></label>
-                            <a data-toggle="tooltip"
-                                title="The check-in will award 20 <b>Free Carrots</b> on the 4th, 11th, & 18th of every month."
-                            >
-                                <i class="bi bi-question-circle"></i>
-                            </a>
-                        </div>
-                    </div> -->
-
                     <hr><h2>Wish Results</h2><br>
 
                     <a id="Calculate" class="btn btn-primary" style="border-width: 1px; border-color: black;">Calculate</a>
@@ -739,54 +491,6 @@
                 };
             });
 
-            // $(function() { // All events will be completable by the second half of the patch.
-            //     if (BannerInfo[CurrentBannerVal].Phase == 2) {
-            //         $('.FlagshipEventCompletableSkipGroup').hide();
-            //         $('.SecondaryEventsCompletableSkipGroup').hide();
-            //         $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-3').addClass('col-sm-6');
-            //     }
-            // });
-
-            // $('#FlagshipEventCompletable').on('change', function () {
-            //     if (BannerInfo[CurrentBannerVal].Phase == 1 && !$('#FlagshipEventCompletable').is(':checked')) {
-            //         $('#FlagshipEventCompleted').attr('disabled', true).prop('checked', false);
-            //         $('label[for="FlagshipEventCompleted"]').css('color', '#505050');
-            //     }
-            //     else {
-            //         $('#FlagshipEventCompleted').attr('disabled', false);
-            //         $('label[for="FlagshipEventCompleted"]').css('color', 'black');
-            //     };
-            // });
-
-            // $('#SecondaryEventsCompletable').on('change', function() {
-            //     let SecondaryEventsMax;
-            //     if (BannerInfo[CurrentBannerVal].Phase == 1 && $('#SecondaryEventsCompletable').parsley().isValid()) {
-            //         SecondaryEventsMax = $('#SecondaryEventsCompletable').val();
-            //     }
-            //     else {
-            //         SecondaryEventsMax = 3;
-            //     };
-
-            //     $('#SecondaryEventsCompleted').attr('max', SecondaryEventsMax).parsley({range: `[0, ${SecondaryEventsMax}]`});
-            //     $('#SecondaryEventsCompleted').trigger('input');
-            // });
-
-            // $('#WishMode').on('change', function () {
-                // $('.CurrencyTopRow').removeClass('col-sm-4').addClass('col-sm-3');
-                // $('.SimpleModeSkipGroup').show();
-                // $('.BasicWishPlanningSkipGroup').show();
-                // $('#WishPlanningTable').hide();
-
-                // if ($('#WishMode').val() == WishModes.Simple.value) {
-                    // $('.SimpleModeSkipGroup').hide();
-                    // $('.CurrencyTopRow').removeClass('col-sm-3').addClass('col-sm-4');
-                // }
-                // else if ($('#WishMode').val() == WishModes.Advanced.value) {
-                    // $('.BasicWishPlanningSkipGroup').hide();
-                    // $('#WishPlanningTable').show();
-                // };
-            // });
-
             function ToggleWishPlanRow(caller, WishPlanRowID) {
                 if ($(caller).is(':checked')) {
                     $(`tr[data-wishplan-rowid=${WishPlanRowID}], tr[data-wishplan-rowid=${WishPlanRowID}] input, tr[data-wishplan-rowid=${WishPlanRowID}] select`).removeClass('DisabledWishPlanRow');
@@ -795,44 +499,6 @@
                     $(`tr[data-wishplan-rowid=${WishPlanRowID}], tr[data-wishplan-rowid=${WishPlanRowID}] input, tr[data-wishplan-rowid=${WishPlanRowID}] select`).addClass('DisabledWishPlanRow');
                 };
             };
-
-            // $('#EnableEventCalcs, #WishMode').on('change', function () {
-            //     if ($('#EnableEventCalcs').is(':checked') && $('#WishMode').val() != WishModes.Simple.value) {
-            //         $('#EventCalcs').show();
-            //     }
-            //     else {
-            //         $('#EventCalcs').hide();
-            //     };
-            // });
-
-            // $('#EnableCapturingRadiance').on('change', function () {
-            //     if ($('#EnableCapturingRadiance').is(':checked')) {
-            //         $('#CapturingRadianceLabel').css('color', 'black');
-            //         $('#CapturingRadiancePitySkipGroup').show();
-            //     }
-            //     else {
-            //         $('#CapturingRadianceLabel').css('color', 'gray');
-            //         $('#CapturingRadiancePitySkipGroup').hide();
-            //     };
-            // });
-
-            // $('#UsingStarglitter').on('change', function(){
-            //     if ($('#UsingStarglitter').is(':checked')) {
-            //         $('#StarglitterSkipGroup').show();
-            //     }
-            //     else {
-            //         $('#StarglitterSkipGroup').hide();
-            //     };
-            // });
-
-            // $('#BPPurchased').on('change', function(){
-            //     if ($('#BPPurchased').is(':checked')) {
-            //         $('#BPLevelSkipGroup').show();
-            //     }
-            //     else {
-            //         $('#BPLevelSkipGroup').hide();
-            //     };
-            // });
 
             function CompileForm(){
                 let FormValues = {};

@@ -162,7 +162,7 @@ const JPBanners = [
         EndDate: moment('20 Jun 2021', "DD MMM YYYY").toDate()
     }
 ];
-// JPBanners.sort((a, b) => a.StartDate - b.StartDate); 
+
 // Sorting banners chronologically and then alphabetically to make sure that indexes remain constant.
 JPBanners.sort((a, b) => {
   // Primary sort by date (ascending)
@@ -175,7 +175,6 @@ JPBanners.sort((a, b) => {
   // Secondary sort by name (ascending) if dates are equal
   return a.Name.localeCompare(b.Name);
 });
-
 
 // Overriding the estimated global dates with the actual global dates.
 // Using IDs instead of names because of reruns.

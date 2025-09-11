@@ -121,23 +121,6 @@ function SavingsCalculator(WishConfig) {
     };
     FC += TeamTrialCarrots * ( TargetBannerInfo.WeekDiff + (DayOfWeek(Today) > DayOfWeek(TargetBannerInfo.EndDate) ? 1 : 0) );
 
-
-
-
-    // FC += 300 * (TargetBannerInfo.PatchDiff + 1); // +1 for current patch.
-    // // Subtracting FC for current patch, if claimed. Live streams generally air 31 days into the patch so we will assume the FC are claimed on that date.
-    // if (DateDiff(BannerInfo[CurrentBannerVal].PatchStartDate, Today) >= 31) {
-    //     FC -= 300;
-    // };
-    // Subtract FC from the last patch if the target banner is in the first phase, as then the LS FC wouldn't be claimable.
-    // if (TargetBannerInfo.Phase == 1) {
-    //     FC -= 300
-    // };
-
-    // Maintenance - 300 FC will be claimable at the start of each patch as compensation for the game going down for the update.
-    // FC += 300 * TargetBannerInfo.PatchDiff;
-
-
     // Club Rewards
     let ExpectedClubCarrots = 0;
     switch (WishConfig.ExpectedAct) {
@@ -155,47 +138,6 @@ function SavingsCalculator(WishConfig) {
     };
     FC += ExpectedClubCarrots * TargetBannerInfo.MonthDiff;
 
-    // if (WishConfig.EnableEventCalcs) {
-    //     // Each patch there will be 1 flagship event, awarding 900 primogems and 3 secondary events, each awarding 420 primogems.
-    //     FC += (900 + 3*420) * (TargetBannerInfo.PatchDiff + 1); // +1 for current patch.
-
-    //     // Subtracts claimed event FC.
-    //     FC -= WishConfig.FlagshipEventCompleted ? 900 : 0;
-    //     FC -= 420*WishConfig.SecondaryEventsCompleted;
-
-    //     // Subtracts unclaimable event FC as not all events will be completable in the first half.
-    //     if (TargetBannerInfo.Phase == 1) { 
-    //         // If the target banner is the current patch's phase 1, then the user can specify which events can be completed.
-    //         if (TargetBannerInfo.PatchDiff == 0) {
-    //             FC -= WishConfig.FlagshipEventCompletable ? 0 : 900;
-    //             FC -= 420*(3-WishConfig.SecondaryEventsCompletable);
-    //         }
-    //         // If the target banner is any farther out, then we will assume that the flagship event is not completable and only one secondary event is completable.
-    //         else {
-    //             FC -= 900;
-    //             FC -= 2*420;
-    //         };
-    //     };
-    
-    //     // Hoyo lab check in - Awards 20 FC on the 4th, 11th, & 18th of each month for checking in daily.
-    //     if (WishConfig.UsingHoyoLabCheckin) {
-    //         FC += 60*(TargetBannerInfo.MonthDiff + 1); // +1 for the current month.
-            
-    //         // Subtract based on the amount of FC we could claim.
-    //         if      (Today.getDate() >= 18) {FC -= 60}
-    //         else if (Today.getDate() >= 11) {FC -= 40}
-    //         else if (Today.getDate() >=  4) {FC -= 20};
-
-    //         // Subtracts FC based on how many could actually be claimed by the banner end date.
-    //         if      (TargetBannerInfo.BannerEndDate.getDate() <  4) {FC -= 60}
-    //         else if (TargetBannerInfo.BannerEndDate.getDate() < 11) {FC -= 40}
-    //         else if (TargetBannerInfo.BannerEndDate.getDate() < 18) {FC -= 20};
-    //     };
-    // };
-
-    // let Tickets = WishConfig.IntertwinedFates;
-
-    // let WishesMade = Math.floor(FC/150);
     let PC = WishConfig.PC;
     if (WishConfig.HasDailyCarrotPack) {
         // TODO: The calculator doesn't factor in when the daily carrot pack is renewed which can mess up the calcs a bit.
@@ -203,32 +145,6 @@ function SavingsCalculator(WishConfig) {
     };
 
     WishesMade += Max(Min( Math.floor(WishConfig.PC/50), DateDiff(TargetBannerInfo.StartDate, TargetBannerInfo.EndDate) ), 0);
-
-
-
-    // Adds starglitter for four-stars that were pulled. Assumes that we would earn one four-star every ten wishes.
-    // For simplicity this won't account for whether the four-stars have a rate up. Assumes 2 starglitter for four-star.
-    // TODO: Shouldn't factor in missing four-star characters beyond the maximum possible number of character wishes.
-    // if (WishConfig.UsingStarglitter) {
-    //     let FourStars = Math.floor(WishesMade/10);
-    //     let FourStarPity = WishesMade % 10;
-
-    //     // Won't get starglitter for newly acquired four-stars. Adds up the number of currently missing four-stars plus those that may be added in future patches. 
-    //     // Assumes that one four-star will be added per patch, to err on the side of caution, although this often won't be the case.
-    //     Starglitter += Math.max(0, 2 * (FourStars - (WishConfig.MissingFourStarCharacters + TargetBannerInfo.PatchDiff)));
-
-    //     let AdditionalWishesMade;
-    //     let AdditionalFourStars;
-    //     while (Starglitter >= 5) {
-    //         AdditionalWishesMade = Math.floor(Starglitter/5);
-    //         Starglitter %= 5;
-    //         AdditionalFourStars = Math.floor((AdditionalWishesMade + FourStarPity)/10);
-    //         FourStarPity = (AdditionalWishesMade + FourStarPity) % 10;
-    //         Starglitter += 2 * AdditionalFourStars; // Missing four-stars don't factor in here since this code block wouldn't run if we were still missing any at this point.
-
-    //         WishesMade += AdditionalWishesMade;
-    //     };
-    // };
 
     return {FCScouts = Math.floor(FC/150), PCScouts = Math.floor(PC/50)};
 };
