@@ -39,6 +39,7 @@ for (let i = 0; i < JPBanners.length; i++) {
         Name: JPBanners[i].Name,
         StartDate: GlobalBannerStartDate,
         EndDate: GlobalBannerEndDate,
+        BannerLength: DateDiff(GlobalBannerStartDate, GlobalBannerEndDate),
         WeekDiff: Math.floor(DateDiff(Today, GlobalBannerEndDate) / 7),
         MonthDiff: 12*(GlobalBannerEndDate.getFullYear() - Today.getFullYear()) + (GlobalBannerEndDate.getMonth() - Today.getMonth())
     })
@@ -57,7 +58,7 @@ function DateDiff(DateFrom, DateTo) {
 };
 
 function DayOfWeek(Date) {
-    let DOW = Date.day()
+    let DOW = moment(Date).day()
     
     // We want to treat monday as the start of the week and sunday as the end.
     if (DOW == 0) {
@@ -144,13 +145,12 @@ function SavingsCalculator(WishConfig) {
         PC += 500 * TargetBannerInfo.MonthDiff;
     };
 
-    WishesMade += Max(Min( Math.floor(WishConfig.PC/50), DateDiff(TargetBannerInfo.StartDate, TargetBannerInfo.EndDate) ), 0);
-
-    return {FCScouts = Math.floor(FC/150), PCScouts = Math.floor(PC/50)};
+    return {MaxFCScouts: Math.floor(FC/150), PC: PC};
 };
 
 // Declaring variables outside the function scope so they can be used by both NumericWishCalculations and the wish sim functions.
 let Wishes;
+let PCSpent;
 let LostCharacter5050s; // When pulling on the character banner, if you get a five-star without an event item guarantee, you will have a 50:50 chance for it to be your desired five-star.
 let CapturingRadiancePity; // Explained in a tool tip.
 
@@ -162,7 +162,7 @@ let CapturingRadiancePity; // Explained in a tool tip.
 // Once you reach the maximum amount of fate points, your next five-star is guaranteed to be your desired one.
 // Pulling your desired five-star will reset your fate points to 0.
 
-let CharacterPity;
+// let ScoutPity;
 let EventCharacterGuarantee;
 let CharacterRate;
 
@@ -175,33 +175,34 @@ let ChronicledPity;
 let ChronicledFatePoints;
 let ChronicledRate;
 
+let UmaTickets;
+let CardTickets;
+
 function NumericWishCalculations(WishConfig) {
     const Start = Date.now();
     let Successes = 0;
 
-    let WishPlanResults = [];
-    if (WishConfig.WishMode == WishModes.Advanced.value) {
-        WishPlanResults = new Array(WishConfig.EnabledWishPlanArray.length).fill(0);
-    };
+    let WishPlanResults = new Array(WishConfig.EnabledWishPlanArray.length).fill(0);    
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
         Wishes = 0;
-        LostCharacter5050s = 0;
+        PCSpent = 0;
+        // LostCharacter5050s = 0;
 
-        CharacterPity = WishConfig.CharacterPity;
-        EventCharacterGuarantee = WishConfig.EventCharacterGuarantee;
-        CharacterRate = BannerTypes.Character.BaseFiveStarRate + Math.max(0, BannerTypes.Character.SoftPityIncrement*(CharacterPity-BannerTypes.Character.SoftPityThreshold));
-        CapturingRadiancePity = WishConfig.CapturingRadiancePity;
+        // ScoutPity = WishConfig.CharacterPity;
+        // EventCharacterGuarantee = WishConfig.EventCharacterGuarantee;
+        ScoutRate = 0.0075;
+        // CapturingRadiancePity = WishConfig.CapturingRadiancePity;
 
-        WeaponPity = WishConfig.WeaponPity;
-        EventWeaponGuarantee = WishConfig.EventWeaponGuarantee;
-        WeaponFatePoints = WishConfig.WeaponFatePoints;
-        WeaponRate = BannerTypes.Weapon.BaseFiveStarRate + Math.max(0, BannerTypes.Weapon.SoftPityIncrement*(WeaponPity-BannerTypes.Weapon.SoftPityThreshold));
+        // WeaponPity = WishConfig.WeaponPity;
+        // EventWeaponGuarantee = WishConfig.EventWeaponGuarantee;
+        // WeaponFatePoints = WishConfig.WeaponFatePoints;
+        // WeaponRate = BannerTypes.Weapon.BaseFiveStarRate + Math.max(0, BannerTypes.Weapon.SoftPityIncrement*(WeaponPity-BannerTypes.Weapon.SoftPityThreshold));
 
-        ChronicledPity = WishConfig.ChronicledPity;
-        ChronicledFatePoints = WishConfig.ChronicledFatePoints;
-        ChronicledRate = BannerTypes.ChronicledWish.BaseFiveStarRate + Math.max(0, BannerTypes.ChronicledWish.SoftPityIncrement*(ChronicledPity-BannerTypes.ChronicledWish.SoftPityThreshold));
+        // ChronicledPity = WishConfig.ChronicledPity;
+        // ChronicledFatePoints = WishConfig.ChronicledFatePoints;
+        // ChronicledRate = BannerTypes.ChronicledWish.BaseFiveStarRate + Math.max(0, BannerTypes.ChronicledWish.SoftPityIncrement*(ChronicledPity-BannerTypes.ChronicledWish.SoftPityThreshold));
 
         // if (WishConfig.WishMode != WishModes.Advanced.value) {
         //     let CharactersWon = CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
@@ -215,40 +216,55 @@ function NumericWishCalculations(WishConfig) {
         //     };
         // }
         // else {
-            let MissedFiveStars = false;
-            let WishGroupMaxWishes = WishConfig.EnabledWishPlanArray[0].WishPlanMaxWishes;
-            for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
-                if (WishGroupMaxWishes < WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes) {
-                    WishGroupMaxWishes = WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes;
-                    
-                    WeaponFatePoints = 0;
-                    ChronicledFatePoints = 0;
-                };
+        let MissedScoutItems = false;
+        let BannerTypesScouted = [];
+        for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
+            UmaTickets = WishConfig.UmaTickets
+            CardTickets = WishConfig.CardTickets
 
-                let WishItemsWon;
-                // switch (WishConfig.EnabledWishPlanArray[i].WishPlanType) {
-                //     case BannerTypes.Character.value:
-                        WishItemsWon = CharacterWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
-                        // break;
-                //     case BannerTypes.Weapon.value: 
-                //         WishItemsWon = WeaponWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
-                //         break;
-                //     case BannerTypes.ChronicledWish.value: 
-                //         WishItemsWon = ChronicledWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
-                //         break;
-                // };
+            // let WishGroupMaxWishes = WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes;
+            
+            // if ( !BannerTypesScouted.Includes(WishConfig.EnabledWishPlanArray[i].WishPlanType) ) {
+            //     WishGroupMaxWishes = WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes;
 
-                if (WishItemsWon) {
-                    WishPlanResults[i]++;
-                }
-                else {
-                    MissedFiveStars = true;
-                };
+            //     if (WishConfig.EnabledWishPlanArray[i].WishPlanType == BannerTypes['Uma'].Value) {
+            //         ScoutPity = WishConfig.UmaPity;
+            //     }
+            //     else {
+            //         ScoutPity = WishConfig.CardPity;
+            //     }
+                
+            //     // WeaponFatePoints = 0;
+            //     // ChronicledFatePoints = 0;
+            // }
+            // else {
+            //     ScoutPity = 0;
+            // };
+
+            let WishItemsWon;
+            // switch (WishConfig.EnabledWishPlanArray[i].WishPlanType) {
+            //     case BannerTypes.Character.value:
+            WishItemsWon = CharacterWishSim(WishConfig, i);
+                    // break;
+            //     case BannerTypes.Weapon.value: 
+            //         WishItemsWon = WeaponWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
+            //         break;
+            //     case BannerTypes.ChronicledWish.value: 
+            //         WishItemsWon = ChronicledWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
+            //         break;
+            // };
+
+            if (WishItemsWon) {
+                WishPlanResults[i]++;
+            }
+            else {
+                MissedScoutItems = true;
             };
+        };
 
-            if (MissedFiveStars == false) {
-                Successes++
-            };
+        if (MissedScoutItems == false) {
+            Successes++
+        };
         // };
 
         if (Date.now() - Start > 5000) { // Sets a 5 second time limit on wish calcs.
@@ -262,191 +278,104 @@ function NumericWishCalculations(WishConfig) {
     };
 
     return ({
-        TotalSuccessRate: ((Successes / TrialCount)*100).toFixed(1)+'%', 
+        TotalSuccessRate: ((Successes / TrialCount)*100).toFixed(1)+'%',
         WishPlanResults: WishPlanResults
     });
 };
 
-function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
-    let Characters = 0;
+function CharacterWishSim(WishConfig, WishPlanItemNumber) {
+    let ScoutItems = 0;
 
-    if (Characters >= CharacterGoal) {
-        return true;
-    };
+    let Scouts = 0;
+
+    let ScoutItemPlan = WishConfig.EnabledWishPlanArray[WishPlanItemNumber];
+
+    let ExchangePoints = ScoutItemPlan.ExchangePoints;
+    let Goal = ScoutItemPlan.WishPlanGoal;
+    
+    let MaxPCScouts = Min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC - PCSpent)/50)
+    let MaxPinkTicketScouts = ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets;
+    let MaxScouts = ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts
 
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
-    const CharacterFiveStarWinRates = [0.5, 0.525, 0.75, 1];
-    while (Wishes < MaxWishes) {
-        Wishes++;
-        CharacterPity++;
 
-        NonFiveStarChance *= (1 - CharacterRate);
-        
-        if (CharacterPity > BannerTypes.Character.SoftPityThreshold) {
-            CharacterRate += BannerTypes.Character.SoftPityIncrement;
-        };
+    while (Scouts < MaxScouts) {
+        Scouts++;
+        ExchangePoints++;
 
+        NonFiveStarChance *= (1 - 0.0075);
 
         if (FiveStarChance > NonFiveStarChance) {
-            CharacterRate = BannerTypes.Character.BaseFiveStarRate;
-            CharacterPity = 0;
-
-            if (EventCharacterGuarantee || (Math.random() < CharacterFiveStarWinRates[ (WishConfig.EnableCapturingRadiance ? CapturingRadiancePity : 0) ])) {
-                if (!EventCharacterGuarantee) {
-                    CapturingRadiancePity = 0;
-                };
-
-                Characters++;
-                EventCharacterGuarantee = 0;
-
-                if (Characters >= CharacterGoal) {
-                    return true;
-                };
-            }
-            else {
-                EventCharacterGuarantee = 1;
-                LostCharacter5050s++;
-                CapturingRadiancePity++;
-
-                if (WishConfig.UsingStarglitter && (LostCharacter5050s > WishConfig.MissingStandardFiveStarCharacters)){
-                    Wishes -= 2 // You get enough starglitter from five-star cons to make two additional wishes.
-                };
-            };
+            ScoutItems++;
 
             FiveStarChance = Math.random();
             NonFiveStarChance = 1;
         };
+
+        if (ExchangePoints == 200) {
+            ScoutItems++
+            ExchangePoints = 0;
+        };
+
+        if (ScoutItems >= CharacterGoal) {
+            CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts);
+
+            return true;
+        };
+
     };
+
+    CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts);
 
     return false;
 };
 
-// function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
-//     let Weapons = 0;
+// Since we will want to use both paid carrots and pink tickets first, this function will determine how many free carrots were actually used.
+function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
+    let PCScouts = Math.min(Scouts, MaxPCScouts);
+    PCSpent += 50 * PCScouts
+    
+    let PinkTicketScouts = Math.min(Scouts - MaxPCScouts, MaxPinkTicketScouts);
+    if (ScoutItemType == BannerTypes.Uma.Value) {
+        UmaTickets -= PinkTicketScouts;
+    }
+    else {
+        CardTickets -= PinkTicketScouts;
+    };
 
-//     if (Weapons >= WeaponGoal) {
-//         return true;
-//     };
-
-//     let FiveStarChance = Math.random();
-//     let NonFiveStarChance = 1;
-//     while (Wishes < MaxWishes) {
-//         Wishes++;
-//         WeaponPity++;
-
-//         NonFiveStarChance *= (1 - WeaponRate);
-        
-//         if (WeaponPity > BannerTypes.Weapon.SoftPityThreshold) {
-//             WeaponRate += BannerTypes.Weapon.SoftPityIncrement;
-//         };
-
-
-//         if (FiveStarChance > NonFiveStarChance) {
-//             WeaponRate = BannerTypes.Weapon.BaseFiveStarRate;
-//             WeaponPity = 0;
-
-//             if (WishConfig.UsingStarglitter) {
-//                 Wishes -= 2 // You get enough starglitter from five-star weapons to make two additional wishes.
-//             };
-
-//             let r = Math.random();
-//             // 1 fate point will get you your desired weapon, while having the guarantee will make it a 50:50 between your desired weapon and the other event weapon, while having neither will make it a 3/8 chance.
-//             if (WeaponFatePoints === 1 || (EventWeaponGuarantee && r <= 0.5) || (r <= 0.375)) {
-//                 Weapons++;
-//                 EventWeaponGuarantee = 0;
-//                 WeaponFatePoints = 0;
-
-//                 if (Weapons >= WeaponGoal) {
-//                     return true;
-//                 };
-//             }
-//             // If you got an event weapon, either through the guarantee or the 75% chance, but didn't get your desired weapon, then you must have gotten the other event weapon.
-//             else if (EventWeaponGuarantee || (r <= 0.75)) {
-//                 EventWeaponGuarantee = 0;
-//                 WeaponFatePoints++;
-//             }
-//             // 25% chance to have gotten a standard banner weapon.
-//             else {
-//                 EventWeaponGuarantee = 1;
-//                 WeaponFatePoints++;
-//             };
-
-//             FiveStarChance = Math.random();
-//             NonFiveStarChance = 1;
-//         };
-//     };
-
-//     return false;
-// };
-
-// function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
-//     let ChronicledItems = 0;
-
-//     if (ChronicledItems >= ChronicledGoal) {
-//         return true;
-//     };
-
-//     let FiveStarChance = Math.random();
-//     let NonFiveStarChance = 1;
-//     while (Wishes < MaxWishes) {
-//         Wishes++;
-//         ChronicledPity++;
-
-//         NonFiveStarChance *= (1 - ChronicledRate);
-        
-//         if (ChronicledPity > BannerTypes.ChronicledWish.SoftPityThreshold) {
-//             ChronicledRate += BannerTypes.ChronicledWish.SoftPityIncrement;
-//         };
-
-
-//         if (FiveStarChance > NonFiveStarChance) {
-//             ChronicledRate = BannerTypes.ChronicledWish.BaseFiveStarRate;
-//             ChronicledPity = 0;
-
-//             if (ChronicledFatePoints >= 1 || (Math.random() < 0.5)) {
-//                 ChronicledItems++;
-//                 ChronicledFatePoints = 0;
-
-//                 if (ChronicledItems >= ChronicledGoal) {
-//                     return true;
-//                 };
-//             }
-//             else {
-//                 ChronicledFatePoints++;
-//             };
-            
-//             FiveStarChance = Math.random();
-//             NonFiveStarChance = 1;
-//         };
-//     };
-
-//     return false;
-// };
+    FCScouts -= (Scouts - PCScouts - PinkTicketScouts)
+};
 
 function WishCalcs(WishConfig) {
     
-    let ixMaxWishes;
-    let ixBannerEnd = -1;
+    // let ixMaxWishes;
+    let LatestStartDate = '01/01/1970';
     WishConfig.EnabledWishPlanArray = [];
-    for (let i = 0; i < WishConfig.WishPlanArray.length; i++) {
-        if (WishConfig.WishPlanArray[i].WishPlanEnabled) {
-            if (WishConfig.WishPlanArray[i].WishPlanBannerEnd > ixBannerEnd) {
-                ixBannerEnd = WishConfig.WishPlanArray[i].WishPlanBannerEnd;
-                TargetBannerInfo = BannerInfo[ixBannerEnd];
+    for (let i = 0; i < WishConfig.WishPlanArray.length; i++) {    
 
-                WishConfig.WishPlanArray[i].WishPlanMaxWishes = SavingsCalculator(WishConfig);
-                ixMaxWishes = WishConfig.WishPlanArray[i].WishPlanMaxWishes;
+        let ScoutItemPlan = WishConfig.WishPlanArray[i];
+        let TargetBannerInfo = GlobalBanners[ScoutItemPlan.WishPlanBannerEnd];
+        
+        if (ScoutItemPlan.WishPlanEnabled) {
+            
+            if (TargetBannerInfo.StartDate >= LatestStartDate) {
+
+                LatestStartDate = TargetBannerInfo.StartDate;
+                let SavingsResults = SavingsCalculator(WishConfig);
+
+                ScoutItemPlan.MaxFCScouts = SavingsResults.MaxFCScouts
+                ScoutItemPlan.PC = SavingsResults.PC
             }
-            else if (WishConfig.WishPlanArray[i].WishPlanBannerEnd == ixBannerEnd) {
-                WishConfig.WishPlanArray[i].WishPlanMaxWishes = ixMaxWishes
+            else if (ScoutItemPlan.WishPlanBannerEnd == LatestStartDate) {
+                ScoutItemPlan.WishPlanMaxWishes = ixMaxWishes
             }
             else {
                 $('#WishError').show().html('Banner end dates must be in ascending order.');
                 return {Success: false};
             };
 
-            WishConfig.EnabledWishPlanArray.push(WishConfig.WishPlanArray[i]);
+            WishConfig.EnabledWishPlanArray.push(ScoutItemPlan);
         };
     };
 
@@ -460,7 +389,6 @@ function WishCalcs(WishConfig) {
 
         let NewRow = $(
             `<tr class="WishPlanResultsRow">`+
-                `<td>${WishConfig.EnabledWishPlanArray[i].WishPlanItem}</td>`+
                 `<td>${BannerEndText}</td>`+
                 `<td>${WishConfig.EnabledWishPlanArray[i].WishPlanGoal}</td>`+
                 `<td>${WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes}</td>`+
