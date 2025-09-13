@@ -1,6 +1,6 @@
 // TODO: Add comments.
 
-let TargetBannerInfo;
+// let TargetBannerInfo;
 const Trials = 10**6;
 
 const Today = new Date(); // TODO: Update date/banner calcs to factor in if day/banner has changed between when the page was loaded and when calcs are run.
@@ -68,7 +68,7 @@ function DayOfWeek(Date) {
     };
 };
 
-function SavingsCalculator(WishConfig) {
+function SavingsCalculator(WishConfig, TargetBannerInfo) {
     // FC are a currency used to purchase intertwinded fates, which will be used to make wishes.
     // Genesis Crystals are a paid currency that can be converted to Primogems at a 1:1 rate.
     let FC = WishConfig.FC;
@@ -123,7 +123,7 @@ function SavingsCalculator(WishConfig) {
 };
 
 // Declaring variables outside the function scope so they can be used by both NumericWishCalculations and the wish sim functions.
-let Wishes;
+let FCScouts;
 let PCSpent;
 let LostCharacter5050s; // When pulling on the character banner, if you get a five-star without an event item guarantee, you will have a 50:50 chance for it to be your desired five-star.
 let CapturingRadiancePity; // Explained in a tool tip.
@@ -143,7 +143,7 @@ function NumericWishCalculations(WishConfig) {
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
-        Wishes = 0;
+        FCScouts = 0;
         PCSpent = 0;
 
         let MissedScoutItems = false;
@@ -193,14 +193,15 @@ function CharacterWishSim(WishConfig, WishPlanItemNumber) {
     let ExchangePoints = ScoutItemPlan.ExchangePoints;
     let Goal = ScoutItemPlan.WishPlanGoal;
     
-    let MaxPCScouts = Min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC - PCSpent)/50)
+    let MaxFCScouts = ScoutItemPlan.MaxFCScouts - FCScouts
+    let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC - PCSpent)/50)
     let MaxPinkTicketScouts = ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets;
     let MaxScouts = ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts
 
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
 
-    while (Scouts < MaxScouts) {
+    while (Scouts < MaxFCScouts) {
         Scouts++;
         ExchangePoints++;
 
@@ -218,7 +219,7 @@ function CharacterWishSim(WishConfig, WishPlanItemNumber) {
             ExchangePoints = 0;
         };
 
-        if (ScoutItems >= CharacterGoal) {
+        if (ScoutItems >= ScoutItemPlan.WishPlanGoal) {
             CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts);
 
             return true;
@@ -250,29 +251,25 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
 function WishCalcs(WishConfig) {
     
     // let ixMaxWishes;
-    let LatestStartDate = '01/01/1970';
+    let SavingsResults;
+    let LatestEndDate = '01/01/1970';
     WishConfig.EnabledWishPlanArray = [];
     for (let i = 0; i < WishConfig.WishPlanArray.length; i++) {    
 
         let ScoutItemPlan = WishConfig.WishPlanArray[i];
         let TargetBannerInfo = GlobalBanners[ScoutItemPlan.WishPlanBannerEnd];
-        
+
         if (ScoutItemPlan.WishPlanEnabled) {
-            
-            if (TargetBannerInfo.StartDate >= LatestStartDate) {
-
-                LatestStartDate = TargetBannerInfo.StartDate;
-                let SavingsResults = SavingsCalculator(WishConfig);
-
-                ScoutItemPlan.MaxFCScouts = SavingsResults.MaxFCScouts
-                ScoutItemPlan.PC = SavingsResults.PC
-            }
-            else if (ScoutItemPlan.WishPlanBannerEnd == LatestStartDate) {
-                ScoutItemPlan.WishPlanMaxWishes = ixMaxWishes
+            if (TargetBannerInfo.EndDate < LatestEndDate) {
+                $('#WishError').show().html('Scout plan rows must be ordered by end date.');
+                return {Success: false};
             }
             else {
-                $('#WishError').show().html('Banner end dates must be in ascending order.');
-                return {Success: false};
+                LatestEndDate = TargetBannerInfo.EndDate;
+
+                let SavingsResults = SavingsCalculator(WishConfig, TargetBannerInfo);
+                ScoutItemPlan.MaxFCScouts = SavingsResults.MaxFCScouts
+                ScoutItemPlan.PC = SavingsResults.PC
             };
 
             WishConfig.EnabledWishPlanArray.push(ScoutItemPlan);
@@ -284,6 +281,7 @@ function WishCalcs(WishConfig) {
     $('#WishPlanningResultsTable .WishPlanResultsRow').remove();
 
     for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
+
         let BannerEndVal = WishConfig.EnabledWishPlanArray[i].WishPlanBannerEnd;
         let BannerEndText = $(`#BannerEnd option[value=${BannerEndVal}]`).text();
 
@@ -291,7 +289,7 @@ function WishCalcs(WishConfig) {
             `<tr class="WishPlanResultsRow">`+
                 `<td>${BannerEndText}</td>`+
                 `<td>${WishConfig.EnabledWishPlanArray[i].WishPlanGoal}</td>`+
-                `<td>${WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes}</td>`+
+                `<td>${WishConfig.EnabledWishPlanArray[i].MaxFCScouts}</td>`+
                 `<td>${WishResults.WishPlanResults[i]}</td>`+
             `</tr>`
         );
