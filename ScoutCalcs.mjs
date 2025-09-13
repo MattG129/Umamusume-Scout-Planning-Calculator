@@ -1,6 +1,5 @@
 // TODO: Add comments.
 
-// let BannerInfo = [];
 let TargetBannerInfo;
 const Trials = 10**6;
 
@@ -69,31 +68,6 @@ function DayOfWeek(Date) {
     };
 };
 
-// let Patch = 50; // Using ints to make things easier.
-// let PatchDiff = 0; // This will track how many patches are between the current patch and any subsequent patches.
-// let PatchStartDate = v5StartDate;
-// let CurrentBannerVal;
-// while (BannerInfo.length < 50) {
-//     for (let Phase = 1; Phase <= 2; Phase++) {
-//         let BannerEndDate = DateAdd(PatchStartDate, 21*Phase);
-
-//         if (BannerEndDate >= Today && CurrentBannerVal == undefined) {
-//             CurrentBannerVal = BannerInfo.length;
-//         };
-
-//         // BannerInfo will start with 5.0 phase 1, rather than the current patch, as it needs to have consistent values because of the import.
-//         BannerInfo.push({
-//             'Patch': (Patch/10).toFixed(1),
-//             'PatchDiff': PatchDiff,
-//             'PatchStartDate': PatchStartDate,
-//             'Phase': Phase,
-//             'PhaseDiff': BannerInfo.length - CurrentBannerVal,
-//             'BannerEndDate': BannerEndDate,
-//             'MonthDiff': 12*(BannerEndDate.getFullYear() - Today.getFullYear()) + (BannerEndDate.getMonth() - Today.getMonth())
-//         });
-//     };
-// };
-
 function SavingsCalculator(WishConfig) {
     // FC are a currency used to purchase intertwinded fates, which will be used to make wishes.
     // Genesis Crystals are a paid currency that can be converted to Primogems at a 1:1 rate.
@@ -158,23 +132,6 @@ let CapturingRadiancePity; // Explained in a tool tip.
 
 // Rate: Chance of getting a five-star on the next pull.
 
-// Fate points: You will get one fate point everytime you pull a five-star that isn't your current target. 
-// Once you reach the maximum amount of fate points, your next five-star is guaranteed to be your desired one.
-// Pulling your desired five-star will reset your fate points to 0.
-
-// let ScoutPity;
-let EventCharacterGuarantee;
-let CharacterRate;
-
-let WeaponPity;
-let EventWeaponGuarantee;
-let WeaponFatePoints;
-let WeaponRate;
-
-let ChronicledPity;
-let ChronicledFatePoints;
-let ChronicledRate;
-
 let UmaTickets;
 let CardTickets;
 
@@ -188,71 +145,15 @@ function NumericWishCalculations(WishConfig) {
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
         Wishes = 0;
         PCSpent = 0;
-        // LostCharacter5050s = 0;
 
-        // ScoutPity = WishConfig.CharacterPity;
-        // EventCharacterGuarantee = WishConfig.EventCharacterGuarantee;
-        ScoutRate = 0.0075;
-        // CapturingRadiancePity = WishConfig.CapturingRadiancePity;
-
-        // WeaponPity = WishConfig.WeaponPity;
-        // EventWeaponGuarantee = WishConfig.EventWeaponGuarantee;
-        // WeaponFatePoints = WishConfig.WeaponFatePoints;
-        // WeaponRate = BannerTypes.Weapon.BaseFiveStarRate + Math.max(0, BannerTypes.Weapon.SoftPityIncrement*(WeaponPity-BannerTypes.Weapon.SoftPityThreshold));
-
-        // ChronicledPity = WishConfig.ChronicledPity;
-        // ChronicledFatePoints = WishConfig.ChronicledFatePoints;
-        // ChronicledRate = BannerTypes.ChronicledWish.BaseFiveStarRate + Math.max(0, BannerTypes.ChronicledWish.SoftPityIncrement*(ChronicledPity-BannerTypes.ChronicledWish.SoftPityThreshold));
-
-        // if (WishConfig.WishMode != WishModes.Advanced.value) {
-        //     let CharactersWon = CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
-
-        //     let WeaponsWon = WeaponWishSim(WishConfig, WishConfig.WeaponGoal, WishConfig.MaxWishes);
-
-        //     let ChronicledItemsWon = ChronicledWishSim(WishConfig, WishConfig.ChronicledGoal, WishConfig.MaxWishes);
-
-        //     if (CharactersWon && WeaponsWon && ChronicledItemsWon) {
-        //         Successes++;
-        //     };
-        // }
-        // else {
         let MissedScoutItems = false;
         let BannerTypesScouted = [];
         for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
             UmaTickets = WishConfig.UmaTickets
             CardTickets = WishConfig.CardTickets
 
-            // let WishGroupMaxWishes = WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes;
-            
-            // if ( !BannerTypesScouted.Includes(WishConfig.EnabledWishPlanArray[i].WishPlanType) ) {
-            //     WishGroupMaxWishes = WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes;
-
-            //     if (WishConfig.EnabledWishPlanArray[i].WishPlanType == BannerTypes['Uma'].Value) {
-            //         ScoutPity = WishConfig.UmaPity;
-            //     }
-            //     else {
-            //         ScoutPity = WishConfig.CardPity;
-            //     }
-                
-            //     // WeaponFatePoints = 0;
-            //     // ChronicledFatePoints = 0;
-            // }
-            // else {
-            //     ScoutPity = 0;
-            // };
-
             let WishItemsWon;
-            // switch (WishConfig.EnabledWishPlanArray[i].WishPlanType) {
-            //     case BannerTypes.Character.value:
             WishItemsWon = CharacterWishSim(WishConfig, i);
-                    // break;
-            //     case BannerTypes.Weapon.value: 
-            //         WishItemsWon = WeaponWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
-            //         break;
-            //     case BannerTypes.ChronicledWish.value: 
-            //         WishItemsWon = ChronicledWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
-            //         break;
-            // };
 
             if (WishItemsWon) {
                 WishPlanResults[i]++;
@@ -265,7 +166,6 @@ function NumericWishCalculations(WishConfig) {
         if (MissedScoutItems == false) {
             Successes++
         };
-        // };
 
         if (Date.now() - Start > 5000) { // Sets a 5 second time limit on wish calcs.
             TrialCount += 1
