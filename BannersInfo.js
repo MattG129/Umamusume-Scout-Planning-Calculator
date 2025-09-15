@@ -179,8 +179,8 @@ JPBanners.sort((a, b) => {
 // Overriding the estimated global dates with the actual global dates.
 // Using IDs instead of names because of reruns.
 let GlobalDateOverrides = {
-    0: {StartDate: '7 Sept 2025', EndDate: '18 Sept 2025'},
-    1: {StartDate: '17 Sept 2025', EndDate: '25 Sept 2025'},
-    2: {StartDate: '21 Sept 2025', EndDate: '4 Oct 2025'},
+    0: {StartDate: '7 Sept 2025', EndDate: '18 Sept 2025'}, // Seiun Sky
+    1: {StartDate: '17 Sept 2025', EndDate: '25 Sept 2025'}, // Hishi Amazon
+    2: {StartDate: '21 Sept 2025', EndDate: '4 Oct 2025'}, // El Condor/Grass Wonder Fantasy
     3: {StartDate: '21 Sept 2025', EndDate: '4 Oct 2025'}
 }
