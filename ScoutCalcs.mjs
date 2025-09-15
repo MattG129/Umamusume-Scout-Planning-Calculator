@@ -129,7 +129,7 @@ function NumericWishCalculations(ScoutConfig) {
     const Start = Date.now();
     let Successes = 0;
 
-    let WishPlanResults = new Array(ScoutConfig.EnabledWishPlanArray.length).fill(0);    
+    let ScoutItemResults = new Array(ScoutConfig.EnabledWishPlanArray.length).fill(0);    
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
@@ -142,11 +142,9 @@ function NumericWishCalculations(ScoutConfig) {
         let BannerTypesScouted = [];
         for (let i = 0; i < ScoutConfig.EnabledWishPlanArray.length; i++) {
 
-            let WishItemsWon;
-            WishItemsWon = CharacterWishSim(ScoutConfig, i);
-
-            if (WishItemsWon) {
-                WishPlanResults[i]++;
+            let ScoutItemsWon = ScoutSim(ScoutConfig, i);
+            if (ScoutItemsWon) {
+                ScoutItemResults[i]++;
             }
             else {
                 MissedScoutItems = true;
@@ -163,17 +161,17 @@ function NumericWishCalculations(ScoutConfig) {
         };
     };
 
-    for (let i = 0; i < WishPlanResults.length; i++) {
-        WishPlanResults[i] = ((WishPlanResults[i] / TrialCount)*100).toFixed(1)+'%';
+    for (let i = 0; i < ScoutItemResults.length; i++) {
+        ScoutItemResults[i] = ((ScoutItemResults[i] / TrialCount)*100).toFixed(1)+'%';
     };
 
     return ({
         TotalSuccessRate: ((Successes / TrialCount)*100).toFixed(1)+'%',
-        WishPlanResults: WishPlanResults
+        ScoutItemResults: ScoutItemResults
     });
 };
 
-function CharacterWishSim(ScoutConfig, WishPlanItemNumber) {
+function ScoutSim(ScoutConfig, WishPlanItemNumber) {
     let ScoutItems = 0;
 
     let Scouts = 0;
@@ -265,7 +263,7 @@ function WishCalcs(ScoutConfig) {
         };
     };
 
-    WishResults = NumericWishCalculations(ScoutConfig);
+    ScoutsResults = NumericWishCalculations(ScoutConfig);
 
     $('#WishPlanningResultsTable .WishPlanResultsRow').remove();
 
@@ -281,7 +279,7 @@ function WishCalcs(ScoutConfig) {
                 `<td>${BannerEndText}</td>`+
                 `<td>${ScoutItemPlan.WishPlanGoal}</td>`+
                 `<td>${ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts}</td>`+
-                `<td>${WishResults.WishPlanResults[i]}</td>`+
+                `<td>${ScoutsResults.ScoutItemResults[i]}</td>`+
             `</tr>`
         );
 
@@ -290,7 +288,7 @@ function WishCalcs(ScoutConfig) {
 
     $('#WishPlanningResultsTable tfoot').append($(
         `<tr class="WishPlanResultsRow">`+
-            `<td colspan="5"><b>Chance of reaching all wish goals: ${WishResults.TotalSuccessRate}</b></td>`+
+            `<td colspan="5"><b>Chance of reaching all wish goals: ${ScoutsResults.TotalSuccessRate}</b></td>`+
         `</tr>`
     ));
 
