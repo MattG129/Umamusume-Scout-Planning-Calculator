@@ -72,16 +72,12 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // FC are a currency used to purchase intertwinded fates, which will be used to make wishes.
     // Genesis Crystals are a paid currency that can be converted to Primogems at a 1:1 rate.
     let FC = ScoutConfig.FC;
-
-    // 40 FC from character trials, every banner. Assumes that this banner's trial FC have already been claimed.
-    // FC += 40*(ScoutItemPlan.PhaseDiff);
     
     // Daily Missions
     FC += DateDiff(Today, ScoutItemPlan.EndDate) * ( 30 + (ScoutConfig.HasDailyCarrotPack ? 50 : 0) );
 
     // 110 free carrots will be earned from the daily login bonus over the course of a week.
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
-    // Will also have to update the calcs to 
     FC += 110 * ScoutItemPlan.WeekDiff;
 
     // Team Trials
@@ -125,12 +121,6 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
 // Declaring variables outside the function scope so they can be used by both NumericWishCalculations and the wish sim functions.
 let FCScouts;
 let PCSpent;
-let LostCharacter5050s; // When pulling on the character banner, if you get a five-star without an event item guarantee, you will have a 50:50 chance for it to be your desired five-star.
-let CapturingRadiancePity; // Explained in a tool tip.
-
-// Pity: Builds up as you make wishes and once it reaches a certain amount it will increase your chances of getting a five-star. Once you get a five-star it will reset to 0.
-
-// Rate: Chance of getting a five-star on the next pull.
 
 let UmaTickets;
 let CardTickets;
@@ -191,7 +181,6 @@ function CharacterWishSim(ScoutConfig, WishPlanItemNumber) {
     let ScoutItemPlan = ScoutConfig.EnabledWishPlanArray[WishPlanItemNumber];
 
     let ExchangePoints = ScoutItemPlan.ExchangePoints;
-    // let Goal = ScoutItemPlan.WishPlanGoal;
 
     let MaxFCScouts = ScoutItemPlan.MaxFCScouts - FCScouts
     let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC - PCSpent)/50)
@@ -200,8 +189,6 @@ function CharacterWishSim(ScoutConfig, WishPlanItemNumber) {
 
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
-
-    // console.log(MaxScouts);
 
     while (Scouts < MaxScouts) {
         Scouts++;
@@ -252,7 +239,6 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
 
 function WishCalcs(ScoutConfig) {
 
-    // let ixMaxWishes;
     let SavingsResults;
     let LatestEndDate = '01/01/1970';
     ScoutConfig.EnabledWishPlanArray = [];
@@ -262,7 +248,6 @@ function WishCalcs(ScoutConfig) {
 
         if (ScoutItemPlan.WishPlanEnabled) {
             
-            // let TargetBannerInfo = GlobalBanners[ScoutItemPlan.Banner];
             Object.assign(ScoutItemPlan, GlobalBanners[ScoutItemPlan.Banner]);
             
             if (ScoutItemPlan.EndDate < LatestEndDate) {
@@ -273,12 +258,8 @@ function WishCalcs(ScoutConfig) {
                 LatestEndDate = ScoutItemPlan.EndDate;
 
                 let SavingsResults = SavingsCalculator(ScoutConfig, ScoutItemPlan);
-                // ScoutItemPlan.MaxFCScouts = SavingsResults.MaxFCScouts
-                // ScoutItemPlan.PC = SavingsResults.PC
-                // ScoutItemPlan.BannerLength = TargetBannerInfo.BannerLength
                 Object.assign(ScoutItemPlan, SavingsResults);
             };
-
 
             ScoutConfig.EnabledWishPlanArray.push(ScoutItemPlan);
         };

@@ -210,10 +210,8 @@
                         $(function() {
                             for (let i = 0; i < GlobalBanners.length; i++) {
                                 if (GlobalBanners[i].EndDate >= Today) {
-                                // console.log('yo')
                                     $('#BannerEnd').append($('<option>', {
                                         value: i,
-                                        // ${moment(GlobalBanners[i].BannerEndDate, "YYYY-MM-DD").format('L')}
                                         text: `${GlobalBanners[i].Name}: ${moment(GlobalBanners[i].StartDate, "YYYY-MM-DD").format('L')} - ${moment(GlobalBanners[i].EndDate, "YYYY-MM-DD").format('L')}`,
                                     }));
                                 }
@@ -336,7 +334,6 @@
                             >
                                 <i class="bi bi-question-circle"></i>
                             </a>
-                            <!-- <input type="number" id="ExpectedAct" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0"> -->
                             <select id="ExpectedClubRank" class="form-select" style="max-width: 300px;">
                                 <option value="1">SS (1-10)</option>
                                 <option value="2">S+ (11-30)</option>
@@ -354,10 +351,6 @@
                         <div class="col-md-3"></div>
                     </div>
 
-                    <!-- <div class="SimpleModeSkipGroup"> -->
-                        
-                    <!-- </div> -->
-
                     <div>
                         <hr>
                         <h2>
@@ -374,22 +367,6 @@
                             <input type="checkbox" id="HasDailyCarrotPack" class="form-check-input">
                             <label for="HasDailyCarrotPack" class="form-label">Purchasing Daily Carrot Pack</label>
                         </div>
-                        <!-- <div class="form-check form-check-inline">
-                            <input type="checkbox" id="BPPurchased" class="form-check-input">
-                            <label for="BPPurchased" class="form-label">Purchasing Battle Pass</label>
-                        </div>
-                   
-                        <div id="BPLevelSkipGroup" class="form-group" style="display: none;">
-                            <label for="BPLevel" class="form-label">Battle Pass Level</label>
-                            <select id="BPLevel" class="form-select" style="max-width: 100px;">
-                                <option value="0"> 0-9   </option>
-                                <option value="1"> 10-19 </option>
-                                <option value="2"> 20-29 </option>
-                                <option value="3"> 30-39 </option>
-                                <option value="4"> 40-49 </option>
-                                <option value="5"> 50    </option>
-                            </select>
-                        </div> -->
                     </div>
 
                     <hr><h2>Wish Results</h2><br>
