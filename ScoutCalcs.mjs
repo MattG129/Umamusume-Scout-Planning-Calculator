@@ -145,12 +145,12 @@ function NumericWishCalculations(WishConfig) {
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
         FCScouts = 0;
         PCSpent = 0;
+        UmaTickets = WishConfig.UmaTickets
+        CardTickets = WishConfig.CardTickets
 
         let MissedScoutItems = false;
         let BannerTypesScouted = [];
         for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
-            UmaTickets = WishConfig.UmaTickets
-            CardTickets = WishConfig.CardTickets
 
             let WishItemsWon;
             WishItemsWon = CharacterWishSim(WishConfig, i);
