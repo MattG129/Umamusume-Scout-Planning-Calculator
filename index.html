@@ -277,7 +277,7 @@
                                     `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<input type="number" class="WishPlanPity form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">`+
+                                            `<input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">`+
                                         `</center>`+
                                     `</td>`+
                                     `<td>`+
@@ -533,7 +533,7 @@
                 $('tr[data-wishplan-rowid]').each(function() {
                     FormValues.WishPlanArray.push({
                         Banner:            Number($(this).find('td .ScoutPlanBanner').val()),
-                        WishPlanPity:      Number($(this).find('td .WishPlanPity').val()),
+                        ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
                         WishPlanGoal:      Number($(this).find('td .WishPlanGoal').val()),
                         WishPlanEnabled:          $(this).find('td .WishPlanEnabled').is(':checked')
                     });
@@ -583,7 +583,7 @@
 
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanItem`).val(JSONImport.WishPlanArray[i].WishPlanItem);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanType`).val(JSONImport.WishPlanArray[i].WishPlanType);
-                        $(`tr[data-wishplan-rowid=${i}] td .WishPlanPity`).val(JSONImport.WishPlanArray[i].WishPlanPity);
+                        $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.WishPlanArray[i].ExchangePoints);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
                         let WishPlanBanner = GlobalBanners[JSONImport.WishPlanArray[i].Banner];
