@@ -1,7 +1,7 @@
 // TODO: Add comments.
 
 // let TargetBannerInfo;
-const Trials = 10**6;
+const Trials = 10**5;
 
 const Today = new Date(); // TODO: Update date/banner calcs to factor in if day/banner has changed between when the page was loaded and when calcs are run.
 Today.setHours(0,0,0,0);
@@ -68,25 +68,25 @@ function DayOfWeek(Date) {
     };
 };
 
-function SavingsCalculator(WishConfig, TargetBannerInfo) {
+function SavingsCalculator(WishConfig, ScoutItemPlan) {
     // FC are a currency used to purchase intertwinded fates, which will be used to make wishes.
     // Genesis Crystals are a paid currency that can be converted to Primogems at a 1:1 rate.
     let FC = WishConfig.FC;
 
     // 40 FC from character trials, every banner. Assumes that this banner's trial FC have already been claimed.
-    // FC += 40*(TargetBannerInfo.PhaseDiff);
+    // FC += 40*(ScoutItemPlan.PhaseDiff);
     
     // Daily Missions
-    FC += DateDiff(Today, TargetBannerInfo.EndDate) * ( 30 + (WishConfig.HasDailyCarrotPack ? 50 : 0) );
+    FC += DateDiff(Today, ScoutItemPlan.EndDate) * ( 30 + (WishConfig.HasDailyCarrotPack ? 50 : 0) );
 
     // 110 free carrots will be earned from the daily login bonus over the course of a week.
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     // Will also have to update the calcs to 
-    FC += 110 * TargetBannerInfo.WeekDiff;
+    FC += 110 * ScoutItemPlan.WeekDiff;
 
     // Team Trials
     let TeamTrialCarrots = 0;
-    switch (WishConfig.ExpectedAct) {
+    switch (WishConfig.TeamTrialsClass) {
         case 1: TeamTrialCarrots = 0;   break;
         case 2: TeamTrialCarrots = 25;  break;
         case 3: TeamTrialCarrots = 50;  break;
@@ -94,11 +94,11 @@ function SavingsCalculator(WishConfig, TargetBannerInfo) {
         case 5: TeamTrialCarrots = 150; break;
         case 6: TeamTrialCarrots = 250; break;
     };
-    FC += TeamTrialCarrots * ( TargetBannerInfo.WeekDiff + (DayOfWeek(Today) > DayOfWeek(TargetBannerInfo.EndDate) ? 1 : 0) );
+    FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.EndDate) ? 1 : 0) );
 
     // Club Rewards
     let ExpectedClubCarrots = 0;
-    switch (WishConfig.ExpectedAct) {
+    switch (WishConfig.ExpectedClubRank) {
         case 1:  ExpectedClubCarrots = 3000; break;
         case 2:  ExpectedClubCarrots = 2400; break;
         case 3:  ExpectedClubCarrots = 2100; break;
@@ -111,12 +111,12 @@ function SavingsCalculator(WishConfig, TargetBannerInfo) {
         case 10: ExpectedClubCarrots = 150;  break;
         case 11: ExpectedClubCarrots = 0;    break;
     };
-    FC += ExpectedClubCarrots * TargetBannerInfo.MonthDiff;
+    FC += ExpectedClubCarrots * ScoutItemPlan.MonthDiff;
 
     let PC = WishConfig.PC;
     if (WishConfig.HasDailyCarrotPack) {
         // TODO: The calculator doesn't factor in when the daily carrot pack is renewed which can mess up the calcs a bit.
-        PC += 500 * TargetBannerInfo.MonthDiff;
+        PC += 500 * ScoutItemPlan.MonthDiff;
     };
 
     return {MaxFCScouts: Math.floor(FC/150), PC: PC};
@@ -191,7 +191,7 @@ function CharacterWishSim(WishConfig, WishPlanItemNumber) {
     let ScoutItemPlan = WishConfig.EnabledWishPlanArray[WishPlanItemNumber];
 
     let ExchangePoints = ScoutItemPlan.ExchangePoints;
-    let Goal = ScoutItemPlan.WishPlanGoal;
+    // let Goal = ScoutItemPlan.WishPlanGoal;
     
     let MaxFCScouts = ScoutItemPlan.MaxFCScouts - FCScouts
     let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC - PCSpent)/50)
@@ -201,7 +201,9 @@ function CharacterWishSim(WishConfig, WishPlanItemNumber) {
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
 
-    while (Scouts < MaxFCScouts) {
+    // console.log(MaxScouts);
+
+    while (Scouts < MaxScouts) {
         Scouts++;
         ExchangePoints++;
 
@@ -245,11 +247,11 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
         CardTickets -= PinkTicketScouts;
     };
 
-    FCScouts -= (Scouts - PCScouts - PinkTicketScouts)
+    FCScouts += (Scouts - PCScouts - PinkTicketScouts);
 };
 
 function WishCalcs(WishConfig) {
-    
+
     // let ixMaxWishes;
     let SavingsResults;
     let LatestEndDate = '01/01/1970';
@@ -257,20 +259,26 @@ function WishCalcs(WishConfig) {
     for (let i = 0; i < WishConfig.WishPlanArray.length; i++) {    
 
         let ScoutItemPlan = WishConfig.WishPlanArray[i];
-        let TargetBannerInfo = GlobalBanners[ScoutItemPlan.WishPlanBannerEnd];
 
         if (ScoutItemPlan.WishPlanEnabled) {
-            if (TargetBannerInfo.EndDate < LatestEndDate) {
+            
+            // let TargetBannerInfo = GlobalBanners[ScoutItemPlan.Banner];
+            Object.assign(ScoutItemPlan, GlobalBanners[ScoutItemPlan.Banner]);
+            
+            if (ScoutItemPlan.EndDate < LatestEndDate) {
                 $('#WishError').show().html('Scout plan rows must be ordered by end date.');
                 return {Success: false};
             }
             else {
-                LatestEndDate = TargetBannerInfo.EndDate;
+                LatestEndDate = ScoutItemPlan.EndDate;
 
-                let SavingsResults = SavingsCalculator(WishConfig, TargetBannerInfo);
-                ScoutItemPlan.MaxFCScouts = SavingsResults.MaxFCScouts
-                ScoutItemPlan.PC = SavingsResults.PC
+                let SavingsResults = SavingsCalculator(WishConfig, ScoutItemPlan);
+                // ScoutItemPlan.MaxFCScouts = SavingsResults.MaxFCScouts
+                // ScoutItemPlan.PC = SavingsResults.PC
+                // ScoutItemPlan.BannerLength = TargetBannerInfo.BannerLength
+                Object.assign(ScoutItemPlan, SavingsResults);
             };
+
 
             WishConfig.EnabledWishPlanArray.push(ScoutItemPlan);
         };
@@ -282,7 +290,7 @@ function WishCalcs(WishConfig) {
 
     for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
 
-        let BannerEndVal = WishConfig.EnabledWishPlanArray[i].WishPlanBannerEnd;
+        let BannerEndVal = WishConfig.EnabledWishPlanArray[i].Banner;
         let BannerEndText = $(`#BannerEnd option[value=${BannerEndVal}]`).text();
 
         let NewRow = $(
