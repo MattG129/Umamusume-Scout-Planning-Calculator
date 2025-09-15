@@ -272,7 +272,7 @@
                                     `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<select class="WishPlanBannerEnd form-select"></select>`+
+                                            `<select class="ScoutPlanBanner form-select"></select>`+
                                         `</center>`+
                                     `</td>`+
                                     `<td>`+
@@ -301,7 +301,7 @@
                             $('#WishPlanningTableBody').append(NewRow);
                             $('#WishPlanningTableBody').sortable("refresh");
 
-                            $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] .WishPlanBannerEnd`).html($('#BannerEnd').html());
+                            $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] .ScoutPlanBanner`).html($('#BannerEnd').html());
                             $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).addClass('WishPlanField TableField');
 
                             SetParsleyValidations();
@@ -532,9 +532,7 @@
                 FormValues.WishPlanArray = [];
                 $('tr[data-wishplan-rowid]').each(function() {
                     FormValues.WishPlanArray.push({
-                        WishPlanItem:             $(this).find('td .WishPlanItem').val(),
-                        WishPlanType:      Number($(this).find('td .WishPlanType').val()),
-                        WishPlanBannerEnd: Number($(this).find('td .WishPlanBannerEnd').val()),
+                        Banner:            Number($(this).find('td .ScoutPlanBanner').val()),
                         WishPlanPity:      Number($(this).find('td .WishPlanPity').val()),
                         WishPlanGoal:      Number($(this).find('td .WishPlanGoal').val()),
                         WishPlanEnabled:          $(this).find('td .WishPlanEnabled').is(':checked')
@@ -603,12 +601,12 @@
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanPity`).val(JSONImport.WishPlanArray[i].WishPlanPity);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
-                        // if (JSONImport.WishPlanArray[i].WishPlanBannerEnd >= CurrentBannerVal) {
-                        //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(JSONImport.WishPlanArray[i].WishPlanBannerEnd);
+                        // if (JSONImport.WishPlanArray[i].Banner >= CurrentBannerVal) {
+                        //     $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.WishPlanArray[i].ScoutPlanBanner);
                         //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
                         // }
                         // else {
-                        //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(CurrentBannerVal);
+                        //     $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val(CurrentBannerVal);
                         //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
 
                         //     if (JSONImport.WishMode == WishModes.Advanced.value && JSONImport.WishPlanArray[i].WishPlanEnabled) {
