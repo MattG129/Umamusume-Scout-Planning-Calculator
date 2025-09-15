@@ -563,22 +563,6 @@
                 else {
                     $('#InvalidImportMessage').hide();
 
-                    // TODO: This part needs to be revisted once we figure out how to handle banner date inaccuracies.
-                    // if (JSONImport.BannerEnd < CurrentBannerVal) {
-                    //     if (JSONImport.WishMode != WishModes.Advanced.value) {
-                    //         swal({icon: 'info', text: 'Banner end date was not imported as it has already passed. All other fields have been successfully imported.'});
-                    //     };
-
-                    //     JSONImport.BannerEnd = CurrentBannerVal;
-                    // }
-                    // else if (JSONImport.BannerEnd >= BannerInfo.length) {
-                    //     if (JSONImport.WishMode != WishModes.Advanced.value) {
-                    //         swal({icon: 'info', text: 'Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.'});
-                    //     };
-
-                    //     JSONImport.BannerEnd = CurrentBannerVal;
-                    // };
-
                     $('#form input:not(.WishPlanField), #form select:not(.WishPlanField)').each(function() {
                         if ($(this).is(':checkbox')) {
                             $(this).prop('checked', JSONImport[this.id]);
@@ -592,6 +576,7 @@
                     $('tr[data-wishplan-rowid]').remove();
                     NewWishPlanRowID = 0;
 
+                    // TODO: Test this with an expired banner. Also, test what happens if an invalid banner val is used.
                     let AnnounceExpiredWishPlanRows = false; // We will only set this to true when there are active expired wish plan rows and advanced wish planning mode is activated.
                     for (let i = 0; i < JSONImport.WishPlanArray.length; i++) {
                         AddWishPlanRow();
@@ -601,18 +586,20 @@
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanPity`).val(JSONImport.WishPlanArray[i].WishPlanPity);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
-                        // if (JSONImport.WishPlanArray[i].Banner >= CurrentBannerVal) {
-                        //     $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.WishPlanArray[i].ScoutPlanBanner);
-                        //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
-                        // }
-                        // else {
-                        //     $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val(CurrentBannerVal);
-                        //     $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
+                        let WishPlanBanner = GlobalBanners[JSONImport.WishPlanArray[i].Banner];
 
-                        //     if (JSONImport.WishMode == WishModes.Advanced.value && JSONImport.WishPlanArray[i].WishPlanEnabled) {
-                        //         AnnounceExpiredWishPlanRows = true;
-                        //     };
-                        // };
+                        if (WishPlanBanner.EndDate >= Today) {
+                            $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.WishPlanArray[i].Banner);
+                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
+                        }
+                        else {
+                            $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val('');
+                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
+
+                            if (JSONImport.WishMode == WishModes.Advanced.value && JSONImport.WishPlanArray[i].WishPlanEnabled) {
+                                AnnounceExpiredWishPlanRows = true;
+                            };
+                        };
                     };
                     
                     if (AnnounceExpiredWishPlanRows) {
