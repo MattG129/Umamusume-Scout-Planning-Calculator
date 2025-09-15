@@ -1,7 +1,7 @@
 // TODO: Add comments.
 
 // let TargetBannerInfo;
-const Trials = 10**5;
+const Trials = 10**6;
 
 const Today = new Date(); // TODO: Update date/banner calcs to factor in if day/banner has changed between when the page was loaded and when calcs are run.
 Today.setHours(0,0,0,0);
@@ -34,7 +34,7 @@ for (let i = 0; i < JPBanners.length; i++) {
     }
 
     GlobalBanners.push({
-        Type: BannerTypes[JPBanners[i].TypeVar].value,
+        Type: BannerTypes[JPBanners[i].TypeVar].Value,
         Name: JPBanners[i].Name,
         StartDate: GlobalBannerStartDate,
         EndDate: GlobalBannerEndDate,
@@ -192,11 +192,11 @@ function CharacterWishSim(WishConfig, WishPlanItemNumber) {
 
     let ExchangePoints = ScoutItemPlan.ExchangePoints;
     // let Goal = ScoutItemPlan.WishPlanGoal;
-    
+
     let MaxFCScouts = ScoutItemPlan.MaxFCScouts - FCScouts
     let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC - PCSpent)/50)
     let MaxPinkTicketScouts = ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets;
-    let MaxScouts = ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts
+    let MaxScouts = MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts
 
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
@@ -222,14 +222,14 @@ function CharacterWishSim(WishConfig, WishPlanItemNumber) {
         };
 
         if (ScoutItems >= ScoutItemPlan.WishPlanGoal) {
-            CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts);
+            CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
 
             return true;
         };
 
     };
 
-    CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts);
+    CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
 
     return false;
 };
