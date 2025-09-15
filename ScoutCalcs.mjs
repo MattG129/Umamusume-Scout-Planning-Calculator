@@ -290,14 +290,16 @@ function WishCalcs(WishConfig) {
 
     for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
 
-        let BannerEndVal = WishConfig.EnabledWishPlanArray[i].Banner;
-        let BannerEndText = $(`#BannerEnd option[value=${BannerEndVal}]`).text();
+        let ScoutItemPlan = WishConfig.EnabledWishPlanArray[i];
+        let BannerEndText = $(`#BannerEnd option[value=${ScoutItemPlan.Banner}]`).text();
+        let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC/50));
+        let MaxPinkTicketScouts = ScoutItemPlan.Type == BannerTypes.Uma.Value ? WishConfig.UmaTickets : WishConfig.CardTickets;
 
         let NewRow = $(
             `<tr class="WishPlanResultsRow">`+
                 `<td>${BannerEndText}</td>`+
-                `<td>${WishConfig.EnabledWishPlanArray[i].WishPlanGoal}</td>`+
-                `<td>${WishConfig.EnabledWishPlanArray[i].MaxFCScouts}</td>`+
+                `<td>${ScoutItemPlan.WishPlanGoal}</td>`+
+                `<td>${ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts}</td>`+
                 `<td>${WishResults.WishPlanResults[i]}</td>`+
             `</tr>`
         );
