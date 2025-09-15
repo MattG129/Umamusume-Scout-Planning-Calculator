@@ -266,7 +266,7 @@ function WishCalcs(ScoutConfig) {
             Object.assign(ScoutItemPlan, GlobalBanners[ScoutItemPlan.Banner]);
             
             if (ScoutItemPlan.EndDate < LatestEndDate) {
-                $('#WishError').show().html('Scout plan rows must be ordered by end date.');
+                $('#ScoutPlanOrderError').show().html('Scout plan rows must be ordered by end date.');
                 return {Success: false};
             }
             else {
