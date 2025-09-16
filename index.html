@@ -447,7 +447,6 @@
             };
 
             UpdateCalculateButton();
-            $('#CharacterGoal, #WeaponGoal, #ChronicledGoal, #WishMode').on('input', UpdateCalculateButton)
 
             $("#Calculate").on('click', function() {
                 $('.WishResults').hide();
@@ -549,7 +548,7 @@
                     NewScoutPlanRowID = 0;
 
                     // TODO: Test this with an expired banner. Also, test what happens if an invalid banner val is used.
-                    let AnnounceExpiredWishPlanRows = false; // We will only set this to true when there are active expired wish plan rows and advanced wish planning mode is activated.
+                    let AnnounceExpiredItems = false; // We will only set this to true when there are active expired wish plan rows and advanced wish planning mode is activated.
                     for (let i = 0; i < JSONImport.WishPlanArray.length; i++) {
                         AddWishPlanRow();
 
@@ -566,13 +565,13 @@
                             $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val('');
                             $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
 
-                            if (JSONImport.WishMode == WishModes.Advanced.value && JSONImport.WishPlanArray[i].WishPlanEnabled) {
-                                AnnounceExpiredWishPlanRows = true;
+                            if (JSONImport.WishPlanArray[i].WishPlanEnabled) {
+                                AnnounceExpiredItems = true;
                             };
                         };
                     };
                     
-                    if (AnnounceExpiredWishPlanRows) {
+                    if (AnnounceExpiredItems) {
                         swal({icon: 'info', text: 'Expired wish plan row(s) were detected in the import. These row(s) have been automatically set to inactive. All other information has been successfully imported.'});
                     };
 
