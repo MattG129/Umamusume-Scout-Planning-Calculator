@@ -171,12 +171,12 @@ function NumericWishCalculations(ScoutConfig) {
     });
 };
 
-function ScoutSim(ScoutConfig, WishPlanItemNumber) {
+function ScoutSim(ScoutConfig, ScoutItemNumber) {
     let ScoutItems = 0;
 
     let Scouts = 0;
 
-    let ScoutItemPlan = ScoutConfig.EnabledWishPlanArray[WishPlanItemNumber];
+    let ScoutItemPlan = ScoutConfig.EnabledWishPlanArray[ScoutItemNumber];
 
     let ExchangePoints = ScoutItemPlan.ExchangePoints;
 

@@ -30,7 +30,7 @@
         <script type="text/javascript">
             let Page = 'index';
 
-            let NewWishPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
+            let NewScoutPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
         </script>
     </head>
     <body>
@@ -263,7 +263,7 @@
                     <script type="text/javascript">
                         function AddWishPlanRow() {
                             let NewRow = $(
-                                `<tr id="WishPlanRow${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}">`+
+                                `<tr id="WishPlanRow${NewScoutPlanRowID}" data-wishplan-rowid="${NewScoutPlanRowID}">`+
                                     `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
                                     `<td>`+
                                         `<center>`+
@@ -282,11 +282,11 @@
                                     `</td>`+
                                     `<td class="td-label">`+
                                         `<label class="td-label">`+
-                                            `<input type="checkbox" class="WishPlanEnabled form-check-input align-middle" onchange="ToggleWishPlanRow(this, ${NewWishPlanRowID}); UpdateCalculateButton();" checked>`+
+                                            `<input type="checkbox" class="WishPlanEnabled form-check-input align-middle" onchange="ToggleWishPlanRow(this, ${NewScoutPlanRowID}); UpdateCalculateButton();" checked>`+
                                         `</label>`+
                                     `</td>`+
                                     `<td>`+
-                                        `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove(); UpdateCalculateButton();">`+
+                                        `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewScoutPlanRowID}').remove(); UpdateCalculateButton();">`+
                                             `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
                                         `</button>`+
                                     `</td>`+
@@ -296,16 +296,16 @@
                             $('#WishPlanningTableBody').append(NewRow);
                             $('#WishPlanningTableBody').sortable("refresh");
 
-                            $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] .ScoutPlanBanner`).html($('#BannerEnd').html());
-                            $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).addClass('WishPlanField TableField');
+                            $(`tr[data-wishplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerEnd').html());
+                            $(`tr[data-wishplan-rowid=${NewScoutPlanRowID}] input, tr[data-wishplan-rowid=${NewScoutPlanRowID}] select`).addClass('WishPlanField TableField');
 
                             SetParsleyValidations();
 
-                            NewWishPlanRowID++;
+                            NewScoutPlanRowID++;
                         };
 
                         $(function() {
-                            NewWishPlanRowID = 0;
+                            NewScoutPlanRowID = 0;
 
                             $('#WishPlanningTableBody').sortable({handle: ".handle"});
 
@@ -546,7 +546,7 @@
 
                     // We will remove the existing wish planning rows to avoid any potential conflicts with the imported ones.
                     $('tr[data-wishplan-rowid]').remove();
-                    NewWishPlanRowID = 0;
+                    NewScoutPlanRowID = 0;
 
                     // TODO: Test this with an expired banner. Also, test what happens if an invalid banner val is used.
                     let AnnounceExpiredWishPlanRows = false; // We will only set this to true when there are active expired wish plan rows and advanced wish planning mode is activated.
@@ -558,9 +558,7 @@
                         $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.WishPlanArray[i].ExchangePoints);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
-                        let WishPlanBanner = GlobalBanners[JSONImport.WishPlanArray[i].Banner];
-
-                        if (WishPlanBanner.EndDate >= Today) {
+                        if (GlobalBanners[JSONImport.WishPlanArray[i].Banner].EndDate >= Today) {
                             $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.WishPlanArray[i].Banner);
                             $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
                         }
