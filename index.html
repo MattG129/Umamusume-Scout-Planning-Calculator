@@ -552,7 +552,6 @@
                     for (let i = 0; i < JSONImport.WishPlanArray.length; i++) {
                         AddWishPlanRow();
 
-                        $(`tr[data-wishplan-rowid=${i}] td .WishPlanType`).val(JSONImport.WishPlanArray[i].WishPlanType);
                         $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.WishPlanArray[i].ExchangePoints);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
