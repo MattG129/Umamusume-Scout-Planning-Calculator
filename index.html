@@ -277,7 +277,7 @@
                                     `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<input type="number" class="WishPlanGoal form-control" data-parsley-trigger="input" data-parsley-required="true" Value="1" data-parsley-min="1" min="1">`+
+                                            `<input type="number" class="ScoutPlanGoal form-control" data-parsley-trigger="input" data-parsley-required="true" Value="1" data-parsley-min="1" min="1">`+
                                         `</center>`+
                                     `</td>`+
                                     `<td class="td-label">`+
@@ -504,7 +504,7 @@
                     FormValues.WishPlanArray.push({
                         Banner:            Number($(this).find('td .ScoutPlanBanner').val()),
                         ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
-                        WishPlanGoal:      Number($(this).find('td .WishPlanGoal').val()),
+                        Goal:              Number($(this).find('td .ScoutPlanGoal').val()),
                         WishPlanEnabled:          $(this).find('td .WishPlanEnabled').is(':checked')
                     });
                 });
@@ -552,7 +552,7 @@
                         AddWishPlanRow();
 
                         $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.WishPlanArray[i].ExchangePoints);
-                        $(`tr[data-scoutplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
+                        $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanGoal`).val(JSONImport.WishPlanArray[i].Goal);
 
                         if (BannersInfo[JSONImport.WishPlanArray[i].Banner].GlobalEndDate >= Today) {
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.WishPlanArray[i].Banner);

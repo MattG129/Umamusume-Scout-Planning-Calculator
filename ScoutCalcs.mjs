@@ -190,7 +190,7 @@ function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
             ExchangePoints = 0;
         };
 
-        if (ScoutItems >= ScoutItemPlan.WishPlanGoal) {
+        if (ScoutItems >= ScoutItemPlan.Goal) {
             CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
 
             return true;
@@ -261,7 +261,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
         let NewRow = $(
             `<tr class="WishPlanResultsRow">`+
                 `<td>${BannerEndText}</td>`+
-                `<td>${ScoutItemPlan.WishPlanGoal}</td>`+
+                `<td>${ScoutItemPlan.Goal}</td>`+
                 `<td>${ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts}</td>`+
                 `<td>${ScoutsResults.ScoutItemResults[i]}</td>`+
             `</tr>`
