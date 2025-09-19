@@ -103,14 +103,13 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     return {MaxFCScouts: Math.floor(FC/150), PC: PC};
 };
 
-// Declaring variables outside the function scope so they can be used by both NumericWishCalculations and the wish sim functions.
 let FCScouts;
 let PCSpent;
 
 let UmaTickets;
 let CardTickets;
 
-function NumericWishCalculations(ScoutConfig) {
+function RunAndEvaluateScoutSimulations(ScoutConfig) {
     const Start = Date.now();
     let Successes = 0;
 
@@ -127,7 +126,7 @@ function NumericWishCalculations(ScoutConfig) {
         let BannerTypesScouted = [];
         for (let i = 0; i < ScoutConfig.EnabledScoutPlanArray.length; i++) {
 
-            let ScoutItemsWon = ScoutSim(ScoutConfig, i);
+            let ScoutItemsWon = ScoutSimulator(ScoutConfig, i);
             if (ScoutItemsWon) {
                 ScoutItemResults[i]++;
             }
@@ -156,7 +155,7 @@ function NumericWishCalculations(ScoutConfig) {
     });
 };
 
-function ScoutSim(ScoutConfig, ScoutItemNumber) {
+function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
     let ScoutItems = 0;
 
     let Scouts = 0;
@@ -220,7 +219,7 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
     FCScouts += (Scouts - PCScouts - PinkTicketScouts);
 };
 
-function WishCalcs(ScoutConfig) {
+function ScoutPlanningCalculator(ScoutConfig) {
 
     let SavingsResults;
     let LatestEndDate = '01/01/1970';
@@ -248,7 +247,7 @@ function WishCalcs(ScoutConfig) {
         };
     };
 
-    ScoutsResults = NumericWishCalculations(ScoutConfig);
+    ScoutsResults = RunAndEvaluateScoutSimulations(ScoutConfig);
 
     $('#ScoutPlanningResultsTable .WishPlanResultsRow').remove();
 

@@ -395,8 +395,8 @@
                             <th style="width: 20%">Chance of Success</th>
                         </tr>
                     </thead>
-                    <tbody id="ScoutPlanningResultsBody"> <!--- Will be filled in by WishCalcs. ---> </tbody>
-                    <tfoot> <!--- Will be filled in by WishCalcs. ---> </tfoot>
+                    <tbody id="ScoutPlanningResultsBody"> <!--- Will be filled in by ScoutPlanningCalculator. ---> </tbody>
+                    <tfoot> <!--- Will be filled in by ScoutPlanningCalculator. ---> </tfoot>
                 </table>
 
                 <hr>
@@ -464,7 +464,7 @@
                     $('html, body').animate({scrollTop: $("#LoadingGroup").offset().top, easing: 'linear'}, 100);
 
                     setTimeout(function () {
-                        if (WishCalcs(CompileForm()).Success) {
+                        if (ScoutPlanningCalculator(CompileForm()).Success) {
                             ResultsLoaded = true;
                             UpdateCalculateButton();
                         };
