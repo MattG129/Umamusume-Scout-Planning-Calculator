@@ -140,7 +140,7 @@ function NumericWishCalculations(ScoutConfig) {
             Successes++
         };
 
-        if (Date.now() - Start > 5000) { // Sets a 5 second time limit on wish calcs.
+        if (Date.now() - Start > 5000) { // Sets a 5 second time limit on calcs.
             TrialCount += 1
             break;
         };
@@ -268,7 +268,7 @@ function WishCalcs(ScoutConfig) {
             `</tr>`
         );
 
-        $('#WishPlanningResultsBody').append(NewRow);
+        $('#ScoutPlanningResultsBody').append(NewRow);
     };
 
     $('#ScoutPlanningResultsTable tfoot').append($(
