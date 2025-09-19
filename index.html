@@ -282,7 +282,7 @@
                                     `</td>`+
                                     `<td class="td-label">`+
                                         `<label class="td-label">`+
-                                            `<input type="checkbox" class="WishPlanEnabled form-check-input align-middle" onchange="ToggleWishPlanRow(this, ${NewScoutPlanRowID}); UpdateCalculateButton();" checked>`+
+                                            `<input type="checkbox" class="WishPlanEnabled form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateCalculateButton();" checked>`+
                                         `</label>`+
                                     `</td>`+
                                     `<td>`+
@@ -382,7 +382,7 @@
                     Loading...
                 </div>
 
-                <a id="WishResultsAnchor"></a>
+                <a id="ScoutResultsAnchor"></a>
 
                 <div id="ScoutPlanOrderError" class="WishResults" style="display: none; color: #800000;"></div>
 
@@ -472,19 +472,19 @@
 
                         $('#LoadingGroup').hide();
 
-                        $('html, body').animate({scrollTop: $("#WishResultsAnchor").offset().top, easing: 'linear'}, 250);
+                        $('html, body').animate({scrollTop: $("#ScoutResultsAnchor").offset().top, easing: 'linear'}, 250);
                         
                         $("#Calculate").show();
                     }, 500);
                 };
             });
 
-            function ToggleWishPlanRow(caller, WishPlanRowID) {
+            function ToggleScoutPlanRow(caller, ScoutPlanRowID) {
                 if ($(caller).is(':checked')) {
-                    $(`tr[data-wishplan-rowid=${WishPlanRowID}], tr[data-wishplan-rowid=${WishPlanRowID}] input, tr[data-wishplan-rowid=${WishPlanRowID}] select`).removeClass('DisabledWishPlanRow');
+                    $(`tr[data-wishplan-rowid=${ScoutPlanRowID}], tr[data-wishplan-rowid=${ScoutPlanRowID}] input, tr[data-wishplan-rowid=${ScoutPlanRowID}] select`).removeClass('DisabledWishPlanRow');
                 }
                 else {
-                    $(`tr[data-wishplan-rowid=${WishPlanRowID}], tr[data-wishplan-rowid=${WishPlanRowID}] input, tr[data-wishplan-rowid=${WishPlanRowID}] select`).addClass('DisabledWishPlanRow');
+                    $(`tr[data-wishplan-rowid=${ScoutPlanRowID}], tr[data-wishplan-rowid=${ScoutPlanRowID}] input, tr[data-wishplan-rowid=${ScoutPlanRowID}] select`).addClass('DisabledWishPlanRow');
                 };
             };
 
