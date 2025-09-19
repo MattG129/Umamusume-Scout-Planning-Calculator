@@ -121,7 +121,7 @@
                 }
             }
             
-            .DisabledWishPlanRow {
+            .InactiveScoutPlanRow {
                 color: gray;
                 border-color: gray;
             }
@@ -238,7 +238,7 @@
                                         Copies
                                     </th>
                                     <th style="width: 10%;">
-                                        Enabled
+                                        Active
                                     </th>
                                     <th style="width: 10%;">
                                         <!-- Remove Button -->
@@ -282,7 +282,7 @@
                                     `</td>`+
                                     `<td class="td-label">`+
                                         `<label class="td-label">`+
-                                            `<input type="checkbox" class="WishPlanEnabled form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateCalculateButton();" checked>`+
+                                            `<input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateCalculateButton();" checked>`+
                                         `</label>`+
                                     `</td>`+
                                     `<td>`+
@@ -435,7 +435,7 @@
             function UpdateCalculateButton() {
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
-                if ( $('tr[data-scoutplan-rowid]:not(.DisabledWishPlanRow)').length > 0 ) {
+                if ( $('tr[data-scoutplan-rowid]:not(.InactiveScoutPlanRow)').length > 0 ) {
                     $("#Calculate").html(CalculateText);
                     $("#Calculate").removeClass('disabled');
                 }
@@ -480,10 +480,10 @@
 
             function ToggleScoutPlanRow(caller, ScoutPlanRowID) {
                 if ($(caller).is(':checked')) {
-                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input, tr[data-scoutplan-rowid=${ScoutPlanRowID}] select`).removeClass('DisabledWishPlanRow');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input, tr[data-scoutplan-rowid=${ScoutPlanRowID}] select`).removeClass('InactiveScoutPlanRow');
                 }
                 else {
-                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input, tr[data-scoutplan-rowid=${ScoutPlanRowID}] select`).addClass('DisabledWishPlanRow');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input, tr[data-scoutplan-rowid=${ScoutPlanRowID}] select`).addClass('InactiveScoutPlanRow');
                 };
             };
 
@@ -505,7 +505,7 @@
                         Banner:            Number($(this).find('td .ScoutPlanBanner').val()),
                         ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
                         Goal:              Number($(this).find('td .ScoutPlanGoal').val()),
-                        WishPlanEnabled:          $(this).find('td .WishPlanEnabled').is(':checked')
+                        Active:        $(this).find('td .ScoutPlanActive').is(':checked')
                     });
                 });
 
@@ -556,13 +556,13 @@
 
                         if (BannersInfo[JSONImport.ScoutPlanArray[i].Banner].GlobalEndDate >= Today) {
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.ScoutPlanArray[i].Banner);
-                            $(`tr[data-scoutplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.ScoutPlanArray[i].WishPlanEnabled);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', JSONImport.ScoutPlanArray[i].ScoutPlanActive);
                         }
                         else {
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val('');
-                            $(`tr[data-scoutplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', false);
 
-                            if (JSONImport.ScoutPlanArray[i].WishPlanEnabled) {
+                            if (JSONImport.ScoutPlanArray[i].ScoutPlanActive) {
                                 AnnounceExpiredItems = true;
                             };
                         };

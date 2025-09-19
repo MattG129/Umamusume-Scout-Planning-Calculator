@@ -113,7 +113,7 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
     const Start = Date.now();
     let Successes = 0;
 
-    let ScoutItemResults = new Array(ScoutConfig.EnabledScoutPlanArray.length).fill(0);    
+    let ScoutItemResults = new Array(ScoutConfig.ActiveScoutPlanArray.length).fill(0);    
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
@@ -124,7 +124,7 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
 
         let MissedScoutItems = false;
         let BannerTypesScouted = [];
-        for (let i = 0; i < ScoutConfig.EnabledScoutPlanArray.length; i++) {
+        for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
 
             let ScoutItemsWon = ScoutSimulator(ScoutConfig, i);
             if (ScoutItemsWon) {
@@ -160,7 +160,7 @@ function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
 
     let Scouts = 0;
 
-    let ScoutItemPlan = ScoutConfig.EnabledScoutPlanArray[ScoutItemNumber];
+    let ScoutItemPlan = ScoutConfig.ActiveScoutPlanArray[ScoutItemNumber];
 
     let ExchangePoints = ScoutItemPlan.ExchangePoints;
 
@@ -223,12 +223,12 @@ function ScoutPlanningCalculator(ScoutConfig) {
 
     let SavingsResults;
     let LatestEndDate = '01/01/1970';
-    ScoutConfig.EnabledScoutPlanArray = [];
+    ScoutConfig.ActiveScoutPlanArray = [];
     for (let i = 0; i < ScoutConfig.ScoutPlanArray.length; i++) {    
 
         let ScoutItemPlan = ScoutConfig.ScoutPlanArray[i];
 
-        if (ScoutItemPlan.WishPlanEnabled) {
+        if (ScoutItemPlan.Active) {
             
             Object.assign(ScoutItemPlan, BannersInfo[ScoutItemPlan.Banner]);
             
@@ -243,7 +243,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
                 Object.assign(ScoutItemPlan, SavingsResults);
             };
 
-            ScoutConfig.EnabledScoutPlanArray.push(ScoutItemPlan);
+            ScoutConfig.ActiveScoutPlanArray.push(ScoutItemPlan);
         };
     };
 
@@ -251,9 +251,9 @@ function ScoutPlanningCalculator(ScoutConfig) {
 
     $('#ScoutPlanningResultsTable .ScoutPlanResultsRow').remove();
 
-    for (let i = 0; i < ScoutConfig.EnabledScoutPlanArray.length; i++) {
+    for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
 
-        let ScoutItemPlan = ScoutConfig.EnabledScoutPlanArray[i];
+        let ScoutItemPlan = ScoutConfig.ActiveScoutPlanArray[i];
         let BannerEndText = $(`#BannerEnd option[value=${ScoutItemPlan.Banner}]`).text();
         let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC/50));
         let MaxPinkTicketScouts = ScoutItemPlan.Type == BannerTypes.Uma.Value ? ScoutConfig.UmaTickets : ScoutConfig.CardTickets;
@@ -272,7 +272,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
 
     $('#ScoutPlanningResultsTable tfoot').append($(
         `<tr class="ScoutPlanResultsRow">`+
-            `<td colspan="5"><b>Chance of reaching all wish goals: ${ScoutsResults.TotalSuccessRate}</b></td>`+
+            `<td colspan="5"><b>Chance of reaching all scout goals: ${ScoutsResults.TotalSuccessRate}</b></td>`+
         `</tr>`
     ));
 
