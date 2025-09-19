@@ -143,7 +143,7 @@
                         <div id="ImportExportAccordionContent" class="accordion-collapse collapse" aria-labelledby="ImportExportAccordion" data-bs-parent="#ImportExportAccordion">
                             <div class="accordion-body">
                                 <label for="ImportState" class="form-label">
-                                    You can click the <b>Export</b> button below to copy all your wish info for future use. When you are ready to use the calculator again, you can paste that info into the text box below and click <b>Import</b> or <b>Import and Run</b>.
+                                    You can click the <b>Export</b> button below to copy all your scout planning info for future use. When you are ready to use the calculator again, you can paste that info into the text box below and click <b>Import</b> or <b>Import and Run</b>.
                                 </label><br>
                                 <center>
                                     <textarea id="ImportState" class="form-control" style="border-color: black;" rows="5"></textarea><br>
@@ -263,7 +263,7 @@
                     <script type="text/javascript">
                         function AddWishPlanRow() {
                             let NewRow = $(
-                                `<tr id="WishPlanRow${NewScoutPlanRowID}" data-wishplan-rowid="${NewScoutPlanRowID}">`+
+                                `<tr id="WishPlanRow${NewScoutPlanRowID}" data-scoutplan-rowid="${NewScoutPlanRowID}">`+
                                     `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
                                     `<td>`+
                                         `<center>`+
@@ -296,8 +296,8 @@
                             $('#WishPlanningTableBody').append(NewRow);
                             $('#WishPlanningTableBody').sortable("refresh");
 
-                            $(`tr[data-wishplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerEnd').html());
-                            $(`tr[data-wishplan-rowid=${NewScoutPlanRowID}] input, tr[data-wishplan-rowid=${NewScoutPlanRowID}] select`).addClass('WishPlanField TableField');
+                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerEnd').html());
+                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
 
                             SetParsleyValidations();
 
@@ -435,7 +435,7 @@
             function UpdateCalculateButton() {
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
-                if ( $('tr[data-wishplan-rowid]:not(.DisabledWishPlanRow)').length > 0 ) {
+                if ( $('tr[data-scoutplan-rowid]:not(.DisabledWishPlanRow)').length > 0 ) {
                     $("#Calculate").html(CalculateText);
                     $("#Calculate").removeClass('disabled');
                 }
@@ -480,17 +480,17 @@
 
             function ToggleScoutPlanRow(caller, ScoutPlanRowID) {
                 if ($(caller).is(':checked')) {
-                    $(`tr[data-wishplan-rowid=${ScoutPlanRowID}], tr[data-wishplan-rowid=${ScoutPlanRowID}] input, tr[data-wishplan-rowid=${ScoutPlanRowID}] select`).removeClass('DisabledWishPlanRow');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input, tr[data-scoutplan-rowid=${ScoutPlanRowID}] select`).removeClass('DisabledWishPlanRow');
                 }
                 else {
-                    $(`tr[data-wishplan-rowid=${ScoutPlanRowID}], tr[data-wishplan-rowid=${ScoutPlanRowID}] input, tr[data-wishplan-rowid=${ScoutPlanRowID}] select`).addClass('DisabledWishPlanRow');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input, tr[data-scoutplan-rowid=${ScoutPlanRowID}] select`).addClass('DisabledWishPlanRow');
                 };
             };
 
             function CompileForm(){
                 let FormValues = {};
 
-                $('#form input:not(.WishPlanField), #form select:not(.WishPlanField)').each(function() {
+                $('#form input:not(.ScoutPlanField), #form select:not(.ScoutPlanField)').each(function() {
                     if ($(this).is(':checkbox')) {
                         FormValues[this.id] = $(this).is(':checked');
                     }
@@ -500,7 +500,7 @@
                 });
 
                 FormValues.WishPlanArray = [];
-                $('tr[data-wishplan-rowid]').each(function() {
+                $('tr[data-scoutplan-rowid]').each(function() {
                     FormValues.WishPlanArray.push({
                         Banner:            Number($(this).find('td .ScoutPlanBanner').val()),
                         ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
@@ -519,7 +519,7 @@
                 try {
                     JSONImport = JSON.parse(ImportState);
 
-                    // Since some of the import code explicitly references the wish plan mapper it needs to be defined.
+                    // Since some of the import code explicitly references the scout plan mapper it needs to be defined.
                     if (JSONImport.WishPlanArray == undefined) {
                         isValidImport = false;
                     };
@@ -533,7 +533,7 @@
                 else {
                     $('#InvalidImportMessage').hide();
 
-                    $('#form input:not(.WishPlanField), #form select:not(.WishPlanField)').each(function() {
+                    $('#form input:not(.ScoutPlanField), #form select:not(.ScoutPlanField)').each(function() {
                         if ($(this).is(':checkbox')) {
                             $(this).prop('checked', JSONImport[this.id]);
                         }
@@ -542,25 +542,25 @@
                         };
                     });
 
-                    // We will remove the existing wish planning rows to avoid any potential conflicts with the imported ones.
-                    $('tr[data-wishplan-rowid]').remove();
+                    // We will remove the existing scout planning rows to avoid any potential conflicts with the imported ones.
+                    $('tr[data-scoutplan-rowid]').remove();
                     NewScoutPlanRowID = 0;
 
                     // TODO: Test this with an expired banner. Also, test what happens if an invalid banner val is used.
-                    let AnnounceExpiredItems = false; // We will only set this to true when there are active expired wish plan rows and advanced wish planning mode is activated.
+                    let AnnounceExpiredItems = false; // We will only set this to true when there are active expired scout plan rows.
                     for (let i = 0; i < JSONImport.WishPlanArray.length; i++) {
                         AddWishPlanRow();
 
-                        $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.WishPlanArray[i].ExchangePoints);
-                        $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
+                        $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.WishPlanArray[i].ExchangePoints);
+                        $(`tr[data-scoutplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
                         if (BannersInfo[JSONImport.WishPlanArray[i].Banner].GlobalEndDate >= Today) {
-                            $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.WishPlanArray[i].Banner);
-                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.WishPlanArray[i].Banner);
+                            $(`tr[data-scoutplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
                         }
                         else {
-                            $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val('');
-                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val('');
+                            $(`tr[data-scoutplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
 
                             if (JSONImport.WishPlanArray[i].WishPlanEnabled) {
                                 AnnounceExpiredItems = true;
