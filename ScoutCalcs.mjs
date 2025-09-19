@@ -50,8 +50,7 @@ function DayOfWeek(Date) {
 };
 
 function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
-    // FC are a currency used to purchase intertwinded fates, which will be used to make wishes.
-    // Genesis Crystals are a paid currency that can be converted to Primogems at a 1:1 rate.
+    // Free Carrots are a currency that can be used to acquire new Umas or support cards.
     let FC = ScoutConfig.FC;
     
     // Daily Missions
@@ -90,7 +89,12 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     };
     FC += ExpectedClubCarrots * ScoutItemPlan.MonthDiff;
 
+    // Paid Carrots are a paid currency that can be converted to Free Carrots at a 1:1 rate.
+    // They can also be used to make a heavily discounted scout, once per day.
+    // For simplicity's sake, the calculator will only allow these to be used on the once daily pull, for the time being.
     let PC = ScoutConfig.PC;
+
+    // A monthly purchase that will reward 500 PC upfront and 50 PC every day for the next 30 days.
     if (ScoutConfig.HasDailyCarrotPack) {
         // TODO: The calculator doesn't factor in when the daily carrot pack is renewed which can mess up the calcs a bit.
         PC += 500 * ScoutItemPlan.MonthDiff;
