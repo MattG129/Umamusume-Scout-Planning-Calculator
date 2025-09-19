@@ -205,11 +205,11 @@
                     <select id="BannerEnd" class="form-select" style="max-width: 300px; display: none;"></select>
                     <script type="text/javascript">
                         $(function() {
-                            for (let i = 0; i < GlobalBanners.length; i++) {
-                                if (GlobalBanners[i].EndDate >= Today) {
+                            for (let i = 0; i < BannersInfo.length; i++) {
+                                if (BannersInfo[i].GlobalEndDate >= Today) {
                                     $('#BannerEnd').append($('<option>', {
                                         value: i,
-                                        text: `${GlobalBanners[i].Name}: ${moment(GlobalBanners[i].StartDate, "YYYY-MM-DD").format('L')} - ${moment(GlobalBanners[i].EndDate, "YYYY-MM-DD").format('L')}`,
+                                        text: `${BannersInfo[i].Name}: ${moment(BannersInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(BannersInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`,
                                     }));
                                 }
                             };
@@ -557,7 +557,7 @@
                         $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.WishPlanArray[i].ExchangePoints);
                         $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
-                        if (GlobalBanners[JSONImport.WishPlanArray[i].Banner].EndDate >= Today) {
+                        if (BannersInfo[JSONImport.WishPlanArray[i].Banner].GlobalEndDate >= Today) {
                             $(`tr[data-wishplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.WishPlanArray[i].Banner);
                             $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
                         }

@@ -6,42 +6,23 @@ const Trials = 10**6;
 const Today = new Date(); // TODO: Update date/banner calcs to factor in if day/banner has changed between when the page was loaded and when calcs are run.
 Today.setHours(0,0,0,0);
 
-const BannerTypes = {
-    Uma:   {Value: 1},
-    Card:  {Value: 2}
-};
-
 const JPLaunchDate = moment('23 Feb 2021', "DD MMM YYYY").toDate()
 const GlobalLaunchDate = moment('25 Jun 2025', "DD MMM YYYY").toDate()
 const GlobalAccelRate = 1.4;
 
-let GlobalBanners = [];
-for (let i = 0; i < JPBanners.length; i++) {
-
-    let GlobalBannerStartDate;
-    let GlobalBannerEndDate;
-
-    if (Object.hasOwn(GlobalDateOverrides, i)) {
-        GlobalBannerStartDate = moment(GlobalDateOverrides[i].StartDate, "DD MMM YYYY").toDate();
-        GlobalBannerEndDate = moment(GlobalDateOverrides[i].EndDate, "DD MMM YYYY").toDate();
-    }
-    else {
-        let BannerLength = DateDiff(JPBanners[i].StartDate, JPBanners[i].EndDate);
+for (let i = 0; i < BannersInfo.length; i++) {
+    
+    if (!Object.hasOwn(BannersInfo[i], 'GlobalStartDate')) {
+        let BannerLength = DateDiff(BannersInfo[i].JPStartDate, BannersInfo[i].JPEndDate);
         
-        let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, JPBanners[i].StartDate);
-        GlobalBannerStartDate = DateAdd(GlobalLaunchDate, Math.round(JPLaunchBannerStartDateDiff/GlobalAccelRate));
-        GlobalBannerEndDate = DateAdd(GlobalBannerStartDate, BannerLength);
+        let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, BannersInfo[i].JPStartDate);
+        BannersInfo[i].GlobalStartDate = DateAdd(GlobalLaunchDate, Math.round(JPLaunchBannerStartDateDiff/GlobalAccelRate));
+        BannersInfo[i].GlobalEndDate = DateAdd(BannersInfo[i].GlobalStartDate, BannerLength);
     }
 
-    GlobalBanners.push({
-        Type: BannerTypes[JPBanners[i].TypeVar].Value,
-        Name: JPBanners[i].Name,
-        StartDate: GlobalBannerStartDate,
-        EndDate: GlobalBannerEndDate,
-        BannerLength: DateDiff(GlobalBannerStartDate, GlobalBannerEndDate),
-        WeekDiff: Math.floor(DateDiff(Today, GlobalBannerEndDate) / 7),
-        MonthDiff: 12*(GlobalBannerEndDate.getFullYear() - Today.getFullYear()) + (GlobalBannerEndDate.getMonth() - Today.getMonth())
-    })
+    BannersInfo[i].BannerLength = DateDiff(BannersInfo[i].GlobalStartDate, BannersInfo[i].GlobalEndDate);
+    BannersInfo[i].WeekDiff = Math.floor(DateDiff(Today, BannersInfo[i].GlobalEndDate) / 7);
+    BannersInfo[i].MonthDiff = 12*(BannersInfo[i].GlobalEndDate.getFullYear() - Today.getFullYear()) + (BannersInfo[i].GlobalEndDate.getMonth() - Today.getMonth());
 };
 
 function DateAdd(date, days) {
@@ -74,7 +55,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     let FC = ScoutConfig.FC;
     
     // Daily Missions
-    FC += DateDiff(Today, ScoutItemPlan.EndDate) * ( 30 + (ScoutConfig.HasDailyCarrotPack ? 50 : 0) );
+    FC += DateDiff(Today, ScoutItemPlan.GlobalEndDate) * ( 30 + (ScoutConfig.HasDailyCarrotPack ? 50 : 0) );
 
     // 110 free carrots will be earned from the daily login bonus over the course of a week.
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
@@ -90,7 +71,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
         case 5: TeamTrialCarrots = 150; break;
         case 6: TeamTrialCarrots = 250; break;
     };
-    FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.EndDate) ? 1 : 0) );
+    FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
 
     // Club Rewards
     let ExpectedClubCarrots = 0;
@@ -246,14 +227,14 @@ function WishCalcs(ScoutConfig) {
 
         if (ScoutItemPlan.WishPlanEnabled) {
             
-            Object.assign(ScoutItemPlan, GlobalBanners[ScoutItemPlan.Banner]);
+            Object.assign(ScoutItemPlan, BannersInfo[ScoutItemPlan.Banner]);
             
-            if (ScoutItemPlan.EndDate < LatestEndDate) {
+            if (ScoutItemPlan.GlobalEndDate < LatestEndDate) {
                 $('#ScoutPlanOrderError').show().html('Scout plan rows must be ordered by end date.');
                 return {Success: false};
             }
             else {
-                LatestEndDate = ScoutItemPlan.EndDate;
+                LatestEndDate = ScoutItemPlan.GlobalEndDate;
 
                 let SavingsResults = SavingsCalculator(ScoutConfig, ScoutItemPlan);
                 Object.assign(ScoutItemPlan, SavingsResults);
