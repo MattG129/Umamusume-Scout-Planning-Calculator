@@ -250,7 +250,7 @@ function WishCalcs(ScoutConfig) {
 
     ScoutsResults = NumericWishCalculations(ScoutConfig);
 
-    $('#WishPlanningResultsTable .WishPlanResultsRow').remove();
+    $('#ScoutPlanningResultsTable .WishPlanResultsRow').remove();
 
     for (let i = 0; i < ScoutConfig.EnabledScoutPlanArray.length; i++) {
 
@@ -271,13 +271,13 @@ function WishCalcs(ScoutConfig) {
         $('#WishPlanningResultsBody').append(NewRow);
     };
 
-    $('#WishPlanningResultsTable tfoot').append($(
+    $('#ScoutPlanningResultsTable tfoot').append($(
         `<tr class="WishPlanResultsRow">`+
             `<td colspan="5"><b>Chance of reaching all wish goals: ${ScoutsResults.TotalSuccessRate}</b></td>`+
         `</tr>`
     ));
 
-    $('#WishPlanningResultsTable').show();
+    $('#ScoutPlanningResultsTable').show();
 
     return {Success: true};
 };
