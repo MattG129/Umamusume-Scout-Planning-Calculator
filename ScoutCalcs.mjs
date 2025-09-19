@@ -249,7 +249,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
 
     ScoutsResults = RunAndEvaluateScoutSimulations(ScoutConfig);
 
-    $('#ScoutPlanningResultsTable .WishPlanResultsRow').remove();
+    $('#ScoutPlanningResultsTable .ScoutPlanResultsRow').remove();
 
     for (let i = 0; i < ScoutConfig.EnabledScoutPlanArray.length; i++) {
 
@@ -259,7 +259,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
         let MaxPinkTicketScouts = ScoutItemPlan.Type == BannerTypes.Uma.Value ? ScoutConfig.UmaTickets : ScoutConfig.CardTickets;
 
         let NewRow = $(
-            `<tr class="WishPlanResultsRow">`+
+            `<tr class="ScoutPlanResultsRow">`+
                 `<td>${BannerEndText}</td>`+
                 `<td>${ScoutItemPlan.Goal}</td>`+
                 `<td>${ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts}</td>`+
@@ -271,7 +271,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
     };
 
     $('#ScoutPlanningResultsTable tfoot').append($(
-        `<tr class="WishPlanResultsRow">`+
+        `<tr class="ScoutPlanResultsRow">`+
             `<td colspan="5"><b>Chance of reaching all wish goals: ${ScoutsResults.TotalSuccessRate}</b></td>`+
         `</tr>`
     ));
