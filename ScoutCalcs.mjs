@@ -224,9 +224,9 @@ function ScoutPlanningCalculator(ScoutConfig) {
     let SavingsResults;
     let LatestEndDate = '01/01/1970';
     ScoutConfig.EnabledScoutPlanArray = [];
-    for (let i = 0; i < ScoutConfig.WishPlanArray.length; i++) {    
+    for (let i = 0; i < ScoutConfig.ScoutPlanArray.length; i++) {    
 
-        let ScoutItemPlan = ScoutConfig.WishPlanArray[i];
+        let ScoutItemPlan = ScoutConfig.ScoutPlanArray[i];
 
         if (ScoutItemPlan.WishPlanEnabled) {
             

@@ -499,9 +499,9 @@
                     };
                 });
 
-                FormValues.WishPlanArray = [];
+                FormValues.ScoutPlanArray = [];
                 $('tr[data-scoutplan-rowid]').each(function() {
-                    FormValues.WishPlanArray.push({
+                    FormValues.ScoutPlanArray.push({
                         Banner:            Number($(this).find('td .ScoutPlanBanner').val()),
                         ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
                         Goal:              Number($(this).find('td .ScoutPlanGoal').val()),
@@ -520,7 +520,7 @@
                     JSONImport = JSON.parse(ImportState);
 
                     // Since some of the import code explicitly references the scout plan mapper it needs to be defined.
-                    if (JSONImport.WishPlanArray == undefined) {
+                    if (JSONImport.ScoutPlanArray == undefined) {
                         isValidImport = false;
                     };
                 } catch (error) {
@@ -548,21 +548,21 @@
 
                     // TODO: Test this with an expired banner. Also, test what happens if an invalid banner val is used.
                     let AnnounceExpiredItems = false; // We will only set this to true when there are active expired scout plan rows.
-                    for (let i = 0; i < JSONImport.WishPlanArray.length; i++) {
+                    for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
                         AddWishPlanRow();
 
-                        $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.WishPlanArray[i].ExchangePoints);
-                        $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanGoal`).val(JSONImport.WishPlanArray[i].Goal);
+                        $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.ScoutPlanArray[i].ExchangePoints);
+                        $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanGoal`).val(JSONImport.ScoutPlanArray[i].Goal);
 
-                        if (BannersInfo[JSONImport.WishPlanArray[i].Banner].GlobalEndDate >= Today) {
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.WishPlanArray[i].Banner);
-                            $(`tr[data-scoutplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
+                        if (BannersInfo[JSONImport.ScoutPlanArray[i].Banner].GlobalEndDate >= Today) {
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.ScoutPlanArray[i].Banner);
+                            $(`tr[data-scoutplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.ScoutPlanArray[i].WishPlanEnabled);
                         }
                         else {
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val('');
                             $(`tr[data-scoutplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
 
-                            if (JSONImport.WishPlanArray[i].WishPlanEnabled) {
+                            if (JSONImport.ScoutPlanArray[i].WishPlanEnabled) {
                                 AnnounceExpiredItems = true;
                             };
                         };
