@@ -199,14 +199,14 @@
                     </div>
                     <br>
 
-                    <hr><h2>Wishing Info</h2><br>
+                    <hr><h2>Scout Planning</h2><br>
 
                     <!-- TODO: Using this as a basis for the banner dropdown to be copied off of -->
                     <select id="BannerEnd" class="form-select" style="max-width: 300px; display: none;"></select>
                     <script type="text/javascript">
                         $(function() {
                             for (let i = 0; i < BannersInfo.length; i++) {
-                                if (BannersInfo[i].GlobalEndDate >= Today) {
+                                if (BannersInfo[i].GlobalEndDate >= Today && BannersInfo[i].Disabled != true) {
                                     $('#BannerEnd').append($('<option>', {
                                         value: i,
                                         text: `${BannersInfo[i].Name}: ${moment(BannersInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(BannersInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`,
@@ -224,7 +224,7 @@
                                         <!-- Veritcal Grip -->
                                     </th>
                                     <th style="width: 40%; min-width: 125px;">
-                                        Wishing End Date
+                                        Banner
                                         <a data-toggle="tooltip"
                                             title="Dates are in American server time. The calculator currently assumes that banners end at 12:00 AM (0:00) on the banner end date."
                                         >
@@ -261,7 +261,7 @@
                     </div>
 
                     <script type="text/javascript">
-                        function AddWishPlanRow() {
+                        function AddScoutPlanRow() {
                             let NewRow = $(
                                 `<tr id="WishPlanRow${NewScoutPlanRowID}" data-scoutplan-rowid="${NewScoutPlanRowID}">`+
                                     `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
@@ -309,10 +309,10 @@
 
                             $('#WishPlanningTableBody').sortable({handle: ".handle"});
 
-                            $("#AddRowButton").click(function() {AddWishPlanRow(); UpdateCalculateButton();});
+                            $("#AddRowButton").click(function() {AddScoutPlanRow(); UpdateCalculateButton();});
 
                             // We want the table to load with 3 rows by default.
-                            for (let i = 0; i < 3; i++) AddWishPlanRow();
+                            for (let i = 0; i < 3; i++) AddScoutPlanRow();
                         });
                     </script>
 
@@ -366,7 +366,7 @@
                         </div>
                     </div>
 
-                    <hr><h2>Wish Results</h2><br>
+                    <hr><h2>Scout Results</h2><br>
 
                     <a id="Calculate" class="btn btn-primary" style="border-width: 1px; border-color: black;">Calculate</a>
                 </center>
@@ -405,7 +405,7 @@
         </div>
 
         <script type="text/javascript">
-            // When leaving the page, we will save the users form inputs to local storage so that we can import them again after the page has been refreshed. This is needed to reconstruct the wish planning table.
+            // When leaving the page, we will save the users form inputs to local storage so that we can import them again after the page has been refreshed. This is needed to reconstruct the scout planning table.
             $(document).on('visibilitychange', function() {
                 localStorage.setItem("SessionState", JSON.stringify(CompileForm()));
             });
@@ -440,7 +440,7 @@
                     $("#Calculate").removeClass('disabled');
                 }
                 else {
-                    $("#Calculate").html(CalculateText + "<br><span style='font-size: small;'>(Must add wish goals.)</span>");
+                    $("#Calculate").html(CalculateText + "<br><span style='font-size: small;'>(Must add scout goals.)</span>");
                     $("#Calculate").addClass('disabled');
                 };
             };
@@ -549,7 +549,7 @@
                     // TODO: Test this with an expired banner. Also, test what happens if an invalid banner val is used.
                     let AnnounceExpiredItems = false; // We will only set this to true when there are active expired scout plan rows.
                     for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
-                        AddWishPlanRow();
+                        AddScoutPlanRow();
 
                         $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.ScoutPlanArray[i].ExchangePoints);
                         $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanGoal`).val(JSONImport.ScoutPlanArray[i].Goal);
