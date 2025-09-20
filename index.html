@@ -217,7 +217,7 @@
                     </script>
 
                     <div style="overflow-x: auto;">
-                        <table id="WishPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
+                        <table id="ScoutPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
                             <thead>
                                 <tr>
                                     <th style="width: 10%;">
@@ -245,7 +245,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="WishPlanningTableBody">
+                            <tbody id="ScoutPlanningTableBody">
                                 <!--- Rows will be added by the script below. --->
                             </tbody>
                             <tfoot>
@@ -263,7 +263,7 @@
                     <script type="text/javascript">
                         function AddScoutPlanRow() {
                             let NewRow = $(
-                                `<tr id="WishPlanRow${NewScoutPlanRowID}" data-scoutplan-rowid="${NewScoutPlanRowID}">`+
+                                `<tr id="ScoutPlanRow${NewScoutPlanRowID}" data-scoutplan-rowid="${NewScoutPlanRowID}">`+
                                     `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
                                     `<td>`+
                                         `<center>`+
@@ -286,15 +286,15 @@
                                         `</label>`+
                                     `</td>`+
                                     `<td>`+
-                                        `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewScoutPlanRowID}').remove(); UpdateCalculateButton();">`+
+                                        `<button type="button" class="btn btn-danger" onclick="$('#ScoutPlanRow${NewScoutPlanRowID}').remove(); UpdateCalculateButton();">`+
                                             `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
                                         `</button>`+
                                     `</td>`+
                                 `</tr>`
                             );
 
-                            $('#WishPlanningTableBody').append(NewRow);
-                            $('#WishPlanningTableBody').sortable("refresh");
+                            $('#ScoutPlanningTableBody').append(NewRow);
+                            $('#ScoutPlanningTableBody').sortable("refresh");
 
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerEnd').html());
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
@@ -307,7 +307,7 @@
                         $(function() {
                             NewScoutPlanRowID = 0;
 
-                            $('#WishPlanningTableBody').sortable({handle: ".handle"});
+                            $('#ScoutPlanningTableBody').sortable({handle: ".handle"});
 
                             $("#AddRowButton").click(function() {AddScoutPlanRow(); UpdateCalculateButton();});
 
@@ -384,9 +384,9 @@
 
                 <a id="ScoutResultsAnchor"></a>
 
-                <div id="ScoutPlanOrderError" class="WishResults" style="display: none; color: #800000;"></div>
+                <div id="ScoutPlanOrderError" class="ScoutResults" style="display: none; color: #800000;"></div>
 
-                <table id="ScoutPlanningResultsTable" class="table table-bordered table-striped WishResults" style="font-size: min(3vw, 16px); text-align: center; border: 1px; display: none;">
+                <table id="ScoutPlanningResultsTable" class="table table-bordered table-striped ScoutResults" style="font-size: min(3vw, 16px); text-align: center; border: 1px; display: none;">
                     <thead>
                         <tr>
                             <th style="width: 40%">Banner</th>
@@ -448,7 +448,7 @@
             UpdateCalculateButton();
 
             $("#Calculate").on('click', function() {
-                $('.WishResults').hide();
+                $('.ScoutResults').hide();
 
                 let InvalidFields = getInvalidFields();
                 if (InvalidFields.length > 0) {
@@ -505,7 +505,7 @@
                         Banner:            Number($(this).find('td .ScoutPlanBanner').val()),
                         ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
                         Goal:              Number($(this).find('td .ScoutPlanGoal').val()),
-                        Active:        $(this).find('td .ScoutPlanActive').is(':checked')
+                        Active:                   $(this).find('td .ScoutPlanActive').is(':checked')
                     });
                 });
 
@@ -556,13 +556,13 @@
 
                         if (BannersInfo[JSONImport.ScoutPlanArray[i].Banner].GlobalEndDate >= Today) {
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.ScoutPlanArray[i].Banner);
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', JSONImport.ScoutPlanArray[i].ScoutPlanActive);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', JSONImport.ScoutPlanArray[i].Active);
                         }
                         else {
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val('');
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', false);
 
-                            if (JSONImport.ScoutPlanArray[i].ScoutPlanActive) {
+                            if (JSONImport.ScoutPlanArray[i].Active) {
                                 AnnounceExpiredItems = true;
                             };
                         };
