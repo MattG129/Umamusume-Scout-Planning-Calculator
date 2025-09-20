@@ -1,6 +1,5 @@
 // TODO: Add comments.
 
-// let TargetBannerInfo;
 const Trials = 10**6;
 
 const Today = new Date(); // TODO: Update date/banner calcs to factor in if day/banner has changed between when the page was loaded and when calcs are run.
@@ -11,7 +10,7 @@ const GlobalLaunchDate = moment('25 Jun 2025', "DD MMM YYYY").toDate()
 const GlobalAccelRate = 1.4;
 
 for (let i = 0; i < BannersInfo.length; i++) {
-    
+
     if (!Object.hasOwn(BannersInfo[i], 'GlobalStartDate')) {
         let BannerLength = DateDiff(BannersInfo[i].JPStartDate, BannersInfo[i].JPEndDate);
         
@@ -53,14 +52,14 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // Free Carrots are a currency that can be used to acquire new Umas or support cards.
     let FC = ScoutConfig.FC;
     
-    // Daily Missions
+    // Daily Missions + Daily Carrot Pack (if purchased).
     FC += DateDiff(Today, ScoutItemPlan.GlobalEndDate) * ( 30 + (ScoutConfig.HasDailyCarrotPack ? 50 : 0) );
 
     // 110 free carrots will be earned from the daily login bonus over the course of a week.
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     FC += 110 * ScoutItemPlan.WeekDiff;
 
-    // Team Trials
+    // Team Trials - Provides a reward each week based on your ranking.
     let TeamTrialCarrots = 0;
     switch (ScoutConfig.TeamTrialsClass) {
         case 1: TeamTrialCarrots = 0;   break;
@@ -72,7 +71,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     };
     FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
 
-    // Club Rewards
+    // Club Rewards - Provides a reward each month based on your ranking.
     let ExpectedClubCarrots = 0;
     switch (ScoutConfig.ExpectedClubRank) {
         case 1:  ExpectedClubCarrots = 3000; break;
@@ -127,6 +126,7 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
         for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
 
             let ScoutItemsWon = ScoutSimulator(ScoutConfig, i);
+
             if (ScoutItemsWon) {
                 ScoutItemResults[i]++;
             }
