@@ -316,20 +316,72 @@
 
                     <hr><h2>PVP</h2><br>
                     <div class="row">
-                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <h3>Champions Meeting</h3><br>
+
+                            <select id="CMLeague" class="form-select" style="max-width: 300px; margin-bottom: 15px">
+                                <option value="1">Open League</option>
+                                <option value="2">Graded League</option>
+                            </select>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4>Round 1</h4>
+                                    
+                                    <label for="CMR1Sets" class="form-label">Number of Sets</label>
+                                    <input type="number" id="CMR1Sets" class="form-control" style="max-width: 300px; margin-bottom: 15px" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,8]" min="0" max="8" Value="0">
+                                    
+                                    <label for="CMR1WR" class="form-label">Win Rate (%)</label>
+                                    <input type="number" id="CMR1WR" class="form-control" style="max-width: 300px; margin-bottom: 15px" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,100]" min="0" max="100" Value="0">
+                                </div>
+
+                                    
+                                <div class="col-md-4">
+                                    <h4>Round 2</h4>
+
+                                    <label for="CMR2Group" class="form-label">Group</label>
+                                    <select id="CMR2Group" class="form-select" style="max-width: 300px; margin-bottom: 15px">
+                                        <option value="1">A</option>
+                                        <option value="2">B</option>
+                                    </select>
+                                    
+                                    <label for="CMR2Sets" class="form-label">Number of Sets</label>
+                                    <input type="number" id="CMR2Sets" class="form-control" style="max-width: 300px; margin-bottom: 15px" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,8]" min="0" max="8" Value="0">
+
+                                    <label for="CMR2WR" class="form-label">Win Rate (%)</label>
+                                    <input type="number" id="CMR2WR" class="form-control" style="max-width: 300px; margin-bottom: 15px" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,100]" min="0" max="100" Value="0">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <h4>Round 3</h4>
+                                   
+                                    <label for="CMR3Group" class="form-label">Group</label>
+                                    <select id="CMR3Group" class="form-select" style="max-width: 300px; margin-bottom: 15px">
+                                        <option value="1">A</option>
+                                        <option value="2">B</option>
+                                    </select>
+
+                                    <label for="CMR3Placement" class="form-label">Placement</label>
+                                    <input type="number" id="CMR3Placement" class="form-control" style="max-width: 300px; margin-bottom: 15px" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[1,3]" min="1" max="3" Value="3">
+                                </div>
+                            </div>
+
+                        </div>
                         <div class="col-md-3">
+                            <h3>Team Trials</h3>
                             <label for="TeamTrialsClass" class="form-label">Team Trials Class</label>
-                            <input type="number" id="TeamTrialsClass" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[1,6]" min="1" max="6" Value="1">
+                            <input type="number" id="TeamTrialsClass" class="form-control" style="max-width: 300px; margin-bottom: 15px" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[1,6]" min="1" max="6" Value="1">
                         </div>
 
                         <div class="col-md-3">
+                            <h3>Club Rewards</h3>
                             <label for="ExpectedClubRank" class="form-label">Expected Club Ranking</label>
                             <a data-toggle="tooltip" 
                                 title="The grade rankings may not be entirely accurate."
                             >
                                 <i class="bi bi-question-circle"></i>
                             </a>
-                            <select id="ExpectedClubRank" class="form-select" style="max-width: 300px;">
+                            <select id="ExpectedClubRank" class="form-select" style="max-width: 300px; margin-bottom: 15px">
                                 <option value="1">SS (1-10)</option>
                                 <option value="2">S+ (11-30)</option>
                                 <option value="3">S &nbsp;&nbsp;(31-100)</option>
@@ -343,7 +395,6 @@
                                 <option value="11">D &nbsp;&nbsp;(> 30000)</option>
                             </select>
                         </div>
-                        <div class="col-md-3"></div>
                     </div>
 
                     <div>
