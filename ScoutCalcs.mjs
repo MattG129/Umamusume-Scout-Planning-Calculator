@@ -355,18 +355,38 @@ function ScoutPlanningCalculator(ScoutConfig) {
 
     $('#ScoutPlanningResultsTable .ScoutPlanResultsRow').remove();
 
+    let PCScouts = 0;
+    let UmaTicketScouts = 0;
+    let CardTicketScouts = 0;
+    let FCScouts = 0;
     for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
 
         let ScoutItemPlan = ScoutConfig.ActiveScoutPlanArray[i];
         let BannerEndText = $(`#BannerEnd option[value=${ScoutItemPlan.Banner}]`).text();
+
         let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC/50));
-        let MaxPinkTicketScouts = ScoutItemPlan.Type == BannerTypes.Uma.Value ? ScoutConfig.UmaTickets : ScoutConfig.CardTickets;
+        if (MaxPCScouts > PCScouts) {
+            PCScouts += 1;
+        }
+        else if (ScoutItemPlan.Type == BannerTypes.Uma.Value && ScoutItemPlan.MaxPinkTicketScouts > UmaTicketScouts) {
+            UmaTicketScouts += 1;
+        }
+        else if (ScoutItemPlan.Type == BannerTypes.Card.Value && ScoutItemPlan.MaxPinkTicketScouts > CardTicketScouts) {
+            CardTicketScouts += 1;
+        }
+        else if (ScoutItemPlan.MaxFCScouts > FCScouts) {
+            FCScouts += 1;
+        };
+
+        let MaxScouts = MaxPCScouts - PCScouts
+        MaxScouts += ScoutItemPlan.MaxPinkTicketScouts - (ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
+        MaxScouts += ScoutItemPlan.MaxFCScouts - FCScouts
 
         let NewRow = $(
             `<tr class="ScoutPlanResultsRow">
                 <td>${BannerEndText}</td>
                 <td>${ScoutItemPlan.Goal}</td>
-                <td>${ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts}</td>
+                <td>${MaxScouts}</td>
                 <td>${ScoutsResults.ScoutItemResults[i]}</td>
             </tr>`
         );
