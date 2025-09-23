@@ -4,7 +4,7 @@ $(function() {
 
 		<center>
 	    	<div class="alert alert-warning" role="alert" style="max-width: 80%;">
-		        Due to upcoming changes in rewards given from the Login Bonus, Daily Missions, Team Trials, and Club Rankings, the estimates provided by this calculator may vary drastically over the next few weeks.
+		        Due to upcoming changes in rewards given from Club Rankings, the estimates provided by this calculator may change at the beginning of next month.
 	    	</div>
 		</center>
 	`)

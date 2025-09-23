@@ -101,11 +101,11 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     let CardTickets = ScoutConfig.UmaTickets;
     
     // Daily Missions + Daily Carrot Pack (if purchased).
-    FC += DateDiff(Today, ScoutItemPlan.GlobalEndDate) * ( 30 + (ScoutConfig.HasDailyCarrotPack ? 50 : 0) );
+    FC += DateDiff(Today, ScoutItemPlan.GlobalEndDate) * ( 75 + (ScoutConfig.HasDailyCarrotPack ? 50 : 0) );
 
-    // 110 free carrots will be earned from the daily login bonus over the course of a week.
+    // 150 free carrots will be earned from the daily login bonus over the course of a week.
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
-    FC += 110 * ScoutItemPlan.WeekDiff;
+    FC += 150 * ScoutItemPlan.WeekDiff;
 
     // Champion meets are recurring tournments that give out rewards based on how well you preform.
     // Since there have only been two CMs as of this point (09/22/25), it would be difficult to come up with accurate estimates for future races.
@@ -145,11 +145,11 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     let TeamTrialCarrots = 0;
     switch (ScoutConfig.TeamTrialsClass) {
         case 1: TeamTrialCarrots = 0;   break;
-        case 2: TeamTrialCarrots = 25;  break;
-        case 3: TeamTrialCarrots = 50;  break;
-        case 4: TeamTrialCarrots = 100; break;
-        case 5: TeamTrialCarrots = 150; break;
-        case 6: TeamTrialCarrots = 250; break;
+        case 2: TeamTrialCarrots = 35;  break;
+        case 3: TeamTrialCarrots = 75;  break;
+        case 4: TeamTrialCarrots = 150; break;
+        case 5: TeamTrialCarrots = 225; break;
+        case 6: TeamTrialCarrots = 375; break;
     };
     FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
 
