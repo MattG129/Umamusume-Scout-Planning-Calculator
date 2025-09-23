@@ -107,7 +107,6 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     FC += 110 * ScoutItemPlan.WeekDiff;
 
-    FC -= 30 * Math.max(0, 8 - ScoutConfig.CMR1Sets - ScoutConfig.CMR2Sets)
 
     // Champion meets are recurring tournments that give out rewards based on how well you preform.
     // Since there have only been two CMs as of this point (09/22/25), it would be difficult to come up with accurate estimates for future races.
@@ -115,6 +114,10 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     FC += ScoutItemPlan.MonthDiff * CalculateRoundRewards(ScoutConfig, 1);
     FC += ScoutItemPlan.MonthDiff * CalculateRoundRewards(ScoutConfig, 2);
 
+    // You can run up to 8 sets per round. The first 6 are free, but the last 2 will cost 30 FC each.
+    FC -= ScoutItemPlan.MonthDiff * 30 * Math.max(0, ScoutConfig.CMR1Sets - 6);
+    FC -= ScoutItemPlan.MonthDiff * 30 * Math.max(0, ScoutConfig.CMR2Sets - 6);
+    
     // We don't need to run the function for round 3 since its just one race. Round 3 will also award pink tickets.
     // League: 1 = Open, 2 = Graded
     // Group: 1 = A, 2 = B
