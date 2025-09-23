@@ -98,7 +98,8 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
 
     // Uma/Card tickets (pink tickets), can be used to make scouts on their corresponding banners.
     let UmaTickets = ScoutConfig.UmaTickets;
-    let CardTickets = ScoutConfig.UmaTickets;
+
+    let CardTickets = ScoutConfig.CardTickets;
     
     // Daily Missions + Daily Carrot Pack (if purchased).
     FC += DateDiff(Today, ScoutItemPlan.GlobalEndDate) * ( 75 + (ScoutConfig.HasDailyCarrotPack ? 50 : 0) );
@@ -120,25 +121,28 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // We don't need to run the function for round 3 since its just one race. Round 3 will also award pink tickets.
     // League: 1 = Open, 2 = Graded
     // Group: 1 = A, 2 = B
-    if (ScoutConfig.League == 1 && ScoutConfig.CMR3Group == 1) {
+    if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 1) {
+        
         UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
         CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
-        UmaTickets  += ScoutItemPlan.MonthDiff * [900, 700, 500][ScoutConfig.CMR3Placement+1];
+        FC          += ScoutItemPlan.MonthDiff * [900, 700, 500][ScoutConfig.CMR3Placement+1];
     }
-    else if (ScoutConfig.League == 1 && ScoutConfig.CMR3Group == 2) {
+    else if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 2) {
+        
         UmaTickets  += ScoutItemPlan.MonthDiff * [2, 2, 1][ScoutConfig.CMR3Placement+1];
         CardTickets += ScoutItemPlan.MonthDiff * [1, 0, 0][ScoutConfig.CMR3Placement+1];
-        UmaTickets  += ScoutItemPlan.MonthDiff * [500, 300, 200][ScoutConfig.CMR3Placement+1];
+        FC          += ScoutItemPlan.MonthDiff * [500, 300, 200][ScoutConfig.CMR3Placement+1];
     }
-    else if (ScoutConfig.League == 2 && ScoutConfig.CMR3Group == 1) {
+    else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 1) {
+
         UmaTickets  += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement+1];
         CardTickets += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement+1];
-        UmaTickets  += ScoutItemPlan.MonthDiff * [2000, 1500, 1000][ScoutConfig.CMR3Placement+1];
+        FC          += ScoutItemPlan.MonthDiff * [2000, 1500, 1000][ScoutConfig.CMR3Placement+1];
     }
-    else if (ScoutConfig.League == 2 && ScoutConfig.CMR3Group == 2) {
+    else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 2) {
         UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
         CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
-        UmaTickets  += ScoutItemPlan.MonthDiff * [1000, 750, 500][ScoutConfig.CMR3Placement+1];
+        FC          += ScoutItemPlan.MonthDiff * [1000, 750, 500][ScoutConfig.CMR3Placement+1];
     };
 
     // Team Trials - Provides a reward each week based on your ranking.
@@ -181,7 +185,11 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
         PC += 500 * ScoutItemPlan.MonthDiff;
     };
 
-    return {MaxFCScouts: Math.floor(FC/150), PC: PC};
+    return {
+        MaxFCScouts: Math.floor(FC/150),
+        PC: PC,
+        MaxPinkTicketScouts: ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets
+    };
 };
 
 let FCScouts;
@@ -200,8 +208,8 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
         FCScouts = 0;
         PCSpent = 0;
-        UmaTickets = ScoutConfig.UmaTickets
-        CardTickets = ScoutConfig.CardTickets
+        UmaTickets = 0;
+        CardTickets = 0;
 
         let MissedScoutItems = false;
         let BannerTypesScouted = [];
@@ -248,7 +256,7 @@ function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
 
     let MaxFCScouts = ScoutItemPlan.MaxFCScouts - FCScouts
     let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC - PCSpent)/50)
-    let MaxPinkTicketScouts = ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets;
+    let MaxPinkTicketScouts = ScoutItemPlan.MaxPinkTicketScouts - (ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets);
     let MaxScouts = MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts
 
     let FiveStarChance = Math.random();
@@ -292,10 +300,10 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
     
     let PinkTicketScouts = Math.min(Scouts - MaxPCScouts, MaxPinkTicketScouts);
     if (ScoutItemType == BannerTypes.Uma.Value) {
-        UmaTickets -= PinkTicketScouts;
+        UmaTickets += PinkTicketScouts;
     }
     else {
-        CardTickets -= PinkTicketScouts;
+        CardTickets += PinkTicketScouts;
     };
 
     FCScouts += (Scouts - PCScouts - PinkTicketScouts);
