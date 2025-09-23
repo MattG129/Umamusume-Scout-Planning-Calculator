@@ -363,21 +363,21 @@ function ScoutPlanningCalculator(ScoutConfig) {
         let MaxPinkTicketScouts = ScoutItemPlan.Type == BannerTypes.Uma.Value ? ScoutConfig.UmaTickets : ScoutConfig.CardTickets;
 
         let NewRow = $(
-            `<tr class="ScoutPlanResultsRow">`+
-                `<td>${BannerEndText}</td>`+
-                `<td>${ScoutItemPlan.Goal}</td>`+
-                `<td>${ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts}</td>`+
-                `<td>${ScoutsResults.ScoutItemResults[i]}</td>`+
-            `</tr>`
+            `<tr class="ScoutPlanResultsRow">
+                <td>${BannerEndText}</td>
+                <td>${ScoutItemPlan.Goal}</td>
+                <td>${ScoutItemPlan.MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts}</td>
+                <td>${ScoutsResults.ScoutItemResults[i]}</td>
+            </tr>`
         );
 
         $('#ScoutPlanningResultsBody').append(NewRow);
     };
 
     $('#ScoutPlanningResultsTable tfoot').append($(
-        `<tr class="ScoutPlanResultsRow">`+
-            `<td colspan="5"><b>Chance of reaching all scout goals: ${ScoutsResults.TotalSuccessRate}</b></td>`+
-        `</tr>`
+        `<tr class="ScoutPlanResultsRow">
+            <td colspan="5"><b>Chance of reaching all scout goals: ${ScoutsResults.TotalSuccessRate}</b></td>
+        </tr>`
     ));
 
     $('#ScoutPlanningResultsTable').show();
