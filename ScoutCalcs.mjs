@@ -107,7 +107,6 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     FC += 110 * ScoutItemPlan.WeekDiff;
 
-
     // Champion meets are recurring tournments that give out rewards based on how well you preform.
     // Since there have only been two CMs as of this point (09/22/25), it would be difficult to come up with accurate estimates for future races.
     // As such, we will simplify things by having the calculator assume 1 CM per month and that it will all take place on the first of the month, even though they normally span multiple days.
