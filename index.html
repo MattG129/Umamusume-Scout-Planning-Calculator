@@ -606,32 +606,46 @@
 
                     // We will remove the existing scout planning rows to avoid any potential conflicts with the imported ones.
                     $('tr[data-scoutplan-rowid]').remove();
-                    NewScoutPlanRowID = 0;
+                    NewScoutPlanRowID = 0; // We will set this to zero so that each row's id will line up with the scout plan item's index.
 
-                    // TODO: Test this with an expired banner. Also, test what happens if an invalid banner val is used.
-                    let AnnounceExpiredItems = false; // We will only set this to true when there are active expired scout plan rows.
+                    let ExpiredActiveItems = [];
                     for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
-                        AddScoutPlanRow();
 
-                        $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(JSONImport.ScoutPlanArray[i].ExchangePoints);
-                        $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanGoal`).val(JSONImport.ScoutPlanArray[i].Goal);
+                        let ScoutPlanItem = JSONImport.ScoutPlanArray[i]
 
-                        if (BannersInfo[JSONImport.ScoutPlanArray[i].Banner].GlobalEndDate >= Today) {
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val(JSONImport.ScoutPlanArray[i].Banner);
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', JSONImport.ScoutPlanArray[i].Active);
+                        if (ScoutPlanItem.Banner < 0 || ScoutPlanItem.Banner >= BannersInfo.length) {
+                            NewScoutPlanRowID++; // We want to keep this synced with i.
+                        }
+                        else if (BannersInfo[ScoutPlanItem.Banner].GlobalEndDate < Today) {
+                            NewScoutPlanRowID++;
+
+                            if (ScoutPlanItem.Active) {
+                                ExpiredActiveItems.push( ScoutPlanItem.Banner) ;
+                            };
                         }
                         else {
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val('');
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', false);
+                            AddScoutPlanRow();
 
-                            if (JSONImport.ScoutPlanArray[i].Active) {
-                                AnnounceExpiredItems = true;
-                            };
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val(ScoutPlanItem.Banner);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanGoal`).val(ScoutPlanItem.Goal);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanItem.ExchangePoints);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanItem.Active);
                         };
                     };
                     
-                    if (AnnounceExpiredItems) {
-                        swal({icon: 'info', text: 'Expired wish plan row(s) were detected in the import. These row(s) have been automatically set to inactive. All other information has been successfully imported.'});
+                    if (ExpiredActiveItems.length > 0) {
+
+                        let RemovedRows = `Expired wish plan row(s) were detected in the import. The following row(s) have been automatically removed:
+                        `
+                        for (let i = 0; i < ExpiredActiveItems.length; i++) {
+                            RemovedRows += `
+                                \u2022 ${BannersInfo[ExpiredActiveItems[i]].Name}`
+                        };
+                        RemovedRows += `
+
+                        All other information has been successfully imported.`
+
+                        swal({icon: 'info', text: RemovedRows});
                     };
 
                     $('input, select').change().trigger('input');
