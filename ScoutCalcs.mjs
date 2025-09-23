@@ -174,6 +174,20 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     };
     FC += ExpectedClubCarrots * ScoutItemPlan.MonthDiff;
 
+    // When a new Uma comes out, you will be able to view the first 4 chapters of there story,
+    // even if you haven't pulled them, and will recieve 80 FC for doing so.
+    for (let i = 0; i < BannersInfo.length; i++) {
+        if (
+            BannersInfo[i].GlobalStartDate > Today
+            && BannersInfo[i].GlobalStartDate <= ScoutItemPlan.GlobalEndDate
+            && BannersInfo[i].IsNew
+            && BannersInfo[i].Type == BannerTypes['Uma'].Value
+            && BannersInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma thats already been released.
+        ) {                    
+            FC += 80
+        }
+    };
+
     // Paid Carrots are a paid currency that can be converted to Free Carrots at a 1:1 rate.
     // They can also be used to make a heavily discounted scout, once per day.
     // For simplicity's sake, the calculator will only allow these to be used on the once daily pull, for the time being.
