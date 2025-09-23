@@ -48,9 +48,57 @@ function DayOfWeek(Date) {
     };
 };
 
+function CalculateRoundRewards(ScoutConfig, Round) {
+    // CM Rewards will be given out based on how many races were won out of five, for a given set.
+    // Since the amount of rewards per win increases at a non-linear rate, and for simplicity's sake, we will estimate the results using max and min wins per set.
+    // The max wins per set will represent a rate that would be just above the win rate. Similar for the min wins per set.
+    // (ex: If our win rate is 30 then our max is 2 and min is 1 as 2/5 -> 40% and 1/5 -> 20%.)
+    MaxWinsPerFinish = 1;
+    while (ScoutConfig[`CMR${Round}WR`] > 20*MaxWinsPerFinish) {
+        MaxWinsPerFinish += 1
+    };
+    MinWinsPerFinish = MaxWinsPerFinish - 1;
+
+    // We will now try and approximate the winrate using our boundries and the number sets run.
+    let MaxWinSets = ScoutConfig[`CMR${Round}Sets`]
+    let MinWinSets = ScoutConfig[`CMR${Round}Sets`] - MaxWinSets;
+    while ( 20*(MaxWinsPerFinish*MaxWinSets + MinWinsPerFinish*MinWinSets) / ScoutConfig[`CMR${Round}Sets`] > ScoutConfig[`CMR${Round}WR`] ) {
+        MaxWinSets -= 1
+        MinWinSets += 1
+    };
+
+    // League: 1 = Open, 2 = Graded
+    // Group: 1 = A, 2 = B
+    let Rewards;
+    if (ScoutConfig.CMLeague == 1 && Round == 1) {
+        Rewards = [5, 10, 15, 20, 25, 30];
+    }
+    else if (ScoutConfig.CMLeague == 1 && Round == 2 && ScoutConfig.CMR2Group == 1) {
+        Rewards = [15, 20, 30, 40, 50, 100];
+    }
+    else if (ScoutConfig.CMLeague == 1 && Round == 2 && ScoutConfig.CMR2Group == 2) {
+        Rewards = [10, 15, 20, 30, 40, 50];
+    }
+    else if (ScoutConfig.CMLeague == 2 && Round == 1) {
+        Rewards = [10, 15, 20, 30, 40, 50];
+    }
+    else if (ScoutConfig.CMLeague == 2 && Round == 2 && ScoutConfig.CMR2Group == 1) {
+        Rewards = [20, 30, 40, 50, 75, 150];
+    }
+    else if (ScoutConfig.CMLeague == 2 && Round == 2 && ScoutConfig.CMR2Group == 2) {
+        Rewards = [15, 20, 30, 40, 50, 100];
+    };
+
+    return MaxWinSets*Rewards[MaxWinsPerFinish] + MinWinSets*Rewards[MinWinsPerFinish];
+};
+
 function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // Free Carrots are a currency that can be used to acquire new Umas or support cards.
     let FC = ScoutConfig.FC;
+
+    // Uma/Card tickets (pink tickets), can be used to make scouts on their corresponding banners.
+    let UmaTickets = ScoutConfig.UmaTickets;
+    let CardTickets = ScoutConfig.UmaTickets;
     
     // Daily Missions + Daily Carrot Pack (if purchased).
     FC += DateDiff(Today, ScoutItemPlan.GlobalEndDate) * ( 30 + (ScoutConfig.HasDailyCarrotPack ? 50 : 0) );
@@ -58,6 +106,38 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // 110 free carrots will be earned from the daily login bonus over the course of a week.
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     FC += 110 * ScoutItemPlan.WeekDiff;
+
+    FC -= 30 * Math.max(0, 8 - ScoutConfig.CMR1Sets - ScoutConfig.CMR2Sets)
+
+    // Champion meets are recurring tournments that give out rewards based on how well you preform.
+    // Since there have only been two CMs as of this point (09/22/25), it would be difficult to come up with accurate estimates for future races.
+    // As such, we will simplify things by having the calculator assume 1 CM per month and that it will all take place on the first of the month, even though they normally span multiple days.
+    FC += ScoutItemPlan.MonthDiff * CalculateRoundRewards(ScoutConfig, 1);
+    FC += ScoutItemPlan.MonthDiff * CalculateRoundRewards(ScoutConfig, 2);
+
+    // We don't need to run the function for round 3 since its just one race. Round 3 will also award pink tickets.
+    // League: 1 = Open, 2 = Graded
+    // Group: 1 = A, 2 = B
+    if (ScoutConfig.League == 1 && ScoutConfig.CMR3Group == 1) {
+        UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
+        CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
+        UmaTickets  += ScoutItemPlan.MonthDiff * [900, 700, 500][ScoutConfig.CMR3Placement+1];
+    }
+    else if (ScoutConfig.League == 1 && ScoutConfig.CMR3Group == 2) {
+        UmaTickets  += ScoutItemPlan.MonthDiff * [2, 2, 1][ScoutConfig.CMR3Placement+1];
+        CardTickets += ScoutItemPlan.MonthDiff * [1, 0, 0][ScoutConfig.CMR3Placement+1];
+        UmaTickets  += ScoutItemPlan.MonthDiff * [500, 300, 200][ScoutConfig.CMR3Placement+1];
+    }
+    else if (ScoutConfig.League == 2 && ScoutConfig.CMR3Group == 1) {
+        UmaTickets  += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement+1];
+        CardTickets += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement+1];
+        UmaTickets  += ScoutItemPlan.MonthDiff * [2000, 1500, 1000][ScoutConfig.CMR3Placement+1];
+    }
+    else if (ScoutConfig.League == 2 && ScoutConfig.CMR3Group == 2) {
+        UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
+        CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
+        UmaTickets  += ScoutItemPlan.MonthDiff * [1000, 750, 500][ScoutConfig.CMR3Placement+1];
+    };
 
     // Team Trials - Provides a reward each week based on your ranking.
     let TeamTrialCarrots = 0;
