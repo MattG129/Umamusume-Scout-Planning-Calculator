@@ -263,34 +263,34 @@
                     <script type="text/javascript">
                         function AddScoutPlanRow() {
                             let NewRow = $(
-                                `<tr id="ScoutPlanRow${NewScoutPlanRowID}" data-scoutplan-rowid="${NewScoutPlanRowID}">`+
-                                    `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
-                                    `<td>`+
-                                        `<center>`+
-                                            `<select class="ScoutPlanBanner form-select"></select>`+
-                                        `</center>`+
-                                    `</td>`+
-                                    `<td>`+
-                                        `<center>`+
-                                            `<input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">`+
-                                        `</center>`+
-                                    `</td>`+
-                                    `<td>`+
-                                        `<center>`+
-                                            `<input type="number" class="ScoutPlanGoal form-control" data-parsley-trigger="input" data-parsley-required="true" Value="1" data-parsley-min="1" min="1">`+
-                                        `</center>`+
-                                    `</td>`+
-                                    `<td class="td-label">`+
-                                        `<label class="td-label">`+
-                                            `<input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateCalculateButton();" checked>`+
-                                        `</label>`+
-                                    `</td>`+
-                                    `<td>`+
-                                        `<button type="button" class="btn btn-danger" onclick="$('#ScoutPlanRow${NewScoutPlanRowID}').remove(); UpdateCalculateButton();">`+
-                                            `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
-                                        `</button>`+
-                                    `</td>`+
-                                `</tr>`
+                                `<tr id="ScoutPlanRow${NewScoutPlanRowID}" data-scoutplan-rowid="${NewScoutPlanRowID}">
+                                    <td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>
+                                    <td>
+                                        <center>
+                                            <select class="ScoutPlanBanner form-select"></select>
+                                        </center>
+                                    </td>
+                                    <td>
+                                        <center>
+                                            <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
+                                        </center>
+                                    </td>
+                                    <td>
+                                        <center>
+                                            <input type="number" class="ScoutPlanGoal form-control" data-parsley-trigger="input" data-parsley-required="true" Value="1" data-parsley-min="1" min="1">
+                                        </center>
+                                    </td>
+                                    <td class="td-label">
+                                        <label class="td-label">
+                                            <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateCalculateButton();" checked>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" onclick="$('#ScoutPlanRow${NewScoutPlanRowID}').remove(); UpdateCalculateButton();">
+                                            <i class="bi bi-x-lg" style=" font-weight: bold;"></i>
+                                        </button>
+                                    </td>
+                                </tr>`
                             );
 
                             $('#ScoutPlanningTableBody').append(NewRow);
