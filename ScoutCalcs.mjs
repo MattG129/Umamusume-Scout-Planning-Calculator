@@ -93,31 +93,31 @@ function CalculateRoundRewards(ScoutConfig, Round) {
 };
 
 function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
-    // Free Carrots are a currency that can be used to acquire new Umas or support cards.
+    // Free Carats are a currency that can be used to acquire new Umas or support cards.
     let FC = ScoutConfig.FC;
 
     // Uma/Card tickets (pink tickets), can be used to make scouts on their corresponding banners.
     let UmaTickets = ScoutConfig.UmaTickets;
     let CardTickets = ScoutConfig.CardTickets;
     
-    // Daily Missions + Daily Carrot Pack (if purchased).
-    FC += DateDiff(Today, ScoutItemPlan.GlobalEndDate) * ( 75 + (ScoutConfig.HasDailyCarrotPack ? 50 : 0) );
+    // Daily Missions + Daily Carat Pack (if purchased).
+    FC += DateDiff(Today, ScoutItemPlan.GlobalEndDate) * ( 75 + (ScoutConfig.HasDailyCaratPack ? 50 : 0) );
 
-    // 150 free carrots will be earned from the daily login bonus over the course of a week.
+    // 150 free carats will be earned from the daily login bonus over the course of a week.
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     FC += 150 * ScoutItemPlan.WeekDiff;
 
     // Team Trials - Provides a reward each week based on your ranking.
-    let TeamTrialCarrots = 0;
+    let TeamTrialCarats = 0;
     switch (ScoutConfig.TeamTrialsClass) {
-        case 1: TeamTrialCarrots = 0;   break;
-        case 2: TeamTrialCarrots = 35;  break;
-        case 3: TeamTrialCarrots = 75;  break;
-        case 4: TeamTrialCarrots = 150; break;
-        case 5: TeamTrialCarrots = 225; break;
-        case 6: TeamTrialCarrots = 375; break;
+        case 1: TeamTrialCarats = 0;   break;
+        case 2: TeamTrialCarats = 35;  break;
+        case 3: TeamTrialCarats = 75;  break;
+        case 4: TeamTrialCarats = 150; break;
+        case 5: TeamTrialCarats = 225; break;
+        case 6: TeamTrialCarats = 375; break;
     };
-    FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
+    FC += TeamTrialCarats * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
 
     // Each month there will be an event that gives out carats and pink tickets for completing stories, bingo cards, and reaching certain event point milestones.
 
@@ -185,21 +185,21 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     };
 
     // Club Rewards - Provides a reward each month based on your ranking.
-    let ExpectedClubCarrots = 0;
+    let ExpectedClubCarats = 0;
     switch (ScoutConfig.ExpectedClubRank) {
-        case 1:  ExpectedClubCarrots = 3000; break;
-        case 2:  ExpectedClubCarrots = 2400; break;
-        case 3:  ExpectedClubCarrots = 2100; break;
-        case 4:  ExpectedClubCarrots = 1800; break;
-        case 5:  ExpectedClubCarrots = 1500; break;
-        case 6:  ExpectedClubCarrots = 1200; break;
-        case 7:  ExpectedClubCarrots = 900;  break;
-        case 8:  ExpectedClubCarrots = 600;  break;
-        case 9:  ExpectedClubCarrots = 300;  break;
-        case 10: ExpectedClubCarrots = 150;  break;
-        case 11: ExpectedClubCarrots = 0;    break;
+        case 1:  ExpectedClubCarats = 3000; break;
+        case 2:  ExpectedClubCarats = 2400; break;
+        case 3:  ExpectedClubCarats = 2100; break;
+        case 4:  ExpectedClubCarats = 1800; break;
+        case 5:  ExpectedClubCarats = 1500; break;
+        case 6:  ExpectedClubCarats = 1200; break;
+        case 7:  ExpectedClubCarats = 900;  break;
+        case 8:  ExpectedClubCarats = 600;  break;
+        case 9:  ExpectedClubCarats = 300;  break;
+        case 10: ExpectedClubCarats = 150;  break;
+        case 11: ExpectedClubCarats = 0;    break;
     };
-    FC += ExpectedClubCarrots * ScoutItemPlan.MonthDiff;
+    FC += ExpectedClubCarats * ScoutItemPlan.MonthDiff;
 
     // When a new Uma comes out, you will be able to view the first 4 chapters of there story,
     // even if you haven't pulled them, and will recieve 80 FC for doing so.
@@ -215,14 +215,14 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
         }
     };
 
-    // Paid Carrots are a paid currency that can be converted to Free Carrots at a 1:1 rate.
+    // Paid Carats are a paid currency that can be converted to Free Carats at a 1:1 rate.
     // They can also be used to make a heavily discounted scout, once per day.
     // For simplicity's sake, the calculator will only allow these to be used on the once daily pull, for the time being.
     let PC = ScoutConfig.PC;
 
     // A monthly purchase that will reward 500 PC upfront and 50 PC every day for the next 30 days.
-    if (ScoutConfig.HasDailyCarrotPack) {
-        // TODO: The calculator doesn't factor in when the daily carrot pack is renewed which can mess up the calcs a bit.
+    if (ScoutConfig.HasDailyCaratPack) {
+        // TODO: The calculator doesn't factor in when the daily carat pack is renewed which can mess up the calcs a bit.
         PC += 500 * ScoutItemPlan.MonthDiff;
     };
 
@@ -334,7 +334,7 @@ function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
     return false;
 };
 
-// Since we will want to use both paid carrots and pink tickets first, this function will determine how many free carrots were actually used.
+// Since we will want to use both paid carats and pink tickets first, this function will determine how many free carats were actually used.
 function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
     let PCScouts = Math.min(Scouts, MaxPCScouts);
     PCSpent += 50 * PCScouts
