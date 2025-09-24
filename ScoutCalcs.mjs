@@ -148,26 +148,26 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // Group: 1 = A, 2 = B
     if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 1) {
         
-        UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
-        CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
-        FC          += ScoutItemPlan.MonthDiff * [900, 700, 500][ScoutConfig.CMR3Placement+1];
+        UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+        CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+        FC          += ScoutItemPlan.MonthDiff * [900, 700, 500][ScoutConfig.CMR3Placement-1];
     }
     else if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 2) {
         
-        UmaTickets  += ScoutItemPlan.MonthDiff * [2, 2, 1][ScoutConfig.CMR3Placement+1];
-        CardTickets += ScoutItemPlan.MonthDiff * [1, 0, 0][ScoutConfig.CMR3Placement+1];
-        FC          += ScoutItemPlan.MonthDiff * [500, 300, 200][ScoutConfig.CMR3Placement+1];
+        UmaTickets  += ScoutItemPlan.MonthDiff * [2, 2, 1][ScoutConfig.CMR3Placement-1];
+        CardTickets += ScoutItemPlan.MonthDiff * [1, 0, 0][ScoutConfig.CMR3Placement-1];
+        FC          += ScoutItemPlan.MonthDiff * [500, 300, 200][ScoutConfig.CMR3Placement-1];
     }
     else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 1) {
 
-        UmaTickets  += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement+1];
-        CardTickets += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement+1];
-        FC          += ScoutItemPlan.MonthDiff * [2000, 1500, 1000][ScoutConfig.CMR3Placement+1];
+        UmaTickets  += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement-1];
+        CardTickets += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement-1];
+        FC          += ScoutItemPlan.MonthDiff * [2000, 1500, 1000][ScoutConfig.CMR3Placement-1];
     }
     else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 2) {
-        UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
-        CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement+1];
-        FC          += ScoutItemPlan.MonthDiff * [1000, 750, 500][ScoutConfig.CMR3Placement+1];
+        UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+        CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+        FC          += ScoutItemPlan.MonthDiff * [1000, 750, 500][ScoutConfig.CMR3Placement-1];
     };
 
     // Club Rewards - Provides a reward each month based on your ranking.
