@@ -1,5 +1,3 @@
-// TODO: Add comments.
-
 const Trials = 10**6;
 
 const Today = new Date(); // TODO: Update date/banner calcs to factor in if day/banner has changed between when the page was loaded and when calcs are run.
