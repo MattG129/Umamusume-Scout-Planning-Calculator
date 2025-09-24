@@ -145,10 +145,9 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     if (ScoutConfig.ExpectedEventPoints >= 8) {UmaTickets  += NumberOfEvents * 1};
     if (ScoutConfig.ExpectedEventPoints >= 9) {FC          += NumberOfEvents * 150};
 
-    // Champion meets are recurring tournments that give out rewards based on how well you preform.
-    // Since there have only been two CMs as of this point (09/22/25), it would be difficult to come up with accurate estimates for future races.
-    // As such, we will simplify things by having the calculator assume 1 CM per month and that it will all take place on the first of the month, even though they normally span multiple days.
-
+    /* Champion meets are recurring tournments that give out rewards based on how well you perform. Since there have only been two CMs as of
+    the time of writing this, it would be difficult to come up with accurate estimates for future dates. As such, we will simplify things by
+    having the calculator assume 1 CM per month. We will calculate the NumberOfCMs similarly to how NumberOfEvents is calculated. */
     let NumberOfCMs = Math.max(0, ScoutItemPlan.MonthDiff - (ScoutConfig.CurrentMonthsCMCompleted ? 1 : 0));
 
     FC += NumberOfCMs * CalculateRoundRewards(ScoutConfig, 1);
