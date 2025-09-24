@@ -98,7 +98,6 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
 
     // Uma/Card tickets (pink tickets), can be used to make scouts on their corresponding banners.
     let UmaTickets = ScoutConfig.UmaTickets;
-
     let CardTickets = ScoutConfig.CardTickets;
     
     // Daily Missions + Daily Carrot Pack (if purchased).
@@ -107,6 +106,20 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // 150 free carrots will be earned from the daily login bonus over the course of a week.
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     FC += 150 * ScoutItemPlan.WeekDiff;
+
+    // When a new Uma comes out, you will be able to view the first 4 chapters of there story,
+    // even if you haven't pulled them, and will recieve 80 FC for doing so.
+    for (let i = 0; i < BannersInfo.length; i++) {
+        if (
+            BannersInfo[i].GlobalStartDate > Today
+            && BannersInfo[i].GlobalStartDate <= ScoutItemPlan.GlobalEndDate
+            && BannersInfo[i].IsNew
+            && BannersInfo[i].Type == BannerTypes['Uma'].Value
+            && BannersInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma thats already been released.
+        ) {                    
+            FC += 80
+        }
+    };
 
     // Champion meets are recurring tournments that give out rewards based on how well you preform.
     // Since there have only been two CMs as of this point (09/22/25), it would be difficult to come up with accurate estimates for future races.
@@ -117,7 +130,19 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // You can run up to 8 sets per round. The first 6 are free, but the last 2 will cost 30 FC each.
     FC -= ScoutItemPlan.MonthDiff * 30 * Math.max(0, ScoutConfig.CMR1Sets - 6);
     FC -= ScoutItemPlan.MonthDiff * 30 * Math.max(0, ScoutConfig.CMR2Sets - 6);
-    
+
+    // Team Trials - Provides a reward each week based on your ranking.
+    let TeamTrialCarrots = 0;
+    switch (ScoutConfig.TeamTrialsClass) {
+        case 1: TeamTrialCarrots = 0;   break;
+        case 2: TeamTrialCarrots = 35;  break;
+        case 3: TeamTrialCarrots = 75;  break;
+        case 4: TeamTrialCarrots = 150; break;
+        case 5: TeamTrialCarrots = 225; break;
+        case 6: TeamTrialCarrots = 375; break;
+    };
+    FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
+
     // We don't need to run the function for round 3 since its just one race. Round 3 will also award pink tickets.
     // League: 1 = Open, 2 = Graded
     // Group: 1 = A, 2 = B
@@ -145,18 +170,6 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
         FC          += ScoutItemPlan.MonthDiff * [1000, 750, 500][ScoutConfig.CMR3Placement+1];
     };
 
-    // Team Trials - Provides a reward each week based on your ranking.
-    let TeamTrialCarrots = 0;
-    switch (ScoutConfig.TeamTrialsClass) {
-        case 1: TeamTrialCarrots = 0;   break;
-        case 2: TeamTrialCarrots = 35;  break;
-        case 3: TeamTrialCarrots = 75;  break;
-        case 4: TeamTrialCarrots = 150; break;
-        case 5: TeamTrialCarrots = 225; break;
-        case 6: TeamTrialCarrots = 375; break;
-    };
-    FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
-
     // Club Rewards - Provides a reward each month based on your ranking.
     let ExpectedClubCarrots = 0;
     switch (ScoutConfig.ExpectedClubRank) {
@@ -173,20 +186,6 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
         case 11: ExpectedClubCarrots = 0;    break;
     };
     FC += ExpectedClubCarrots * ScoutItemPlan.MonthDiff;
-
-    // When a new Uma comes out, you will be able to view the first 4 chapters of there story,
-    // even if you haven't pulled them, and will recieve 80 FC for doing so.
-    for (let i = 0; i < BannersInfo.length; i++) {
-        if (
-            BannersInfo[i].GlobalStartDate > Today
-            && BannersInfo[i].GlobalStartDate <= ScoutItemPlan.GlobalEndDate
-            && BannersInfo[i].IsNew
-            && BannersInfo[i].Type == BannerTypes['Uma'].Value
-            && BannersInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma thats already been released.
-        ) {                    
-            FC += 80
-        }
-    };
 
     // Paid Carrots are a paid currency that can be converted to Free Carrots at a 1:1 rate.
     // They can also be used to make a heavily discounted scout, once per day.
