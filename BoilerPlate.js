@@ -19,10 +19,12 @@ $(function() {
 	};
 
 	if (Page != 'MoreInfo') {
-		Footer += '<a href="MoreInfo.html" style="color: #054295; margin: 5px;">More info</a>'
+		Footer += '<a href="MoreInfo.html" style="color: #054295; margin: 5px;">More Info</a>'
 	};
 	
-	Footer += '<a target="_blank" href="https://github.com/MattG129/Genshin-Wish-Calculator/issues" style="color: #054295; margin: 5px;">Report an issue</a> </center>'
+	Footer += '<a target="_blank" href="https://github.com/MattG129/Umamusume-Wish-Planning-Calculator/issues" style="color: #054295; margin: 5px;">Feedback</a>'
+	
+	Footer += '<a target="_blank" href="https://mattg129.github.io/Genshin-Wish-Calculator/" style="color: #054295; margin: 5px;">Genshin Calculator</a> </center>'
 	
 	$('#Footer').html(Footer)
 });
