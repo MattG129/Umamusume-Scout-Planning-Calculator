@@ -236,8 +236,8 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
 let FCScouts;
 let PCSpent;
 
-let UmaTickets;
-let CardTickets;
+let UmaTicketsSpent;
+let CardTicketsSpent;
 
 function RunAndEvaluateScoutSimulations(ScoutConfig) {
     const Start = Date.now();
@@ -249,8 +249,8 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
         FCScouts = 0;
         PCSpent = 0;
-        UmaTickets = 0;
-        CardTickets = 0;
+        UmaTicketsSpent = 0;
+        CardTicketsSpent = 0;
 
         let MissedScoutItems = false;
         let BannerTypesScouted = [];
@@ -297,7 +297,7 @@ function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
 
     let MaxFCScouts = ScoutItemPlan.MaxFCScouts - FCScouts
     let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC - PCSpent)/50)
-    let MaxPinkTicketScouts = ScoutItemPlan.MaxPinkTicketScouts - (ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets);
+    let MaxPinkTicketScouts = ScoutItemPlan.MaxPinkTicketScouts - (ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTicketsSpent : CardTicketsSpent);
     let MaxScouts = MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts
 
     let FiveStarChance = Math.random();
@@ -341,10 +341,10 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
     
     let PinkTicketScouts = Math.min(Scouts - MaxPCScouts, MaxPinkTicketScouts);
     if (ScoutItemType == BannerTypes.Uma.Value) {
-        UmaTickets += PinkTicketScouts;
+        UmaTicketsSpent += PinkTicketScouts;
     }
     else {
-        CardTickets += PinkTicketScouts;
+        CardTicketsSpent += PinkTicketScouts;
     };
 
     FCScouts += (Scouts - PCScouts - PinkTicketScouts);
