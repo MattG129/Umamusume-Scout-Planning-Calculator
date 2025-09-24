@@ -119,6 +119,25 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     };
     FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
 
+    // Each month there will be an event that gives out carats and pink tickets for completing stories, bingo cards, and reaching certain event point milestones.
+    if (ScoutConfig.CompletesEventStories) {
+        FC += ScoutItemPlan.MonthDiff * 210
+    };
+
+    if (ScoutConfig.CompletesEventBingoCards) {
+        FC += ScoutItemPlan.MonthDiff * 450
+    };
+
+    if (ScoutConfig.ExpectedEventPoints >= 1) {FC          += ScoutItemPlan.MonthDiff * 100};
+    if (ScoutConfig.ExpectedEventPoints >= 2) {CardTickets += ScoutItemPlan.MonthDiff * 1};
+    if (ScoutConfig.ExpectedEventPoints >= 3) {FC          += ScoutItemPlan.MonthDiff * 100};
+    if (ScoutConfig.ExpectedEventPoints >= 4) {UmaTickets  += ScoutItemPlan.MonthDiff * 1};
+    if (ScoutConfig.ExpectedEventPoints >= 5) {FC          += ScoutItemPlan.MonthDiff * 100};
+    if (ScoutConfig.ExpectedEventPoints >= 6) {CardTickets += ScoutItemPlan.MonthDiff * 1};
+    if (ScoutConfig.ExpectedEventPoints >= 7) {FC          += ScoutItemPlan.MonthDiff * 150};
+    if (ScoutConfig.ExpectedEventPoints >= 8) {UmaTickets  += ScoutItemPlan.MonthDiff * 1};
+    if (ScoutConfig.ExpectedEventPoints >= 9) {FC          += ScoutItemPlan.MonthDiff * 150};
+
     // Champion meets are recurring tournments that give out rewards based on how well you preform.
     // Since there have only been two CMs as of this point (09/22/25), it would be difficult to come up with accurate estimates for future races.
     // As such, we will simplify things by having the calculator assume 1 CM per month and that it will all take place on the first of the month, even though they normally span multiple days.
