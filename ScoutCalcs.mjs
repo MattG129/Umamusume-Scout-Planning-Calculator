@@ -389,7 +389,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
     for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
 
         let ScoutItemPlan = ScoutConfig.ActiveScoutPlanArray[i];
-        let BannerEndText = $(`#BannerEnd option[value=${ScoutItemPlan.Banner}]`).text();
+        let BannerText = $(`#BannerTemplate option[value=${ScoutItemPlan.Banner}]`).text();
 
         let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, Math.floor(ScoutItemPlan.PC/50));
         if (MaxPCScouts > PCScouts) {
@@ -411,7 +411,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
 
         let NewRow = $(
             `<tr class="ScoutPlanResultsRow">
-                <td>${BannerEndText}</td>
+                <td>${BannerText}</td>
                 <td>${ScoutItemPlan.Goal}</td>
                 <td>${MaxScouts}</td>
                 <td>${ScoutsResults.ScoutItemResults[i]}</td>

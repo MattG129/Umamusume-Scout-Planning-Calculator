@@ -369,21 +369,6 @@
 
                     <hr><h2>Scout Planning</h2><br>
 
-                    <!-- TODO: Using this as a basis for the banner dropdown to be copied off of -->
-                    <select id="BannerEnd" class="form-select" style="max-width: 300px; display: none;"></select>
-                    <script type="text/javascript">
-                        $(function() {
-                            for (let i = 0; i < BannersInfo.length; i++) {
-                                if (BannersInfo[i].GlobalEndDate >= Today && BannersInfo[i].Disabled != true) {
-                                    $('#BannerEnd').append($('<option>', {
-                                        value: i,
-                                        text: `${BannersInfo[i].Name}: ${moment(BannersInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(BannersInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`,
-                                    }));
-                                }
-                            };
-                        });
-                    </script>
-
                     <div style="overflow-x: auto;">
                         <table id="ScoutPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
                             <thead>
@@ -428,6 +413,21 @@
                         </table>
                     </div>
 
+                    <!-- Using this as a basis for the various scout planning banner dropdowns to be copied off of. -->
+                    <select id="BannerTemplate" class="form-select" style="display: none;"></select>
+                    <script type="text/javascript">
+                        $(function() {
+                            for (let i = 0; i < BannersInfo.length; i++) {
+                                if (BannersInfo[i].GlobalEndDate >= Today && BannersInfo[i].Disabled != true) {
+                                    $('#BannerTemplate').append($('<option>', {
+                                        value: i,
+                                        text: `${BannersInfo[i].Name}: ${moment(BannersInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(BannersInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`,
+                                    }));
+                                };
+                            };
+                        });
+                    </script>
+
                     <script type="text/javascript">
                         function AddScoutPlanRow() {
                             let NewRow = $(
@@ -464,7 +464,7 @@
                             $('#ScoutPlanningTableBody').append(NewRow);
                             $('#ScoutPlanningTableBody').sortable("refresh");
 
-                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerEnd').html()).select2({});
+                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerTemplate').html()).select2({});
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
 
                             SetParsleyValidations();
