@@ -120,59 +120,69 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     FC += TeamTrialCarrots * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
 
     // Each month there will be an event that gives out carats and pink tickets for completing stories, bingo cards, and reaching certain event point milestones.
+
+    /* Since we don't have exact dates for when the events will occur on, we can't just use month diff. Instead we will use the month diff to tell us
+    how many months will have ended between now and the target banner's end date, and assume that the rewards would be given out at the very end of 
+    the month. We won't however, give out rewards for the month that the banner ends on, even if it ends on the last day of the month, in order to avoid any
+    potential edge case issues with time zones and what not. */
+    let NumberOfEvents = Math.max(0, ScoutItemPlan.MonthDiff - (ScoutConfig.CurrentMonthsEventCompleted ? 1 : 0));
+
     if (ScoutConfig.CompletesEventStories) {
-        FC += ScoutItemPlan.MonthDiff * 210
+        FC += NumberOfEvents * 210
     };
 
     if (ScoutConfig.CompletesEventBingoCards) {
-        FC += ScoutItemPlan.MonthDiff * 450
+        FC += NumberOfEvents * 450
     };
 
-    if (ScoutConfig.ExpectedEventPoints >= 1) {FC          += ScoutItemPlan.MonthDiff * 100};
-    if (ScoutConfig.ExpectedEventPoints >= 2) {CardTickets += ScoutItemPlan.MonthDiff * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 3) {FC          += ScoutItemPlan.MonthDiff * 100};
-    if (ScoutConfig.ExpectedEventPoints >= 4) {UmaTickets  += ScoutItemPlan.MonthDiff * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 5) {FC          += ScoutItemPlan.MonthDiff * 100};
-    if (ScoutConfig.ExpectedEventPoints >= 6) {CardTickets += ScoutItemPlan.MonthDiff * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 7) {FC          += ScoutItemPlan.MonthDiff * 150};
-    if (ScoutConfig.ExpectedEventPoints >= 8) {UmaTickets  += ScoutItemPlan.MonthDiff * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 9) {FC          += ScoutItemPlan.MonthDiff * 150};
+    if (ScoutConfig.ExpectedEventPoints >= 1) {FC          += NumberOfEvents * 100};
+    if (ScoutConfig.ExpectedEventPoints >= 2) {CardTickets += NumberOfEvents * 1};
+    if (ScoutConfig.ExpectedEventPoints >= 3) {FC          += NumberOfEvents * 100};
+    if (ScoutConfig.ExpectedEventPoints >= 4) {UmaTickets  += NumberOfEvents * 1};
+    if (ScoutConfig.ExpectedEventPoints >= 5) {FC          += NumberOfEvents * 100};
+    if (ScoutConfig.ExpectedEventPoints >= 6) {CardTickets += NumberOfEvents * 1};
+    if (ScoutConfig.ExpectedEventPoints >= 7) {FC          += NumberOfEvents * 150};
+    if (ScoutConfig.ExpectedEventPoints >= 8) {UmaTickets  += NumberOfEvents * 1};
+    if (ScoutConfig.ExpectedEventPoints >= 9) {FC          += NumberOfEvents * 150};
 
     // Champion meets are recurring tournments that give out rewards based on how well you preform.
     // Since there have only been two CMs as of this point (09/22/25), it would be difficult to come up with accurate estimates for future races.
     // As such, we will simplify things by having the calculator assume 1 CM per month and that it will all take place on the first of the month, even though they normally span multiple days.
-    FC += ScoutItemPlan.MonthDiff * CalculateRoundRewards(ScoutConfig, 1);
-    FC += ScoutItemPlan.MonthDiff * CalculateRoundRewards(ScoutConfig, 2);
+
+    let NumberOfCMs = Math.max(0, ScoutItemPlan.MonthDiff - (ScoutConfig.CurrentMonthsCMCompleted ? 1 : 0));
+
+    FC += NumberOfCMs * CalculateRoundRewards(ScoutConfig, 1);
+    FC += NumberOfCMs * CalculateRoundRewards(ScoutConfig, 2);
 
     // You can run up to 8 sets per round. The first 6 are free, but the last 2 will cost 30 FC each.
-    FC -= ScoutItemPlan.MonthDiff * 30 * Math.max(0, ScoutConfig.CMR1Sets - 6);
-    FC -= ScoutItemPlan.MonthDiff * 30 * Math.max(0, ScoutConfig.CMR2Sets - 6);
+    FC -= NumberOfCMs * 30 * Math.max(0, ScoutConfig.CMR1Sets - 6);
+    FC -= NumberOfCMs * 30 * Math.max(0, ScoutConfig.CMR2Sets - 6);
 
     // We don't need to run the function for round 3 since its just one race. Round 3 will also award pink tickets.
     // League: 1 = Open, 2 = Graded
     // Group: 1 = A, 2 = B
     if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 1) {
         
-        UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement-1];
-        CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement-1];
-        FC          += ScoutItemPlan.MonthDiff * [900, 700, 500][ScoutConfig.CMR3Placement-1];
+        UmaTickets  += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+        CardTickets += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+        FC          += NumberOfCMs * [900, 700, 500][ScoutConfig.CMR3Placement-1];
     }
     else if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 2) {
         
-        UmaTickets  += ScoutItemPlan.MonthDiff * [2, 2, 1][ScoutConfig.CMR3Placement-1];
-        CardTickets += ScoutItemPlan.MonthDiff * [1, 0, 0][ScoutConfig.CMR3Placement-1];
-        FC          += ScoutItemPlan.MonthDiff * [500, 300, 200][ScoutConfig.CMR3Placement-1];
+        UmaTickets  += NumberOfCMs * [2, 2, 1][ScoutConfig.CMR3Placement-1];
+        CardTickets += NumberOfCMs * [1, 0, 0][ScoutConfig.CMR3Placement-1];
+        FC          += NumberOfCMs * [500, 300, 200][ScoutConfig.CMR3Placement-1];
     }
     else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 1) {
 
-        UmaTickets  += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement-1];
-        CardTickets += ScoutItemPlan.MonthDiff * [5, 4, 3][ScoutConfig.CMR3Placement-1];
-        FC          += ScoutItemPlan.MonthDiff * [2000, 1500, 1000][ScoutConfig.CMR3Placement-1];
+        UmaTickets  += NumberOfCMs * [5, 4, 3][ScoutConfig.CMR3Placement-1];
+        CardTickets += NumberOfCMs * [5, 4, 3][ScoutConfig.CMR3Placement-1];
+        FC          += NumberOfCMs * [2000, 1500, 1000][ScoutConfig.CMR3Placement-1];
     }
     else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 2) {
-        UmaTickets  += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement-1];
-        CardTickets += ScoutItemPlan.MonthDiff * [3, 2, 1][ScoutConfig.CMR3Placement-1];
-        FC          += ScoutItemPlan.MonthDiff * [1000, 750, 500][ScoutConfig.CMR3Placement-1];
+        UmaTickets  += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+        CardTickets += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+        FC          += NumberOfCMs * [1000, 750, 500][ScoutConfig.CMR3Placement-1];
     };
 
     // Club Rewards - Provides a reward each month based on your ranking.
