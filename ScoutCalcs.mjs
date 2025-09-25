@@ -13,9 +13,10 @@ for (let i = 0; i < BannersInfo.length; i++) {
         let BannerLength = DateDiff(BannersInfo[i].JPStartDate, BannersInfo[i].JPEndDate);
         
         let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, BannersInfo[i].JPStartDate);
-        BannersInfo[i].GlobalStartDate = DateAdd(GlobalLaunchDate, Math.round(JPLaunchBannerStartDateDiff/GlobalAccelRate));
+        let GlobalLaunchBannerStartDateDiff = Math.round(JPLaunchBannerStartDateDiff/GlobalAccelRate);
+        BannersInfo[i].GlobalStartDate = DateAdd(GlobalLaunchDate, GlobalLaunchBannerStartDateDiff);
         BannersInfo[i].GlobalEndDate = DateAdd(BannersInfo[i].GlobalStartDate, BannerLength);
-    }
+    };
 
     BannersInfo[i].BannerLength = DateDiff(BannersInfo[i].GlobalStartDate, BannersInfo[i].GlobalEndDate);
     BannersInfo[i].WeekDiff = Math.floor(DateDiff(Today, BannersInfo[i].GlobalEndDate) / 7);
@@ -38,29 +39,23 @@ function DayOfWeek(Date) {
     let DOW = moment(Date).day()
     
     // We want to treat monday as the start of the week and sunday as the end.
-    if (DOW == 0) {
-        return 7;
-    }
-    else {
-        return DOW;
-    };
+    return (DOW == 0 ? 7 : DOW);
 };
 
 function CalculateRoundRewards(ScoutConfig, Round) {
-    // CM Rewards will be given out based on how many races were won out of five, for a given set.
-    // Since the amount of rewards per win increases at a non-linear rate, and for simplicity's sake, we will estimate the results using max and min wins per set.
-    // The max wins per set will represent a rate that would be just above the win rate. Similar for the min wins per set.
-    // (ex: If our win rate is 30 then our max is 2 and min is 1 as 2/5 -> 40% and 1/5 -> 20%.)
+    /* CM Rewards will be given out based on how many races were won out of five, for a given set. Since the amount of rewards per win increases at a
+    non-linear rate, and for simplicity's sake, we will estimate the results using max and min wins per set. The max wins per set will represent a rate that
+    would be just above the win rate. Similar for the min wins per set. (ex: If our win rate is 30 then our max is 2 and min is 1 as 2/5 -> 40% and 1/5 -> 20%.) */
     MaxWinsPerFinish = 1;
     while (ScoutConfig[`CMR${Round}WR`] > 20*MaxWinsPerFinish) {
         MaxWinsPerFinish += 1
     };
     MinWinsPerFinish = MaxWinsPerFinish - 1;
 
-    // We will now try and approximate the winrate using our boundries and the number sets run.
+    // We will now try and approximate the winrate using our max, min, and the number of sets run.
     let MaxWinSets = ScoutConfig[`CMR${Round}Sets`]
     let MinWinSets = ScoutConfig[`CMR${Round}Sets`] - MaxWinSets;
-    while ( 20*(MaxWinsPerFinish*MaxWinSets + MinWinsPerFinish*MinWinSets) / ScoutConfig[`CMR${Round}Sets`] > ScoutConfig[`CMR${Round}WR`] ) {
+    while ( 20 * ( (MaxWinsPerFinish*MaxWinSets + MinWinsPerFinish*MinWinSets) / ScoutConfig[`CMR${Round}Sets`] ) > ScoutConfig[`CMR${Round}WR`] ) {
         MaxWinSets -= 1
         MinWinSets += 1
     };
