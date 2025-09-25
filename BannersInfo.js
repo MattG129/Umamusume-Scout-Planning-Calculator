@@ -4139,7 +4139,7 @@ BannersInfo.sort((a, b) => {
 
   if (DateDiff !== 0) {
     return DateDiff;
-  }
+  };
 
   // Secondary sort by name (ascending) if dates are equal
   return a.Name.localeCompare(b.Name);
