@@ -86,10 +86,10 @@ function CalculateRoundRewards(ScoutConfig, Round) {
 };
 
 function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
-    // Free Carats are a currency that can be used to acquire new Umas or support cards.
+    // Free Carats are a currency that can be used to acquire new Umamusumes (Umas) or support cards, in a process called scouting.
     let FC = ScoutConfig.FC;
 
-    // Uma/Card tickets (pink tickets), can be used to make scouts on their corresponding banners.
+    // Uma/Card tickets, collectively referred to as pink tickets, can be used to make scouts on their corresponding types of banners.
     let UmaTickets = ScoutConfig.UmaTickets;
     let CardTickets = ScoutConfig.CardTickets;
     
@@ -100,7 +100,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     FC += 150 * ScoutItemPlan.WeekDiff;
 
-    // Team Trials - Provides a reward each week based on your ranking.
+    // Team Trials - Provides a reward each week based on your class.
     let TeamTrialCarats = 0;
     switch (ScoutConfig.TeamTrialsClass) {
         case 1: TeamTrialCarats = 0;   break;
@@ -115,7 +115,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     // Each month there will be an event that gives out carats and pink tickets for completing stories, bingo cards, and reaching certain event point milestones.
 
     /* Since we don't have exact dates for when the events will occur on, we can't just use month diff. Instead we will use the month diff to tell us
-    how many months will have ended between now and the target banner's end date, and assume that the rewards would be given out at the very end of 
+    how many months will have ended between now and the target banner's end date and assume that the rewards would be given out at the very end of 
     the month. We won't however, give out rewards for the month that the banner ends on, even if it ends on the last day of the month, in order to avoid any
     potential edge case issues with time zones and what not. */
     let NumberOfEvents = Math.max(0, ScoutItemPlan.MonthDiff - (ScoutConfig.CurrentMonthsEventCompleted ? 1 : 0));
@@ -194,8 +194,8 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     };
     FC += ExpectedClubCarats * ScoutItemPlan.MonthDiff;
 
-    // When a new Uma comes out, you will be able to view the first 4 chapters of there story,
-    // even if you haven't pulled them, and will recieve 80 FC for doing so.
+    /* When a new Uma comes out, you will be able to view the first 4 chapters of there story,
+    even if you haven't pulled them, and will recieve 80 FC for doing so. */
     for (let i = 0; i < BannersInfo.length; i++) {
         if (
             BannersInfo[i].GlobalStartDate > Today
@@ -208,12 +208,11 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
         }
     };
 
-    // Paid Carats are a paid currency that can be converted to Free Carats at a 1:1 rate.
-    // They can also be used to make a heavily discounted scout, once per day.
-    // For simplicity's sake, the calculator will only allow these to be used on the once daily pull, for the time being.
+    /* Paid Carats are a paid currency that can be converted to Free Carats at a 1:1 rate. They can also be used to make a heavily discounted
+    scout, once per day. For simplicity's sake, the calculator will currently only allow these to be used on the once daily scout. */
     let PC = ScoutConfig.PC;
 
-    // A monthly purchase that will reward 500 PC upfront and 50 PC every day for the next 30 days.
+    // A monthly purchase that will reward 500 PC upfront and 50 FC every day for the next 30 days.
     if (ScoutConfig.HasDailyCaratPack) {
         // TODO: The calculator doesn't factor in when the daily carat pack is renewed which can mess up the calcs a bit.
         PC += 500 * ScoutItemPlan.MonthDiff;
