@@ -370,7 +370,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10%;">
-                                        <!-- Veritcal Grip -->
+                                        <!-- Vertical Grip -->
                                     </th>
                                     <th style="width: 40%; min-width: 125px;">
                                         Banner <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (0:00)."><i class="bi bi-question-circle" style="color: black;"></i></a>
@@ -429,7 +429,7 @@
                                     <td>
                                         <center>
                                             <select class="ScoutPlanBanner form-select"></select><br>
-                                            <div class="OutOfOrderMessage" style="color: #800000; display: none;">This row's end date is earlier than the previous row’s. Please ensure end dates are in chronological order.</div>
+                                            <div class="OutOfOrderMessage" style="color: #800000; display: none;">This row's end date is earlier than the previous row's. Please ensure end dates are in chronological order.</div>
                                         </center>
                                     </td>
                                     <td>
@@ -481,7 +481,7 @@
                                 for (let i = 0; i < BannersInfo.length; i++) {
                                     if (BannersInfo[i].GlobalEndDate >= Today && BannersInfo[i].Disabled != true) {
                                         AddScoutPlanRow();
-                                        
+
                                         $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}] td .ScoutPlanBanner`).val(i);
 
                                         if (NewScoutPlanRowID >= 3) {
@@ -669,7 +669,7 @@
                 try {
                     JSONImport = JSON.parse(ImportState);
 
-                    // Since some of the import code explicitly references the scout plan mapper it needs to be defined.
+                    // Since some of the import code explicitly references the scout plan array it needs to be defined.
                     if (JSONImport.ScoutPlanArray == undefined) {
                         isValidImport = false;
                     };
@@ -698,7 +698,6 @@
 
                     let ExpiredActiveItems = [];
                     for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
-
                         let ScoutPlanItem = JSONImport.ScoutPlanArray[i]
 
                         if (ScoutPlanItem.Banner < 0 || ScoutPlanItem.Banner >= BannersInfo.length) {
@@ -708,7 +707,7 @@
                             NewScoutPlanRowID++;
 
                             if (ScoutPlanItem.Active) {
-                                ExpiredActiveItems.push( ScoutPlanItem.Banner) ;
+                                ExpiredActiveItems.push(ScoutPlanItem.Banner) ;
                             };
                         }
                         else {
@@ -722,7 +721,6 @@
                     };
                     
                     if (ExpiredActiveItems.length > 0) {
-
                         let RemovedRows = `Expired wish plan row(s) were detected in the import. The following row(s) have been automatically removed:
                         `
                         for (let i = 0; i < ExpiredActiveItems.length; i++) {
@@ -750,7 +748,7 @@
                 };
             };
 
-            function Export(){
+            function Export() {
                 if (getInvalidFields().length != 0) {
                     swal({icon: 'error', text: 'Invalid information detected. Cannot generate export.'});
                 }
