@@ -38,7 +38,7 @@ function DateDiff(DateFrom, DateTo) {
 function DayOfWeek(Date) {
     let DOW = moment(Date).day()
     
-    // We want to treat monday as the start of the week and sunday as the end.
+    // We want to treat Monday as the start of the week and Sunday as the end.
     return (DOW == 0 ? 7 : DOW);
 };
 
@@ -52,7 +52,7 @@ function CalculateRoundRewards(ScoutConfig, Round) {
     };
     MinWinsPerFinish = MaxWinsPerFinish - 1;
 
-    // We will now try and approximate the winrate using our max, min, and the number of sets run.
+    // We will now try and approximate the win rate using our max, min, and the number of sets run.
     let MaxWinSets = ScoutConfig[`CMR${Round}Sets`]
     let MinWinSets = ScoutConfig[`CMR${Round}Sets`] - MaxWinSets;
     while ( 20 * ( (MaxWinsPerFinish*MaxWinSets + MinWinsPerFinish*MinWinSets) / ScoutConfig[`CMR${Round}Sets`] ) > ScoutConfig[`CMR${Round}WR`] ) {
@@ -138,7 +138,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     if (ScoutConfig.ExpectedEventPoints >= 8) {UmaTickets  += NumberOfEvents * 1};
     if (ScoutConfig.ExpectedEventPoints >= 9) {FC          += NumberOfEvents * 150};
 
-    /* Champion meets are recurring tournments that give out rewards based on how well you perform. Since there have only been two CMs as of
+    /* Champion meets are recurring tournaments that give out rewards based on how well you perform. Since there have only been two CMs as of
     the time of writing this, it would be difficult to come up with accurate estimates for future dates. As such, we will simplify things by
     having the calculator assume 1 CM per month. We will calculate the NumberOfCMs similarly to how NumberOfEvents is calculated. */
     let NumberOfCMs = Math.max(0, ScoutItemPlan.MonthDiff - (ScoutConfig.CurrentMonthsCMCompleted ? 1 : 0));
@@ -195,14 +195,14 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     FC += ExpectedClubCarats * ScoutItemPlan.MonthDiff;
 
     /* When a new Uma comes out, you will be able to view the first 4 chapters of there story,
-    even if you haven't pulled them, and will recieve 80 FC for doing so. */
+    even if you haven't pulled them, and will receive 80 FC for doing so. */
     for (let i = 0; i < BannersInfo.length; i++) {
         if (
             BannersInfo[i].GlobalStartDate > Today
             && BannersInfo[i].GlobalStartDate <= ScoutItemPlan.GlobalEndDate
             && BannersInfo[i].IsNew
             && BannersInfo[i].Type == BannerTypes['Uma'].Value
-            && BannersInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma thats already been released.
+            && BannersInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma that's already been released.
         ) {                    
             FC += 80
         }
