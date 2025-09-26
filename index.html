@@ -428,7 +428,8 @@
                                     <td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>
                                     <td>
                                         <center>
-                                            <select class="ScoutPlanBanner form-select"></select>
+                                            <select class="ScoutPlanBanner form-select"></select><br>
+                                            <div class="OutOfOrderMessage" style="color: #800000; display: none;">This row's end date is earlier than the previous row’s. Please ensure end dates are in chronological order.</div>
                                         </center>
                                     </td>
                                     <td>
@@ -468,7 +469,10 @@
                         $(function() {
                             NewScoutPlanRowID = 0;
 
-                            $('#ScoutPlanningTableBody').sortable({handle: ".handle"});
+                            $('#ScoutPlanningTableBody').sortable({
+                                handle: ".handle",
+                                update: function() {ValidateBannerOrder()}
+                            });
 
                             $("#AddRowButton").click(function() {AddScoutPlanRow(); UpdateCalculateButton();});
 
@@ -489,6 +493,24 @@
                                 $('#ScoutPlanningLoadingMessage').remove();
                             };
                         });
+
+                        function ValidateBannerOrder() {
+                            let PreviousRowBannerVal = -1;
+
+                            $('tr[data-scoutplan-rowid]').each(function() {
+                                $(this).find('.OutOfOrderMessage').hide();
+
+                                if (PreviousRowBannerVal != -1) {
+                                    let BannerVal = $(this).find('.ScoutPlanBanner').val();
+
+                                    if (BannersInfo[BannerVal].GlobalEndDate < BannersInfo[PreviousRowBannerVal].GlobalEndDate) {
+                                        $(this).find('.OutOfOrderMessage').show();
+                                    };
+                                };
+
+                                PreviousRowBannerVal = $(this).find('.ScoutPlanBanner').val();
+                            });
+                        };
                     </script>
 
                     <hr><h2>Scout Results</h2><br>
@@ -543,6 +565,7 @@
                     Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
 
                     $('#ScoutPlanningLoadingMessage').remove();
+                    ValidateBannerOrder();
                 };
             });
 
