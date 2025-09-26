@@ -234,7 +234,6 @@ let CardTicketsSpent;
 function RunAndEvaluateScoutSimulations(ScoutConfig) {
     const Start = Date.now();
     let Successes = 0;
-
     let ScoutItemResults = new Array(ScoutConfig.ActiveScoutPlanArray.length).fill(0);    
 
     let TrialCount;
@@ -245,9 +244,7 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
         CardTicketsSpent = 0;
 
         let MissedScoutItems = false;
-        let BannerTypesScouted = [];
         for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
-
             let ScoutItemsWon = ScoutSimulator(ScoutConfig, i);
 
             if (ScoutItemsWon) {
@@ -280,11 +277,8 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
 
 function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
     let ScoutItems = 0;
-
     let Scouts = 0;
-
     let ScoutItemPlan = ScoutConfig.ActiveScoutPlanArray[ScoutItemNumber];
-
     let ExchangePoints = ScoutItemPlan.ExchangePoints;
 
     let MaxFCScouts = ScoutItemPlan.MaxFCScouts - FCScouts
@@ -343,16 +337,14 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
 };
 
 function ScoutPlanningCalculator(ScoutConfig) {
-
     let SavingsResults;
     let LatestEndDate = '01/01/1970';
-    ScoutConfig.ActiveScoutPlanArray = [];
-    for (let i = 0; i < ScoutConfig.ScoutPlanArray.length; i++) {    
 
+    ScoutConfig.ActiveScoutPlanArray = [];
+    for (let i = 0; i < ScoutConfig.ScoutPlanArray.length; i++) {
         let ScoutItemPlan = ScoutConfig.ScoutPlanArray[i];
 
         if (ScoutItemPlan.Active) {
-            
             Object.assign(ScoutItemPlan, BannersInfo[ScoutItemPlan.Banner]);
             
             if (ScoutItemPlan.GlobalEndDate < LatestEndDate) {
