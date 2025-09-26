@@ -458,7 +458,8 @@ const BannersInfo = [
     JPStartDate: moment('13 Feb 2025', "DD MMM YYYY").toDate(),
     JPEndDate: moment('23 Feb 2025', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0225
+    Rate: 0.0225,
+    Disabled: true
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -1167,7 +1168,8 @@ const BannersInfo = [
     JPStartDate: moment('23 Feb 2024', "DD MMM YYYY").toDate(),
     JPEndDate: moment('20 Mar 2024', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0225
+    Rate: 0.0225,
+    Disabled: true
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -1183,7 +1185,8 @@ const BannersInfo = [
     JPStartDate: moment('13 Feb 2024', "DD MMM YYYY").toDate(),
     JPEndDate: moment('23 Feb 2024', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0225
+    Rate: 0.0225,
+    Disabled: true
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -3144,7 +3147,8 @@ const BannersInfo = [
     JPStartDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0225
+    Rate: 0.0225,
+    Disabled: true
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -3599,7 +3603,8 @@ const BannersInfo = [
     JPStartDate: moment('9 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
-    Rate: 0.0075
+    Rate: 0.0075,
+    Disabled: true
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4130,17 +4135,4 @@ const BannersInfo = [
     Rate: 0.003334,
     Disabled: true
   }
-];
-
-// Sorting banners chronologically and then alphabetically to make sure that indexes remain constant.
-BannersInfo.sort((a, b) => {
-  // Primary sort by date (ascending)
-  let DateDiff = a.JPStartDate.getTime() - b.JPStartDate.getTime();
-
-  if (DateDiff !== 0) {
-    return DateDiff;
-  };
-
-  // Secondary sort by name (ascending) if dates are equal
-  return a.Name.localeCompare(b.Name);
-});
+].reverse();
