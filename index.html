@@ -390,6 +390,8 @@
                                 </tr>
                             </thead>
                             <tbody id="ScoutPlanningTableBody">
+                                <tr id="ScoutPlanningLoadingMessage"><td colspan="7">Loading...</td></tr>
+
                                 <!--- Rows will be added by the script below. --->
                             </tbody>
                             <tfoot>
@@ -470,8 +472,22 @@
 
                             $("#AddRowButton").click(function() {AddScoutPlanRow(); UpdateCalculateButton();});
 
-                            // We want the table to load with 3 rows by default.
-                            for (let i = 0; i < 3; i++) AddScoutPlanRow();
+                            if (localStorage.getItem("SessionState") == null) {
+                                // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners.
+                                for (let i = 0; i < BannersInfo.length; i++) {
+                                    if (BannersInfo[i].GlobalEndDate >= Today && BannersInfo[i].Disabled != true) {
+                                        AddScoutPlanRow();
+                                        
+                                        $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}] td .ScoutPlanBanner`).val(i);
+
+                                        if (NewScoutPlanRowID >= 3) {
+                                            break;
+                                        };
+                                    };
+                                };
+
+                                $('#ScoutPlanningLoadingMessage').remove();
+                            };
                         });
                     </script>
 
@@ -525,6 +541,8 @@
                 if (SessionState != null) {
                     // TODO: Add a toggle to turn this off.
                     Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
+
+                    $('#ScoutPlanningLoadingMessage').remove();
                 };
             });
 
