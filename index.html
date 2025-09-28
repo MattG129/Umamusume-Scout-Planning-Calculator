@@ -451,8 +451,9 @@
                                     <td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>
                                     <td>
                                         <center>
-                                            <select class="ScoutPlanBanner form-select"></select><br>
-                                            <div class="OutOfOrderMessage" style="color: #800000; display: none;">This row's end date is earlier than the previous row's. Please ensure end dates are in chronological order.</div>
+                                            <select class="ScoutPlanBanner form-select" onchange="ValidateTable();"></select>
+                                            <div class="OutOfOrderMessage TableValidation" style="color: #800000; display: none;">This row's end date is earlier than the previous row's. Please ensure end dates are in chronological order.</div>
+                                            <div class="UngroupedMessage TableValidation" style="color: #800000; display: none;">Rows from the same banner must be grouped together.</div>
                                         </center>
                                     </td>
                                     <td>
@@ -467,11 +468,11 @@
                                     </td>
                                     <td class="td-label">
                                         <label class="td-label">
-                                            <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateCalculateButton();" checked>
+                                            <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); ValidateTable();" checked>
                                         </label>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="$('#ScoutPlanRow${NewScoutPlanRowID}').remove(); UpdateCalculateButton();">
+                                        <button type="button" class="btn btn-danger" onclick="$('#ScoutPlanRow${NewScoutPlanRowID}').remove(); ValidateTable();">
                                             <i class="bi bi-x-lg" style=" font-weight: bold;"></i>
                                         </button>
                                     </td>
@@ -494,10 +495,10 @@
 
                             $('#ScoutPlanningTableBody').sortable({
                                 handle: ".handle",
-                                update: function() {ValidateBannerOrder()}
+                                update: function() {ValidateTable()}
                             });
 
-                            $("#AddRowButton").click(function() {AddScoutPlanRow(); UpdateCalculateButton();});
+                            $("#AddRowButton").click(function() {AddScoutPlanRow(); ValidateTable();});
 
                             if (localStorage.getItem("SessionState") == null) {
                                 // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners.
@@ -517,22 +518,46 @@
                             };
                         });
 
-                        function ValidateBannerOrder() {
-                            let PreviousRowBannerVal = -1;
+                        function ValidateTable() {
+                            $('.OutOfOrderMessage').hide();
+                            $('.UngroupedMessage').hide();
 
+                            let Groups = [];
+                            let UngroupedGroups = [];
+                            let PreviousRowBannerVal = -1;
                             $('tr[data-scoutplan-rowid]').each(function() {
-                                $(this).find('.OutOfOrderMessage').hide();
+                                let BannerVal = $(this).find('.ScoutPlanBanner').val();
+                                let GroupID = BannersInfo[BannerVal].GroupID;
 
                                 if (PreviousRowBannerVal != -1) {
-                                    let BannerVal = $(this).find('.ScoutPlanBanner').val();
-
                                     if (BannersInfo[BannerVal].GlobalEndDate < BannersInfo[PreviousRowBannerVal].GlobalEndDate) {
                                         $(this).find('.OutOfOrderMessage').show();
                                     };
                                 };
 
-                                PreviousRowBannerVal = $(this).find('.ScoutPlanBanner').val();
+
+                                if (!Groups.includes(GroupID)) {
+                                    Groups.push(GroupID);
+                                };
+
+                                // If an item from a group has already been added to the list but is not the most recent group ID then it must be ungrouped.
+                                if (Groups.includes(GroupID) && Groups[Groups.length-1] != GroupID) {
+                                    UngroupedGroups.push(GroupID);
+                                };
+
+                                PreviousRowBannerVal = BannerVal;
                             });
+
+                             $('tr[data-scoutplan-rowid]').each(function() {
+                                let BannerVal = $(this).find('.ScoutPlanBanner').val();
+                                let GroupID = BannersInfo[BannerVal].GroupID;
+
+                                if (UngroupedGroups.includes(GroupID)) {
+                                    $(this).find('.UngroupedMessage').show();
+                                };
+                            });
+
+                            UpdateCalculateButton();
                         };
                     </script>
 
@@ -588,7 +613,7 @@
                     Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
 
                     $('#ScoutPlanningLoadingMessage').remove();
-                    ValidateBannerOrder();
+                    ValidateTable();
                 };
             });
 
@@ -608,12 +633,15 @@
             function UpdateCalculateButton() {
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
-                if ( $('tr[data-scoutplan-rowid]:not(.InactiveScoutPlanRow)').length > 0 ) {
+                if (
+                    $('tr[data-scoutplan-rowid]:not(.InactiveScoutPlanRow)').length > 0
+                    && $('tr[data-scoutplan-rowid]').find('.TableValidation:visible').length == 0
+                ) {
                     $("#Calculate").html(CalculateText);
                     $("#Calculate").removeClass('disabled');
                 }
                 else {
-                    $("#Calculate").html(CalculateText + "<br><span style='font-size: small;'>(Must add scout goals.)</span>");
+                    $("#Calculate").html(CalculateText);
                     $("#Calculate").addClass('disabled');
                 };
             };
