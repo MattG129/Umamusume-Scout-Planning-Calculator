@@ -398,10 +398,13 @@
                                     <th style="width: 40%; min-width: 125px;">
                                         Banner <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (0:00)."><i class="bi bi-question-circle" style="color: black;"></i></a>
                                     </th>
-                                    <th style="width: 15%; min-width: 80px;">
+                                    <th style="width: 10%; min-width: 80px;">
+                                        Group#
+                                    </th>
+                                    <th style="width: 10%; min-width: 80px;">
                                         Exchange Points
                                     </th>
-                                    <th style="width: 15%; min-width: 80px;">
+                                    <th style="width: 10%; min-width: 80px;">
                                         Copies
                                     </th>
                                     <th style="width: 10%;">
@@ -456,6 +459,7 @@
                                             <div class="UngroupedMessage TableValidation" style="color: #800000; display: none;">Rows from the same banner must be grouped together.</div>
                                         </center>
                                     </td>
+                                    <td class="GroupNumber"></td>
                                     <td>
                                         <center>
                                             <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
@@ -521,6 +525,8 @@
                         function ValidateTable() {
                             $('.OutOfOrderMessage').hide();
                             $('.UngroupedMessage').hide();
+                            $('.ScoutPlanExchangePoints').show();
+                            $('.GroupNumber').html('').css('background-color', 'white');
 
                             let Groups = [];
                             let UngroupedGroups = [];
@@ -535,25 +541,30 @@
                                     };
                                 };
 
-
                                 if (!Groups.includes(GroupID)) {
                                     Groups.push(GroupID);
-                                };
-
-                                // If an item from a group has already been added to the list but is not the most recent group ID then it must be ungrouped.
-                                if (Groups.includes(GroupID) && Groups[Groups.length-1] != GroupID) {
-                                    UngroupedGroups.push(GroupID);
+                                    $(this).find('.GroupNumber').html(GroupID);
+                                }
+                                else {
+                                    // If an item from a group has already been added to the list but is not the most recent group ID then it must be ungrouped.
+                                    if (Groups[Groups.length-1] != GroupID) {
+                                        UngroupedGroups.push(GroupID);
+                                    }
+                                    else {
+                                        $(this).find('.ScoutPlanExchangePoints').hide(); // Exchange points only needs to be specified once per group.
+                                    };
                                 };
 
                                 PreviousRowBannerVal = BannerVal;
                             });
 
-                             $('tr[data-scoutplan-rowid]').each(function() {
+                            $('tr[data-scoutplan-rowid]').each(function() {
                                 let BannerVal = $(this).find('.ScoutPlanBanner').val();
                                 let GroupID = BannersInfo[BannerVal].GroupID;
 
                                 if (UngroupedGroups.includes(GroupID)) {
                                     $(this).find('.UngroupedMessage').show();
+                                    $(this).find('.GroupNumber').html(GroupID).css('background-color', '#E55451');
                                 };
                             });
 
