@@ -454,7 +454,7 @@
                                     <td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>
                                     <td>
                                         <center>
-                                            <select class="ScoutPlanBanner form-select" onchange="ValidateTable();"></select>
+                                            <select class="ScoutPlanBanner form-select" onchange="ValidateTable();" data-parsley-required="true"></select>
                                             <div class="OutOfOrderMessage TableValidation" style="color: #800000; display: none;">This row's end date is earlier than the previous row's. Please ensure end dates are in chronological order.</div>
                                             <div class="UngroupedMessage TableValidation" style="color: #800000; display: none;">Rows from the same banner must be grouped together.</div>
                                             <div class="DuplicateBannerMessage TableValidation" style="color: #800000; display: none;">Duplicate banner.</div>
@@ -487,7 +487,9 @@
                             $('#ScoutPlanningTableBody').append(NewRow);
                             $('#ScoutPlanningTableBody').sortable("refresh");
 
-                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerTemplate').html()).select2({});
+                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerTemplate').html()).val('').select2({
+                                placeholder: "Select Banner"
+                            });
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
 
                             SetParsleyValidations();
@@ -535,48 +537,57 @@
                             let Banners = [];
                             let PreviousRowBannerVal = -1;
                             $('tr[data-scoutplan-rowid]').each(function() {
-                                let BannerVal = $(this).find('.ScoutPlanBanner').val();
-                                let GroupID = BannersInfo[BannerVal].GroupID;
 
-                                if (PreviousRowBannerVal != -1) {
-                                    if (BannersInfo[BannerVal].GlobalEndDate < BannersInfo[PreviousRowBannerVal].GlobalEndDate) {
-                                        $(this).find('.OutOfOrderMessage').show();
+                                let BannerVal = Number($(this).find('.ScoutPlanBanner').val());
+
+                                if ( $(this).find('.ScoutPlanActive').is(':checked') && BannerVal > 0 ) {
+
+                                    let GroupID = BannersInfo[BannerVal].GroupID;
+
+                                    if (PreviousRowBannerVal != -1) {
+                                        if (BannersInfo[BannerVal].GlobalEndDate < BannersInfo[PreviousRowBannerVal].GlobalEndDate) {
+                                            $(this).find('.OutOfOrderMessage').show();
+                                        };
                                     };
-                                };
 
-                                if (!Banners.includes(BannerVal)) {
-                                    Banners.push(BannerVal);
-                                }
-                                else {
-                                    $(this).find('.DuplicateBannerMessage').show();
-                                };
-
-                                if (!Groups.includes(GroupID)) {
-                                    Groups.push(GroupID);
-                                    $(this).find('.GroupNumber').html(GroupID);
-                                }
-                                else {
-                                    // If an item from a group has already been added to the list but is not the most recent group ID then it must be ungrouped.
-                                    if (Groups[Groups.length-1] != GroupID) {
-                                        UngroupedGroups.push(GroupID);
+                                    if (!Banners.includes(BannerVal)) {
+                                        Banners.push(BannerVal);
                                     }
                                     else {
-                                        $(this).find('.ScoutPlanExchangePoints').hide(); // Exchange points only needs to be specified once per group.
+                                        $(this).find('.DuplicateBannerMessage').show();
                                     };
-                                };
 
-                                PreviousRowBannerVal = BannerVal;
+                                    if (!Groups.includes(GroupID)) {
+                                        Groups.push(GroupID);
+                                        $(this).find('.GroupNumber').html(GroupID);
+                                    }
+                                    else {
+                                        // If an item from a group has already been added to the list but is not the most recent group ID then it must be ungrouped.
+                                        if (Groups[Groups.length-1] != GroupID) {
+                                            UngroupedGroups.push(GroupID);
+                                        }
+                                        else {
+                                            $(this).find('.ScoutPlanExchangePoints').hide(); // Exchange points only needs to be specified once per group.
+                                        };
+                                    };
+
+                                    PreviousRowBannerVal = BannerVal;
+                                };
                             });
 
-                            $('tr[data-scoutplan-rowid]').each(function() {
-                                let BannerVal = $(this).find('.ScoutPlanBanner').val();
-                                let GroupID = BannersInfo[BannerVal].GroupID;
+                            if (UngroupedGroups.length > 0) {
+                                $('tr[data-scoutplan-rowid]').each(function() {
+                                    if ($(this).find('.ScoutPlanActive').is(':checked')) {
+                                        let BannerVal = $(this).find('.ScoutPlanBanner').val();
+                                        let GroupID = BannersInfo[BannerVal].GroupID;
 
-                                if (UngroupedGroups.includes(GroupID)) {
-                                    $(this).find('.UngroupedMessage').show();
-                                    $(this).find('.GroupNumber').html(GroupID).css('background-color', '#E55451');
-                                };
-                            });
+                                        if (UngroupedGroups.includes(GroupID)) {
+                                            $(this).find('.UngroupedMessage').show();
+                                            $(this).find('.GroupNumber').html(GroupID).css('background-color', '#E55451');
+                                        };
+                                    };
+                                });
+                            };
 
                             UpdateCalculateButton();
                         };
@@ -641,7 +652,7 @@
             function getInvalidFields() {
                 let InvalidFields = [];
                 
-                $('input:not([type="checkbox"])').each(function() {
+                $('input:not([type="checkbox"]), select').each(function() {
                     if (!$(this).parsley().isValid() && $(this).is(":visible")) {
                         InvalidFields.push($(this).attr('id'));
                     };
@@ -676,7 +687,9 @@
                 if (InvalidFields.length > 0) {
                     swal({icon: 'error', text: 'Please correct invalid data before running calculations.'});
 
-                    $('html, body').animate({scrollTop: $(`#${InvalidFields[0]}`).offset().top-100, easing: 'linear'}, 250);
+                    if (InvalidFields[0] != null) { // Prevents scrolling for scout plan fields since they don't have IDs.
+                        $('html, body').animate({scrollTop: $(`#${InvalidFields[0]}`).offset().top-100, easing: 'linear'}, 250);
+                    };
                 }
                 else {
                     setTimeout(function () {$("#Calculate").hide()}, 0);
@@ -775,7 +788,8 @@
                     for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
                         let ScoutPlanItem = JSONImport.ScoutPlanArray[i]
 
-                        if (ScoutPlanItem.Banner < 0 || ScoutPlanItem.Banner >= BannersInfo.length) {
+                        // Technically 0 is a valid banner val, but its expired, pre-launch, so we're gonna use it to detect invalid numbers.
+                        if (ScoutPlanItem.Banner <= 0 || ScoutPlanItem.Banner >= BannersInfo.length) {
                             NewScoutPlanRowID++; // We want to keep this synced with i.
                         }
                         else if (BannersInfo[ScoutPlanItem.Banner].GlobalEndDate < Today) {
@@ -857,7 +871,7 @@
                     };
                 });
 
-                $('input:not([type="checkbox"])').each(function() {
+                $('input:not([type="checkbox"]), select').each(function() {
                     $(this).parsley().validate();
                 });
             };
