@@ -353,7 +353,7 @@
                     <div>
                         <hr>
                         <h2>
-                            Daily Carat Pack <a data-toggle="tooltip" title="This calculator will assume that the Daily Carat Pack will either be purchased continuously or not at all. It will also assume that, if purchased, the Paid Carats will be received at the start of the month."><i class="bi bi-question-circle"></i></a>
+                            Daily Carat Pack <a data-toggle="tooltip" title="This calculator will assume that the Daily Carat Pack will either be purchased continuously, from the next renewal date onward, or not at all."><i class="bi bi-question-circle"></i></a>
                         </h2>
                         <br>
 
@@ -361,6 +361,29 @@
                             <input type="checkbox" id="HasDailyCaratPack" class="form-check-input">
                             <label for="HasDailyCaratPack" class="form-label">Purchasing Daily Carat Pack</label>
                         </div>
+                        <br>
+
+                        <!-- Not my best work. -->
+                        <!-- TODO: Make this field better. -->
+                        <div id="CaratPackRenewalDateSkipGroup">
+                            <label for="NextCaratPackRenewalDate">Next Renewal Date</label>
+                            <input id="NextCaratPackRenewalDate" type="date" class="form-control" style="display: none; max-width: 300px; margin-bottom: 15px" data-parsley-required="true">
+                        </div>
+
+                        <script type="text/javascript">
+                            $(function() {
+                                $('#NextCaratPackRenewalDate').attr('min', moment(Today).format("YYYY-MM-DD"));
+                            });
+
+                            $('#HasDailyCaratPack').change(function() {
+                                if ( $('#HasDailyCaratPack').is(':checked') ) {
+                                    $('#CaratPackRenewalDateSkipGroup').show();
+                                }
+                                else {
+                                    $('#CaratPackRenewalDateSkipGroup').hide();
+                                };
+                            });
+                        </script>
                     </div>
 
                     <hr><h2>Scout Planning</h2><br>
@@ -643,6 +666,9 @@
                 $('#form input:not(.ScoutPlanField), #form select:not(.ScoutPlanField)').each(function() {
                     if ($(this).is(':checkbox')) {
                         FormValues[this.id] = $(this).is(':checked');
+                    }
+                    else if ($(this).attr('type') == 'date') {
+                        FormValues[this.id] = this.value;
                     }
                     else {
                         FormValues[this.id] = this.value == '' ? '' : Number(this.value);
