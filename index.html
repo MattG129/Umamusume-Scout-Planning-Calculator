@@ -457,6 +457,7 @@
                                             <select class="ScoutPlanBanner form-select" onchange="ValidateTable();"></select>
                                             <div class="OutOfOrderMessage TableValidation" style="color: #800000; display: none;">This row's end date is earlier than the previous row's. Please ensure end dates are in chronological order.</div>
                                             <div class="UngroupedMessage TableValidation" style="color: #800000; display: none;">Rows from the same banner must be grouped together.</div>
+                                            <div class="DuplicateBannerMessage TableValidation" style="color: #800000; display: none;">Duplicate banner.</div>
                                         </center>
                                     </td>
                                     <td class="GroupNumber"></td>
@@ -525,11 +526,13 @@
                         function ValidateTable() {
                             $('.OutOfOrderMessage').hide();
                             $('.UngroupedMessage').hide();
+                            $('.DuplicateBannerMessage').hide();
                             $('.ScoutPlanExchangePoints').show();
                             $('.GroupNumber').html('').css('background-color', 'white');
 
                             let Groups = [];
                             let UngroupedGroups = [];
+                            let Banners = [];
                             let PreviousRowBannerVal = -1;
                             $('tr[data-scoutplan-rowid]').each(function() {
                                 let BannerVal = $(this).find('.ScoutPlanBanner').val();
@@ -539,6 +542,13 @@
                                     if (BannersInfo[BannerVal].GlobalEndDate < BannersInfo[PreviousRowBannerVal].GlobalEndDate) {
                                         $(this).find('.OutOfOrderMessage').show();
                                     };
+                                };
+
+                                if (!Banners.includes(BannerVal)) {
+                                    Banners.push(BannerVal);
+                                }
+                                else {
+                                    $(this).find('.DuplicateBannerMessage').show();
                                 };
 
                                 if (!Groups.includes(GroupID)) {
