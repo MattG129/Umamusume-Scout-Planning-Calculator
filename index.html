@@ -525,71 +525,80 @@
                             };
                         });
 
+                        let VTLastRun = Date.now();
+                        let VTTimeOut; // Prevents the import from triggering this function several times.
                         function ValidateTable() {
-                            $('.OutOfOrderMessage').hide();
-                            $('.UngroupedMessage').hide();
-                            $('.DuplicateBannerMessage').hide();
-                            $('.ScoutPlanExchangePoints').show();
-                            $('.GroupNumber').html('').css('background-color', 'white');
+                            clearTimeout(VTTimeOut);
 
-                            let Groups = [];
-                            let UngroupedGroups = [];
-                            let Banners = [];
-                            let PreviousRowBannerVal = -1;
-                            $('tr[data-scoutplan-rowid]').each(function() {
+                            VTTimeOut = setTimeout(function() {
+                                $('.OutOfOrderMessage').hide();
+                                $('.UngroupedMessage').hide();
+                                $('.DuplicateBannerMessage').hide();
+                                $('.ScoutPlanExchangePoints').show();
+                                $('.GroupNumber').html('').css('background-color', 'white');
 
-                                let BannerVal = Number($(this).find('.ScoutPlanBanner').val());
-
-                                if ( $(this).find('.ScoutPlanActive').is(':checked') && BannerVal > 0 ) {
-
-                                    let GroupID = BannersInfo[BannerVal].GroupID;
-
-                                    if (PreviousRowBannerVal != -1) {
-                                        if (BannersInfo[BannerVal].GlobalEndDate < BannersInfo[PreviousRowBannerVal].GlobalEndDate) {
-                                            $(this).find('.OutOfOrderMessage').show();
-                                        };
-                                    };
-
-                                    if (!Banners.includes(BannerVal)) {
-                                        Banners.push(BannerVal);
-                                    }
-                                    else {
-                                        $(this).find('.DuplicateBannerMessage').show();
-                                    };
-
-                                    if (!Groups.includes(GroupID)) {
-                                        Groups.push(GroupID);
-                                        $(this).find('.GroupNumber').html(GroupID);
-                                    }
-                                    else {
-                                        // If an item from a group has already been added to the list but is not the most recent group ID then it must be ungrouped.
-                                        if (Groups[Groups.length-1] != GroupID) {
-                                            UngroupedGroups.push(GroupID);
-                                        }
-                                        else {
-                                            $(this).find('.ScoutPlanExchangePoints').hide(); // Exchange points only needs to be specified once per group.
-                                        };
-                                    };
-
-                                    PreviousRowBannerVal = BannerVal;
-                                };
-                            });
-
-                            if (UngroupedGroups.length > 0) {
+                                let Groups = [];
+                                let UngroupedGroups = [];
+                                let Banners = [];
+                                let PreviousRowBannerVal = -1;
                                 $('tr[data-scoutplan-rowid]').each(function() {
-                                    if ($(this).find('.ScoutPlanActive').is(':checked')) {
-                                        let BannerVal = $(this).find('.ScoutPlanBanner').val();
+
+                                    let BannerVal = Number($(this).find('.ScoutPlanBanner').val());
+
+                                    if ( $(this).find('.ScoutPlanActive').is(':checked') && BannerVal > 0 ) {
+
                                         let GroupID = BannersInfo[BannerVal].GroupID;
 
-                                        if (UngroupedGroups.includes(GroupID)) {
-                                            $(this).find('.UngroupedMessage').show();
-                                            $(this).find('.GroupNumber').html(GroupID).css('background-color', '#E55451');
+                                        if (PreviousRowBannerVal != -1) {
+                                            if (BannersInfo[BannerVal].GlobalEndDate < BannersInfo[PreviousRowBannerVal].GlobalEndDate) {
+                                                $(this).find('.OutOfOrderMessage').show();
+                                            };
                                         };
+
+                                        if (!Banners.includes(BannerVal)) {
+                                            Banners.push(BannerVal);
+                                        }
+                                        else {
+                                            $(this).find('.DuplicateBannerMessage').show();
+                                        };
+
+                                        if (!Groups.includes(GroupID)) {
+                                            Groups.push(GroupID);
+                                            $(this).find('.GroupNumber').html(GroupID);
+                                        }
+                                        else {
+                                            // If an item from a group has already been added to the list but is not the most recent group ID then it must be ungrouped.
+                                            if (Groups[Groups.length-1] != GroupID) {
+                                                UngroupedGroups.push(GroupID);
+                                            }
+                                            else {
+                                                $(this).find('.ScoutPlanExchangePoints').hide(); // Exchange points only needs to be specified once per group.
+                                            };
+                                        };
+
+                                        PreviousRowBannerVal = BannerVal;
                                     };
                                 });
-                            };
 
-                            UpdateCalculateButton();
+                                if (UngroupedGroups.length > 0) {
+                                    $('tr[data-scoutplan-rowid]').each(function() {
+
+                                        let BannerVal = $(this).find('.ScoutPlanBanner').val();
+
+                                        if ($(this).find('.ScoutPlanActive').is(':checked') && BannerVal > 0) {
+                                            let GroupID = BannersInfo[BannerVal].GroupID;
+
+                                            if (UngroupedGroups.includes(GroupID)) {
+                                                $(this).find('.UngroupedMessage').show();
+                                                $(this).find('.GroupNumber').html(GroupID).css('background-color', '#E55451');
+                                            };
+                                        };
+                                    });
+                                };
+
+                                UpdateCalculateButton();
+
+                            }, 10)
                         };
                     </script>
 
