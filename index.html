@@ -396,10 +396,10 @@
                                         <!-- Vertical Grip -->
                                     </th>
                                     <th style="width: 40%; min-width: 125px;">
-                                        Banner <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (0:00)."><i class="bi bi-question-circle" style="color: black;"></i></a>
+                                        Scout Target <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (0:00)."><i class="bi bi-question-circle" style="color: black;"></i></a>
                                     </th>
                                     <th style="width: 10%; min-width: 80px;">
-                                        Group#
+                                        Banner#
                                     </th>
                                     <th style="width: 10%; min-width: 80px;">
                                         Exchange Points
@@ -456,8 +456,8 @@
                                         <center>
                                             <select class="ScoutPlanBanner form-select" onchange="ValidateTable();" data-parsley-required="true"></select>
                                             <div class="OutOfOrderMessage TableValidation" style="color: #800000; display: none;">This row's end date is earlier than the previous row's. Please ensure end dates are in chronological order.</div>
-                                            <div class="UngroupedMessage TableValidation" style="color: #800000; display: none;">Rows with related banners must be grouped together.</div>
-                                            <div class="DuplicateBannerMessage TableValidation" style="color: #800000; display: none;">Duplicate banner.</div>
+                                            <div class="UngroupedMessage TableValidation" style="color: #800000; display: none;">Scout targets from the same banner must be grouped together.</div>
+                                            <div class="DuplicateBannerMessage TableValidation" style="color: #800000; display: none;">Duplicate scout target.</div>
                                         </center>
                                     </td>
                                     <td class="GroupNumber"></td>
@@ -625,7 +625,7 @@
                 <table id="ScoutPlanningResultsTable" class="table table-bordered table-striped ScoutResults" style="font-size: min(3vw, 16px); text-align: center; border: 1px; display: none;">
                     <thead>
                         <tr>
-                            <th style="width: 40%">Banner</th>
+                            <th style="width: 40%">Scout Target</th>
                             <th style="width: 20%">Copies</th>
                             <th style="width: 20%">Maximum Possible Scouts</th>
                             <th style="width: 20%">Chance of Success</th>
