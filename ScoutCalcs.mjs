@@ -305,7 +305,7 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
     let ExchangePoints = BannerPlan.ExchangePoints;
 
     let MaxFCScouts = BannerPlan.MaxFCScouts - TotalFCScouts;
-    let MaxPCScouts = Math.min( BannerPlan.BannerLength, BannerPlan.MaxPCScouts - TotalPCScouts );
+    let MaxPCScouts = Math.min( DateDiff(Today, BannerPlan.GlobalEndDate), BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - TotalPCScouts );
     let MaxPinkTicketScouts = BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketsSpent : CardTicketsSpent);
     let MaxScouts = MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts;
 
@@ -420,12 +420,12 @@ function ScoutPlanningCalculator(ScoutConfig) {
             
             let Item = BannerPlan.Items[j];
             let BannerText;
-            let MaxPCScouts = Math.min(BannerPlan.BannerLength, BannerPlan.MaxPCScouts - PCScouts);
+            let MaxPCScouts = Math.min( DateDiff(Today, BannerPlan.GlobalEndDate), BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - PCScouts );
 
             if (First) {
                 BannerText = `${BannersInfo[Item.ID].Name}<br>${moment(BannersInfo[Item.ID].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(BannersInfo[Item.ID].GlobalEndDate, "YYYY-MM-DD").format('L')}`
 
-                MaxScouts = MaxPCScouts
+                MaxScouts = MaxPCScouts;
                 MaxScouts += BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
                 MaxScouts += BannerPlan.MaxFCScouts - FCScouts;
             }
