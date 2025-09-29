@@ -85,7 +85,7 @@ function CalculateRoundRewards(ScoutConfig, Round) {
     return MaxWinSets*Rewards[MaxWinsPerFinish] + MinWinSets*Rewards[MinWinsPerFinish];
 };
 
-function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
+function SavingsCalculator(ScoutConfig, BannerPlan) {
     // Free Carats are a currency that can be used to acquire new Umamusumes (Umas) or support cards, in a process called scouting.
     let FC = ScoutConfig.FC;
 
@@ -94,11 +94,11 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     let CardTickets = ScoutConfig.CardTickets;
     
     // Daily Missions + Daily Carat Pack (if purchased).
-    FC += DateDiff(Today, ScoutItemPlan.GlobalEndDate) * ( 75 + (ScoutConfig.HasDailyCaratPack ? 50 : 0) );
+    FC += DateDiff(Today, BannerPlan.GlobalEndDate) * ( 75 + (ScoutConfig.HasDailyCaratPack ? 50 : 0) );
 
     // 150 free carats will be earned from the daily login bonus over the course of a week.
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
-    FC += 150 * ScoutItemPlan.WeekDiff;
+    FC += 150 * BannerPlan.WeekDiff;
 
     // Team Trials - Provides a reward each week based on your class.
     let TeamTrialCarats = 0;
@@ -110,7 +110,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
         case 5: TeamTrialCarats = 225; break;
         case 6: TeamTrialCarats = 375; break;
     };
-    FC += TeamTrialCarats * ( ScoutItemPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(ScoutItemPlan.GlobalEndDate) ? 1 : 0) );
+    FC += TeamTrialCarats * ( BannerPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(BannerPlan.GlobalEndDate) ? 1 : 0) );
 
     // Each month there will be an event that gives out carats and pink tickets for completing stories, bingo cards, and reaching certain event point milestones.
 
@@ -118,7 +118,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     how many months will have ended between now and the target banner's end date and assume that the rewards would be given out at the very end of 
     the month. We won't however, give out rewards for the month that the banner ends on, even if it ends on the last day of the month, in order to avoid any
     potential edge case issues with time zones and what not. */
-    let NumberOfEvents = Math.max(0, ScoutItemPlan.MonthDiff - (ScoutConfig.CurrentMonthsEventCompleted ? 1 : 0));
+    let NumberOfEvents = Math.max(0, BannerPlan.MonthDiff - (ScoutConfig.CurrentMonthsEventCompleted ? 1 : 0));
 
     if (ScoutConfig.CompletesEventStories) {
         FC += NumberOfEvents * 210
@@ -141,7 +141,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     /* Champion meets are recurring tournaments that give out rewards based on how well you perform. Since there have only been two CMs as of
     the time of writing this, it would be difficult to come up with accurate estimates for future dates. As such, we will simplify things by
     having the calculator assume 1 CM per month. We will calculate the NumberOfCMs similarly to how NumberOfEvents is calculated. */
-    let NumberOfCMs = Math.max(0, ScoutItemPlan.MonthDiff - (ScoutConfig.CurrentMonthsCMCompleted ? 1 : 0));
+    let NumberOfCMs = Math.max(0, BannerPlan.MonthDiff - (ScoutConfig.CurrentMonthsCMCompleted ? 1 : 0));
 
     FC += NumberOfCMs * CalculateRoundRewards(ScoutConfig, 1);
     FC += NumberOfCMs * CalculateRoundRewards(ScoutConfig, 2);
@@ -192,14 +192,14 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
         case 10: ExpectedClubCarats = 150;  break;
         case 11: ExpectedClubCarats = 0;    break;
     };
-    FC += ExpectedClubCarats * ScoutItemPlan.MonthDiff;
+    FC += ExpectedClubCarats * BannerPlan.MonthDiff;
 
     /* When a new Uma comes out, you will be able to view the first 4 chapters of there story,
     even if you haven't pulled them, and will receive 80 FC for doing so. */
     for (let i = 0; i < BannersInfo.length; i++) {
         if (
             BannersInfo[i].GlobalStartDate > Today
-            && BannersInfo[i].GlobalStartDate <= ScoutItemPlan.GlobalEndDate
+            && BannersInfo[i].GlobalStartDate <= BannerPlan.GlobalEndDate
             && BannersInfo[i].IsNew
             && BannersInfo[i].Type == BannerTypes['Uma'].Value
             && BannersInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma that's already been released.
@@ -215,9 +215,9 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
 
 
     // A monthly purchase that will reward 500 PC (10 scouts) upfront and 50 FC every day for the next 30 days.
-    if (ScoutConfig.HasDailyCaratPack && ScoutItemPlan.GlobalEndDate >= moment(ScoutConfig.NextCaratPackRenewalDate)) {
+    if (ScoutConfig.HasDailyCaratPack && BannerPlan.GlobalEndDate >= moment(ScoutConfig.NextCaratPackRenewalDate)) {
 
-        let RenewalToEndDateDiff = DateDiff(moment(ScoutConfig.NextCaratPackRenewalDate), ScoutItemPlan.GlobalEndDate);
+        let RenewalToEndDateDiff = DateDiff(moment(ScoutConfig.NextCaratPackRenewalDate), BannerPlan.GlobalEndDate);
 
         /* We will add 10 PC scouts for every renewal date between the next renewal date and the banner's end date, except for the last renewal date between the two.
         For the last one, we need to check how many of the pulls could actually be used by the banner's end date. */
@@ -227,7 +227,7 @@ function SavingsCalculator(ScoutConfig, ScoutItemPlan) {
     return {
         MaxFCScouts: Math.floor(FC/150),
         MaxPCScouts: MaxPCScouts,
-        MaxPinkTicketScouts: ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets
+        MaxPinkTicketScouts: BannerPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets
     };
 };
 
@@ -284,12 +284,12 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
 function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
     let ScoutItems = 0;
     let Scouts = 0;
-    let ScoutItemPlan = ScoutConfig.ActiveScoutPlanArray[ScoutItemNumber];
-    let ExchangePoints = ScoutItemPlan.ExchangePoints;
+    let BannerPlan = ScoutConfig.ActiveScoutPlanArray[ScoutItemNumber];
+    let ExchangePoints = BannerPlan.ExchangePoints;
 
-    let MaxFCScouts = ScoutItemPlan.MaxFCScouts - TotalFCScouts;
-    let MaxPCScouts = Math.min( ScoutItemPlan.BannerLength, ScoutItemPlan.MaxPCScouts - TotalPCScouts );
-    let MaxPinkTicketScouts = ScoutItemPlan.MaxPinkTicketScouts - (ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTicketsSpent : CardTicketsSpent);
+    let MaxFCScouts = BannerPlan.MaxFCScouts - TotalFCScouts;
+    let MaxPCScouts = Math.min( BannerPlan.BannerLength, BannerPlan.MaxPCScouts - TotalPCScouts );
+    let MaxPinkTicketScouts = BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketsSpent : CardTicketsSpent);
     let MaxScouts = MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts;
 
     let FiveStarChance = Math.random();
@@ -313,15 +313,15 @@ function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
             ExchangePoints = 0;
         };
 
-        if (ScoutItems >= ScoutItemPlan.Goal) {
-            CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
+        if (ScoutItems >= BannerPlan.Goal) {
+            CalcFCScouts(BannerPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
 
             return true;
         };
 
     };
 
-    CalcFCScouts(ScoutItemPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
+    CalcFCScouts(BannerPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
 
     return false;
 };
@@ -342,29 +342,30 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
     TotalFCScouts += (Scouts - PCScouts - PinkTicketScouts);
 };
 
-function ScoutPlanningCalculator(ScoutConfig) {
-    let SavingsResults;
-    let LatestEndDate = '01/01/1970';
-
+function ScoutPlanningCalculator(ScoutConfig) {    
     ScoutConfig.ActiveScoutPlanArray = [];
-    for (let i = 0; i < ScoutConfig.ScoutPlanArray.length; i++) {
-        let ScoutItemPlan = ScoutConfig.ScoutPlanArray[i];
 
-        if (ScoutItemPlan.Active) {
-            Object.assign(ScoutItemPlan, BannersInfo[ScoutItemPlan.Banner]);
-            
-            if (ScoutItemPlan.GlobalEndDate < LatestEndDate) {
-                $('#ScoutPlanOrderError').show().html('Scout plan rows must be ordered by end date.');
-                return {Success: false};
+    for (let i = 0; i < ScoutConfig.ScoutPlanArray.length; i++) {
+        if (ScoutConfig.ScoutPlanArray[i].Active) {
+            let Banner = BannersInfo[ScoutConfig.ScoutPlanArray[i].Banner];
+            let PreviousScoutPlanEntry = ScoutConfig.ActiveScoutPlanArray[ScoutConfig.ActiveScoutPlanArray.length-1];
+
+            if (i > 0 && Banner.GroupID == PreviousScoutPlanEntry.GroupID) {
+                PreviousScoutPlanEntry.Items[ScoutConfig.ScoutPlanArray[i].Banner] = ScoutConfig.ScoutPlanArray[i].Goal;
             }
             else {
-                LatestEndDate = ScoutItemPlan.GlobalEndDate;
+                let BannerPlan = ScoutConfig.ScoutPlanArray[i];
 
-                let SavingsResults = SavingsCalculator(ScoutConfig, ScoutItemPlan);
-                Object.assign(ScoutItemPlan, SavingsResults);
+                BannerPlan.Items = {};
+                BannerPlan.Items[ScoutConfig.ScoutPlanArray[i].Banner] = ScoutConfig.ScoutPlanArray[i].Goal;
+                
+                Object.assign(BannerPlan, Banner);
+
+                let SavingsResults = SavingsCalculator(ScoutConfig, BannerPlan);
+                Object.assign(BannerPlan, SavingsResults);
+                
+                ScoutConfig.ActiveScoutPlanArray.push(BannerPlan);
             };
-
-            ScoutConfig.ActiveScoutPlanArray.push(ScoutItemPlan);
         };
     };
 
@@ -378,31 +379,31 @@ function ScoutPlanningCalculator(ScoutConfig) {
     let FCScouts = 0;
     for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
 
-        let ScoutItemPlan = ScoutConfig.ActiveScoutPlanArray[i];
-        let BannerText = $(`#BannerTemplate option[value=${ScoutItemPlan.Banner}]`).text();
+        let BannerPlan = ScoutConfig.ActiveScoutPlanArray[i];
+        let BannerText = $(`#BannerTemplate option[value=${BannerPlan.Banner}]`).text();
 
-        let MaxPCScouts = Math.min(ScoutItemPlan.BannerLength, ScoutItemPlan.MaxPCScouts);
+        let MaxPCScouts = Math.min(BannerPlan.BannerLength, BannerPlan.MaxPCScouts);
         if (MaxPCScouts > PCScouts) {
             PCScouts += 1;
         }
-        else if (ScoutItemPlan.Type == BannerTypes.Uma.Value && ScoutItemPlan.MaxPinkTicketScouts > UmaTicketScouts) {
+        else if (BannerPlan.Type == BannerTypes.Uma.Value && BannerPlan.MaxPinkTicketScouts > UmaTicketScouts) {
             UmaTicketScouts += 1;
         }
-        else if (ScoutItemPlan.Type == BannerTypes.Card.Value && ScoutItemPlan.MaxPinkTicketScouts > CardTicketScouts) {
+        else if (BannerPlan.Type == BannerTypes.Card.Value && BannerPlan.MaxPinkTicketScouts > CardTicketScouts) {
             CardTicketScouts += 1;
         }
-        else if (ScoutItemPlan.MaxFCScouts > FCScouts) {
+        else if (BannerPlan.MaxFCScouts > FCScouts) {
             FCScouts += 1;
         };
 
         let MaxScouts = MaxPCScouts - PCScouts
-        MaxScouts += ScoutItemPlan.MaxPinkTicketScouts - (ScoutItemPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
-        MaxScouts += ScoutItemPlan.MaxFCScouts - FCScouts
+        MaxScouts += BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
+        MaxScouts += BannerPlan.MaxFCScouts - FCScouts
 
         let NewRow = $(
             `<tr class="ScoutPlanResultsRow">
                 <td>${BannerText}</td>
-                <td>${ScoutItemPlan.Goal}</td>
+                <td>${BannerPlan.Goal}</td>
                 <td>${MaxScouts}</td>
                 <td>${ScoutsResults.ScoutItemResults[i]}</td>
             </tr>`
