@@ -488,7 +488,7 @@
                             $('#ScoutPlanningTableBody').sortable("refresh");
 
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerTemplate').html()).val('').select2({
-                                placeholder: "Select Banner"
+                                placeholder: "Please Select"
                             });
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
 
@@ -890,7 +890,7 @@
             $(function(){
                 // For some reason this is the only way I've been able to get the select2 to automatically resize on window resizing.
                 $(window).on('resize', function() {
-                    $('.ScoutPlanBanner').select2("destroy").select2();
+                    $('.ScoutPlanBanner').select2("destroy").select2({placeholder: "Please Select"});
                 });
 
                 SetParsleyValidations();
