@@ -3124,7 +3124,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'El Condor Pasa (SSR guts)',
-    GroupID: 099,
+    GroupID: 99,
     JPStartDate: moment('29 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jul 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3133,7 +3133,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Matikanetannhauser (SSR intelligence)',
-    GroupID: 099,
+    GroupID: 99,
     JPStartDate: moment('29 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jul 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3142,7 +3142,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Taiki Shuttle (Camping)',
-    GroupID: 098,
+    GroupID: 98,
     JPStartDate: moment('29 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jul 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3151,7 +3151,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Mejiro Dober (Camping)',
-    GroupID: 098,
+    GroupID: 98,
     JPStartDate: moment('29 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jul 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3160,7 +3160,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Oguri Cap (SR guts)',
-    GroupID: 097,
+    GroupID: 97,
     JPStartDate: moment('19 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3170,7 +3170,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Taiki Shuttle (SSR speed)',
-    GroupID: 097,
+    GroupID: 97,
     JPStartDate: moment('19 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3179,7 +3179,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Sweep Tosho',
-    GroupID: 096,
+    GroupID: 96,
     JPStartDate: moment('19 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3188,7 +3188,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sakura Chiyono O (SSR stamina)',
-    GroupID: 095,
+    GroupID: 95,
     JPStartDate: moment('9 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3197,7 +3197,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Admire Vega (SSR power)',
-    GroupID: 095,
+    GroupID: 95,
     JPStartDate: moment('9 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3206,7 +3206,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Inari One',
-    GroupID: 094,
+    GroupID: 94,
     JPStartDate: moment('9 Jun 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3215,7 +3215,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Haru Urara (SSR power)',
-    GroupID: 093,
+    GroupID: 93,
     JPStartDate: moment('29 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3224,7 +3224,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Ikuno Dictus (SSR stamina)',
-    GroupID: 093,
+    GroupID: 93,
     JPStartDate: moment('29 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3233,7 +3233,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Curren Chan (Wedding)',
-    GroupID: 092,
+    GroupID: 92,
     JPStartDate: moment('29 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3242,7 +3242,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Fine Motion (Wedding)',
-    GroupID: 092,
+    GroupID: 92,
     JPStartDate: moment('29 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Jun 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3251,7 +3251,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Rice Shower (SSR power)',
-    GroupID: 091,
+    GroupID: 91,
     JPStartDate: moment('19 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 May 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3260,7 +3260,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Matikanefukukitaru (SSR speed)',
-    GroupID: 091,
+    GroupID: 91,
     JPStartDate: moment('19 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 May 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3269,7 +3269,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Mejiro Palmer',
-    GroupID: 090,
+    GroupID: 90,
     JPStartDate: moment('19 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 May 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3278,7 +3278,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Tokai Teio (SR stamina)',
-    GroupID: 089,
+    GroupID: 89,
     JPStartDate: moment('9 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 May 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3288,7 +3288,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Mr. C.B. (SSR intelligence)',
-    GroupID: 089,
+    GroupID: 89,
     JPStartDate: moment('9 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 May 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3297,7 +3297,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Ines Fujin',
-    GroupID: 088,
+    GroupID: 88,
     JPStartDate: moment('9 May 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 May 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3306,7 +3306,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Bamboo Memory (SSR guts)',
-    GroupID: 087,
+    GroupID: 87,
     JPStartDate: moment('27 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 May 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3315,7 +3315,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Seeking the Pearl (SSR speed)',
-    GroupID: 087,
+    GroupID: 87,
     JPStartDate: moment('27 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 May 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3324,7 +3324,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Nice Nature (Cheerleader)',
-    GroupID: 086,
+    GroupID: 86,
     JPStartDate: moment('27 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 May 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3333,7 +3333,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'King Halo (Cheerleader)',
-    GroupID: 086,
+    GroupID: 86,
     JPStartDate: moment('27 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 May 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3342,7 +3342,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Ines Fujin (SSR guts)',
-    GroupID: 085,
+    GroupID: 85,
     JPStartDate: moment('18 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3351,7 +3351,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Twin Turbo (SSR speed)',
-    GroupID: 085,
+    GroupID: 85,
     JPStartDate: moment('18 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3360,7 +3360,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Yaeno Muteki',
-    GroupID: 084,
+    GroupID: 84,
     JPStartDate: moment('18 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3369,7 +3369,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sweep Tosho (SR intelligence)',
-    GroupID: 083,
+    GroupID: 83,
     JPStartDate: moment('10 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('18 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3379,7 +3379,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Daiwa Scarlet (SSR power)',
-    GroupID: 083,
+    GroupID: 83,
     JPStartDate: moment('10 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('18 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3388,7 +3388,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Nishino Flower',
-    GroupID: 082,
+    GroupID: 82,
     JPStartDate: moment('10 Apr 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('18 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3397,7 +3397,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Symboli Rudolf (SSR stamina)',
-    GroupID: 081,
+    GroupID: 81,
     JPStartDate: moment('28 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3406,7 +3406,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sirius Symboli (SSR intelligence)',
-    GroupID: 081,
+    GroupID: 81,
     JPStartDate: moment('28 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3415,7 +3415,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Seiun Sky (Ballroom)',
-    GroupID: 080,
+    GroupID: 80,
     JPStartDate: moment('28 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3424,7 +3424,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Fuji Kiseki (Ballroom)',
-    GroupID: 080,
+    GroupID: 80,
     JPStartDate: moment('28 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Apr 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3433,7 +3433,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Zenno Rob Roy (SSR speed)',
-    GroupID: 079,
+    GroupID: 79,
     JPStartDate: moment('17 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3442,7 +3442,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Curren Chan (SSR intelligence)',
-    GroupID: 079,
+    GroupID: 79,
     JPStartDate: moment('17 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3451,7 +3451,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Mejiro Bright',
-    GroupID: 078,
+    GroupID: 78,
     JPStartDate: moment('17 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3460,7 +3460,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Curren Chan (SR speed)',
-    GroupID: 077,
+    GroupID: 77,
     JPStartDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('17 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3470,7 +3470,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Marvelous Sunday (SSR guts)',
-    GroupID: 077,
+    GroupID: 77,
     JPStartDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('17 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3479,7 +3479,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Satono Diamond',
-    GroupID: 076,
+    GroupID: 76,
     JPStartDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('17 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3515,7 +3515,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Narita Top Road (SSR speed)',
-    GroupID: 075,
+    GroupID: 75,
     JPStartDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3524,7 +3524,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Matikanetannhauser',
-    GroupID: 074,
+    GroupID: 74,
     JPStartDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3534,7 +3534,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Kitasan Black',
-    GroupID: 074,
+    GroupID: 74,
     JPStartDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3543,7 +3543,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Fine Motion (SSR intelligence)',
-    GroupID: 073,
+    GroupID: 73,
     JPStartDate: moment('15 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3552,7 +3552,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Kawakami Princess (SSR speed)',
-    GroupID: 073,
+    GroupID: 73,
     JPStartDate: moment('15 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3561,7 +3561,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Admire Vega',
-    GroupID: 072,
+    GroupID: 72,
     JPStartDate: moment('15 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3570,7 +3570,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Ines Fujin (SR intelligence)',
-    GroupID: 071,
+    GroupID: 71,
     JPStartDate: moment('7 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('15 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3580,7 +3580,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Agnes Digital (SSR power)',
-    GroupID: 071,
+    GroupID: 71,
     JPStartDate: moment('7 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('15 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3589,7 +3589,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Mejiro Ardan',
-    GroupID: 070,
+    GroupID: 70,
     JPStartDate: moment('7 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('15 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3598,7 +3598,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Nishino Flower (SSR intelligence)',
-    GroupID: 069,
+    GroupID: 69,
     JPStartDate: moment('27 Jan 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3607,7 +3607,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sakura Bakushin O (SSR guts)',
-    GroupID: 069,
+    GroupID: 69,
     JPStartDate: moment('27 Jan 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3616,7 +3616,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Mihono Bourbon (Valentine)',
-    GroupID: 068,
+    GroupID: 68,
     JPStartDate: moment('27 Jan 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3625,7 +3625,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Eishin Flash (Valentine)',
-    GroupID: 068,
+    GroupID: 68,
     JPStartDate: moment('27 Jan 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Feb 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3634,7 +3634,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Tazuna Hayakawa (SSR friend)',
-    GroupID: 067,
+    GroupID: 67,
     JPStartDate: moment('19 Jan 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3643,7 +3643,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Riko Kashimoto (SSR friend)',
-    GroupID: 067,
+    GroupID: 67,
     JPStartDate: moment('19 Jan 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3652,7 +3652,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Sakura Chiyono O',
-    GroupID: 066,
+    GroupID: 66,
     JPStartDate: moment('19 Jan 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3661,7 +3661,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Tamamo Cross (SR guts)',
-    GroupID: 065,
+    GroupID: 65,
     JPStartDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3671,7 +3671,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sasami Anshinzawa (SSR friend)',
-    GroupID: 065,
+    GroupID: 65,
     JPStartDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3689,7 +3689,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Admire Vega (SSR power)',
-    GroupID: 063,
+    GroupID: 63,
     JPStartDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3698,7 +3698,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Matikanefukukitaru (SSR speed)',
-    GroupID: 063,
+    GroupID: 63,
     JPStartDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3707,7 +3707,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Haru Urara (New Year)',
-    GroupID: 062,
+    GroupID: 62,
     JPStartDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3716,7 +3716,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'TM Opera O (New Year)',
-    GroupID: 062,
+    GroupID: 62,
     JPStartDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3725,7 +3725,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Oguri Cap (SSR power)',
-    GroupID: 061,
+    GroupID: 61,
     JPStartDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3734,7 +3734,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Nice Nature (SSR intelligence)',
-    GroupID: 061,
+    GroupID: 61,
     JPStartDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3743,7 +3743,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Tamamo Cross',
-    GroupID: 060,
+    GroupID: 60,
     JPStartDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3752,7 +3752,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Inari One (SR power)',
-    GroupID: 059,
+    GroupID: 59,
     JPStartDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3762,7 +3762,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Manhattan Cafe (SSR stamina)',
-    GroupID: 059,
+    GroupID: 59,
     JPStartDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3771,7 +3771,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Fine Motion',
-    GroupID: 058,
+    GroupID: 58,
     JPStartDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3780,7 +3780,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Mayano Top Gun (SSR speed)',
-    GroupID: 057,
+    GroupID: 57,
     JPStartDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3789,7 +3789,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Narita Taishin (SSR intelligence)',
-    GroupID: 057,
+    GroupID: 57,
     JPStartDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3798,7 +3798,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Oguri Cap (Christmas)',
-    GroupID: 056,
+    GroupID: 56,
     JPStartDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3807,7 +3807,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Biwa Hayahide (Christmas)',
-    GroupID: 056,
+    GroupID: 56,
     JPStartDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3816,7 +3816,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Vodka (SR speed)',
-    GroupID: 055,
+    GroupID: 55,
     JPStartDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3826,7 +3826,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Daitaku Helios (SSR power)',
-    GroupID: 055,
+    GroupID: 55,
     JPStartDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3835,7 +3835,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Mejiro Dober',
-    GroupID: 054,
+    GroupID: 54,
     JPStartDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3844,7 +3844,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'El Condor Pasa (SSR power)',
-    GroupID: 053,
+    GroupID: 53,
     JPStartDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3853,7 +3853,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Kitasan Black (SSR speed)',
-    GroupID: 053,
+    GroupID: 53,
     JPStartDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3862,7 +3862,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Tosen Jordan',
-    GroupID: 052,
+    GroupID: 52,
     JPStartDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3871,7 +3871,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Curren Chan (SSR intelligence)',
-    GroupID: 051,
+    GroupID: 51,
     JPStartDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3880,7 +3880,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Narita Brian (SSR stamina)',
-    GroupID: 051,
+    GroupID: 51,
     JPStartDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3889,7 +3889,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Symboli Rudolf (Festival)',
-    GroupID: 050,
+    GroupID: 50,
     JPStartDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3898,7 +3898,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Gold City (Festival)',
-    GroupID: 050,
+    GroupID: 50,
     JPStartDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3907,7 +3907,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sirius Symboli (SR guts)',
-    GroupID: 049,
+    GroupID: 49,
     JPStartDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3917,7 +3917,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Nakayama Festa (SSR stamina)',
-    GroupID: 049,
+    GroupID: 49,
     JPStartDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3926,7 +3926,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Manhattan Cafe',
-    GroupID: 048,
+    GroupID: 48,
     JPStartDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3935,7 +3935,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Seiun Sky (SSR stamina)',
-    GroupID: 047,
+    GroupID: 47,
     JPStartDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3944,7 +3944,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Yaeno Muteki (SSR power)',
-    GroupID: 047,
+    GroupID: 47,
     JPStartDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -3953,7 +3953,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Kawakami Princess',
-    GroupID: 046,
+    GroupID: 46,
     JPStartDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3962,7 +3962,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Tamamo Cross (SSR power)',
-    GroupID: 045,
+    GroupID: 45,
     JPStartDate: moment('28 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3971,7 +3971,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Zenno Rob Roy (SSR speed)',
-    GroupID: 045,
+    GroupID: 45,
     JPStartDate: moment('28 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3980,7 +3980,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Rice Shower (Halloween)',
-    GroupID: 044,
+    GroupID: 44,
     JPStartDate: moment('28 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3989,7 +3989,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Super Creek (Halloween)',
-    GroupID: 044,
+    GroupID: 44,
     JPStartDate: moment('28 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3998,7 +3998,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Fine Motion (SR power)',
-    GroupID: 043,
+    GroupID: 43,
     JPStartDate: moment('19 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4008,7 +4008,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Ikuno Dictus (SSR guts)',
-    GroupID: 043,
+    GroupID: 43,
     JPStartDate: moment('19 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4017,7 +4017,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Agnes Digital',
-    GroupID: 042,
+    GroupID: 42,
     JPStartDate: moment('19 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4026,7 +4026,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sakura Bakushin O (SSR speed)',
-    GroupID: 041,
+    GroupID: 41,
     JPStartDate: moment('9 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4035,7 +4035,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Biko Pegasus (SSR speed)',
-    GroupID: 041,
+    GroupID: 41,
     JPStartDate: moment('9 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4045,7 +4045,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Hishi Akebono',
-    GroupID: 040,
+    GroupID: 40,
     JPStartDate: moment('9 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4054,7 +4054,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Rice Shower (SSR power)',
-    GroupID: 039,
+    GroupID: 39,
     JPStartDate: moment('29 Aug 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4063,7 +4063,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Riko Kashimoto (SSR friend)',
-    GroupID: 039,
+    GroupID: 39,
     JPStartDate: moment('29 Aug 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4072,7 +4072,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Matikanefukukitaru (Full Armor)',
-    GroupID: 038,
+    GroupID: 38,
     JPStartDate: moment('29 Aug 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4081,7 +4081,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Tosen Jordan (SR stamina)',
-    GroupID: 037,
+    GroupID: 37,
     JPStartDate: moment('19 Aug 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4091,7 +4091,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Nice Nature (SSR intelligence)',
-    GroupID: 037,
+    GroupID: 37,
     JPStartDate: moment('19 Aug 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4100,7 +4100,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Eishin Flash',
-    GroupID: 036,
+    GroupID: 36,
     JPStartDate: moment('19 Aug 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4109,7 +4109,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Special Week (SSR guts)',
-    GroupID: 035,
+    GroupID: 35,
     JPStartDate: moment('10 Aug 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4118,7 +4118,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Tokai Teio (SSR speed)',
-    GroupID: 035,
+    GroupID: 35,
     JPStartDate: moment('10 Aug 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4127,7 +4127,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Meisho Doto',
-    GroupID: 034,
+    GroupID: 34,
     JPStartDate: moment('10 Aug 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4136,7 +4136,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sweep Tosho (SSR speed)',
-    GroupID: 033,
+    GroupID: 33,
     JPStartDate: moment('28 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4145,7 +4145,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Winning Ticket (SSR stamina)',
-    GroupID: 033,
+    GroupID: 33,
     JPStartDate: moment('28 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4154,7 +4154,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Special Week (Summer)',
-    GroupID: 032,
+    GroupID: 32,
     JPStartDate: moment('28 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4163,7 +4163,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Maruzensky (Summer)',
-    GroupID: 032,
+    GroupID: 32,
     JPStartDate: moment('28 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Aug 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4172,7 +4172,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Vodka (SSR power)',
-    GroupID: 031,
+    GroupID: 31,
     JPStartDate: moment('19 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4181,7 +4181,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Nishino Flower (SSR speed)',
-    GroupID: 031,
+    GroupID: 31,
     JPStartDate: moment('19 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4190,7 +4190,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Gold City',
-    GroupID: 030,
+    GroupID: 30,
     JPStartDate: moment('19 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4199,7 +4199,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Mejiro Ardan (SR intelligence)',
-    GroupID: 029,
+    GroupID: 29,
     JPStartDate: moment('11 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4209,7 +4209,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Mejiro Ryan (SSR guts)',
-    GroupID: 029,
+    GroupID: 29,
     JPStartDate: moment('11 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4218,7 +4218,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Fuji Kiseki',
-    GroupID: 028,
+    GroupID: 28,
     JPStartDate: moment('11 Jul 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4227,7 +4227,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Seiun Sky (SSR intelligence)',
-    GroupID: 027,
+    GroupID: 27,
     JPStartDate: moment('28 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('11 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4239,7 +4239,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'King Halo (SSR power)',
-    GroupID: 027,
+    GroupID: 27,
     JPStartDate: moment('28 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('11 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4251,7 +4251,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'El Condor Pasa (Fantasy)',
-    GroupID: 026,
+    GroupID: 26,
     JPStartDate: moment('28 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('11 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4263,7 +4263,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Grass Wonder (Fantasy)',
-    GroupID: 026,
+    GroupID: 26,
     JPStartDate: moment('28 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('11 Jul 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4275,7 +4275,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Shinko Windy (SR speed)',
-    GroupID: 025,
+    GroupID: 25,
     JPStartDate: moment('20 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4288,7 +4288,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Bamboo Memory (SSR power)',
-    GroupID: 025,
+    GroupID: 25,
     JPStartDate: moment('20 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4300,7 +4300,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Hishi Amazon',
-    GroupID: 024,
+    GroupID: 24,
     JPStartDate: moment('20 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4312,7 +4312,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Silence Suzuka (SSR speed)',
-    GroupID: 023,
+    GroupID: 23,
     JPStartDate: moment('9 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('20 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4324,7 +4324,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Tamamo Cross (SSR stamina)',
-    GroupID: 023,
+    GroupID: 23,
     JPStartDate: moment('9 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('20 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4336,7 +4336,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Seiun Sky',
-    GroupID: 022,
+    GroupID: 22,
     JPStartDate: moment('9 Jun 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('20 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4348,7 +4348,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Kawakami Princess (SSR speed)',
-    GroupID: 021,
+    GroupID: 21,
     JPStartDate: moment('27 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4357,7 +4357,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Hishi Akebono (SSR guts)',
-    GroupID: 021,
+    GroupID: 21,
     JPStartDate: moment('27 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4366,7 +4366,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Mayano Top Gun (Wedding)',
-    GroupID: 020,
+    GroupID: 20,
     JPStartDate: moment('27 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4375,7 +4375,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Air Groove (Wedding)',
-    GroupID: 020,
+    GroupID: 20,
     JPStartDate: moment('27 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 Jun 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4384,7 +4384,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Seeking the Pearl (SR guts)',
-    GroupID: 019,
+    GroupID: 19,
     JPStartDate: moment('16 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 May 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4394,7 +4394,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sakura Chiyono O (SSR stamina)',
-    GroupID: 019,
+    GroupID: 19,
     JPStartDate: moment('16 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 May 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4403,7 +4403,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Narita Brian',
-    GroupID: 018,
+    GroupID: 18,
     JPStartDate: moment('16 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 May 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4412,7 +4412,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Super Creek (SSR stamina)',
-    GroupID: 017,
+    GroupID: 17,
     JPStartDate: moment('5 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('16 May 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4421,7 +4421,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Tazuna Hayakawa (SSR friend)',
-    GroupID: 017,
+    GroupID: 17,
     JPStartDate: moment('5 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('16 May 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
@@ -4430,7 +4430,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Smart Falcon',
-    GroupID: 016,
+    GroupID: 16,
     JPStartDate: moment('5 May 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('16 May 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4439,7 +4439,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Zenno Rob Roy (SR stamina)',
-    GroupID: 015,
+    GroupID: 15,
     JPStartDate: moment('25 Apr 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('5 May 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4449,7 +4449,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Yaeno Muteki (SSR power)',
-    GroupID: 015,
+    GroupID: 15,
     JPStartDate: moment('25 Apr 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('5 May 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4458,7 +4458,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Narita Taishin',
-    GroupID: 014,
+    GroupID: 14,
     JPStartDate: moment('25 Apr 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('5 May 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4467,7 +4467,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Nishino Flower (SR power)',
-    GroupID: 013,
+    GroupID: 13,
     JPStartDate: moment('14 Apr 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('25 Apr 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4477,7 +4477,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Yukino Bijin (SSR intelligence)',
-    GroupID: 013,
+    GroupID: 13,
     JPStartDate: moment('14 Apr 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('25 Apr 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4486,7 +4486,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Curren Chan',
-    GroupID: 012,
+    GroupID: 12,
     JPStartDate: moment('14 Apr 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('25 Apr 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4495,7 +4495,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Kitasan Black (SSR speed)',
-    GroupID: 011,
+    GroupID: 11,
     JPStartDate: moment('29 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('14 Apr 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4504,7 +4504,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Satono Diamond (SSR stamina)',
-    GroupID: 011,
+    GroupID: 11,
     JPStartDate: moment('29 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('14 Apr 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4513,7 +4513,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Tokai Teio (Anime Collab)',
-    GroupID: 010,
+    GroupID: 10,
     JPStartDate: moment('29 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('14 Apr 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4522,7 +4522,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Mejiro McQueen (Anime Collab)',
-    GroupID: 010,
+    GroupID: 10,
     JPStartDate: moment('29 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('14 Apr 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4531,7 +4531,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Ikuno Dictus (SR intelligence)',
-    GroupID: 009,
+    GroupID: 9,
     JPStartDate: moment('17 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 Mar 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4541,7 +4541,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Mejiro Palmer (SSR guts)',
-    GroupID: 009,
+    GroupID: 9,
     JPStartDate: moment('17 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 Mar 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4550,7 +4550,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Biwa Hayahide',
-    GroupID: 008,
+    GroupID: 8,
     JPStartDate: moment('17 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('29 Mar 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4559,7 +4559,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Daitaku Helios (SR power)',
-    GroupID: 007,
+    GroupID: 7,
     JPStartDate: moment('8 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('17 Mar 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4569,7 +4569,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Twin Turbo (SSR speed)',
-    GroupID: 007,
+    GroupID: 7,
     JPStartDate: moment('8 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('17 Mar 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4578,7 +4578,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Mihono Bourbon',
-    GroupID: 006,
+    GroupID: 6,
     JPStartDate: moment('8 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('17 Mar 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4587,7 +4587,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sweep Tosho (SR speed)',
-    GroupID: 005,
+    GroupID: 5,
     JPStartDate: moment('1 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('8 Mar 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4597,7 +4597,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Oguri Cap (SSR power)',
-    GroupID: 005,
+    GroupID: 5,
     JPStartDate: moment('1 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('8 Mar 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -4606,7 +4606,7 @@ const BannersInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'TM Opera O',
-    GroupID: 004,
+    GroupID: 4,
     JPStartDate: moment('1 Mar 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('8 Mar 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
