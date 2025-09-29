@@ -724,10 +724,12 @@
 
             function ToggleScoutPlanRow(caller, ScoutPlanRowID) {
                 if ($(caller).is(':checked')) {
-                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input, tr[data-scoutplan-rowid=${ScoutPlanRowID}] select`).removeClass('InactiveScoutPlanRow');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input`).removeClass('InactiveScoutPlanRow');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}]`).find('.select2-selection__rendered').css('color', 'black');
                 }
                 else {
-                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input, tr[data-scoutplan-rowid=${ScoutPlanRowID}] select`).addClass('InactiveScoutPlanRow');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input`).addClass('InactiveScoutPlanRow');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}]`).find('.select2-selection__rendered').css('color', 'gray');
                 };
             };
 
