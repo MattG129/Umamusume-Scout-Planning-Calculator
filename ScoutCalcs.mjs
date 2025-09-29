@@ -240,7 +240,7 @@ let CardTicketsSpent;
 function RunAndEvaluateScoutSimulations(ScoutConfig) {
     const Start = Date.now();
     let Successes = 0;
-    let ScoutItemResults = new Array(ScoutConfig.ActiveScoutPlanArray.length).fill(0);    
+    let ScoutItemResults = new Array(ScoutConfig.ActiveScoutTargets).fill(0);
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
@@ -249,15 +249,20 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
         UmaTicketsSpent = 0;
         CardTicketsSpent = 0;
 
+        let ScoutItemNumber = 0;
         let MissedScoutItems = false;
         for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
-            let ScoutItemsWon = ScoutSimulator(ScoutConfig, i);
+            let SimulationResults = ScoutSimulator(ScoutConfig, ScoutConfig.ActiveScoutPlanArray[i]);
 
-            if (ScoutItemsWon) {
-                ScoutItemResults[i]++;
-            }
-            else {
-                MissedScoutItems = true;
+            for (let j = 0; j < SimulationResults.length; j++) {
+                if (SimulationResults[j] > 0) {
+                    MissedScoutItems = true;
+                }
+                else {
+                    ScoutItemResults[ScoutItemNumber]++;
+                };
+
+                ScoutItemNumber++;
             };
         };
 
@@ -281,10 +286,22 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
     });
 };
 
-function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
-    let ScoutItems = 0;
+function ScoutSimulator(ScoutConfig, BannerPlan) {
+    let ScoutGoals = [];
+    let ScoutItemsRemaining = 0;
+    let TargetRates = [];
+    let SumOfTargetRates = 0;
+    for (let i = 0; i < BannerPlan.Items.length; i++) {
+        let Item = BannerPlan.Items[i];
+
+        ScoutGoals.push(Item.Goal);
+        ScoutItemsRemaining += Item.Goal;
+
+        TargetRates.push(BannersInfo[Item.ID].Rate);
+        SumOfTargetRates += BannersInfo[Item.ID].Rate;
+    };
+
     let Scouts = 0;
-    let BannerPlan = ScoutConfig.ActiveScoutPlanArray[ScoutItemNumber];
     let ExchangePoints = BannerPlan.ExchangePoints;
 
     let MaxFCScouts = BannerPlan.MaxFCScouts - TotalFCScouts;
@@ -299,31 +316,43 @@ function ScoutSimulator(ScoutConfig, ScoutItemNumber) {
         Scouts++;
         ExchangePoints++;
 
-        NonFiveStarChance *= (1 - 0.0075);
+        NonFiveStarChance *= (1 - SumOfTargetRates);
 
         if (FiveStarChance > NonFiveStarChance) {
-            ScoutItems++;
+            let CumulativeItemChance = 0;
+            let ScoutRandomizer = Math.random() * SumOfTargetRates;
+
+            for (let i = 0; i < ScoutGoals.length; i++) {
+                CumulativeItemChance += TargetRates[i];
+
+                if (ScoutRandomizer < CumulativeItemChance) {
+                    if (ScoutGoals[i] > 0) {
+                        ScoutGoals[i] -= 1;
+                        ScoutItemsRemaining -= 1;
+                    };
+                    break;
+                };
+            };
 
             FiveStarChance = Math.random();
             NonFiveStarChance = 1;
         };
 
-        if (ExchangePoints == 200) {
-            ScoutItems++
-            ExchangePoints = 0;
+        if (ScoutItemsRemaining - Math.floor(ExchangePoints/200) <= 0) {
+            break;
         };
+    };
 
-        if (ScoutItems >= BannerPlan.Goal) {
-            CalcFCScouts(BannerPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
-
-            return true;
+    for (let i = 0; i < ScoutGoals.length; i++) {
+        while (ScoutGoals[i] > 0 && ExchangePoints >= 200) {
+            ScoutGoals[i] -= 1;
+            ExchangePoints -= 200;
         };
-
     };
 
     CalcFCScouts(BannerPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
 
-    return false;
+    return ScoutGoals;
 };
 
 // Since we will want to use both paid carats and pink tickets first, this function will determine how many free carats were actually used.
@@ -342,23 +371,25 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
     TotalFCScouts += (Scouts - PCScouts - PinkTicketScouts);
 };
 
-function ScoutPlanningCalculator(ScoutConfig) {    
+function ScoutPlanningCalculator(ScoutConfig) {
+    ScoutConfig.ActiveScoutTargets = 0;
     ScoutConfig.ActiveScoutPlanArray = [];
 
     for (let i = 0; i < ScoutConfig.ScoutPlanArray.length; i++) {
         if (ScoutConfig.ScoutPlanArray[i].Active) {
+            ScoutConfig.ActiveScoutTargets++;
+
             let Banner = BannersInfo[ScoutConfig.ScoutPlanArray[i].Banner];
             let PreviousScoutPlanEntry = ScoutConfig.ActiveScoutPlanArray[ScoutConfig.ActiveScoutPlanArray.length-1];
 
             if (i > 0 && Banner.GroupID == PreviousScoutPlanEntry.GroupID) {
-                PreviousScoutPlanEntry.Items[ScoutConfig.ScoutPlanArray[i].Banner] = ScoutConfig.ScoutPlanArray[i].Goal;
+                PreviousScoutPlanEntry.Items.push({ID: ScoutConfig.ScoutPlanArray[i].Banner,  Goal: ScoutConfig.ScoutPlanArray[i].Goal});
             }
             else {
                 let BannerPlan = ScoutConfig.ScoutPlanArray[i];
 
-                BannerPlan.Items = {};
-                BannerPlan.Items[ScoutConfig.ScoutPlanArray[i].Banner] = ScoutConfig.ScoutPlanArray[i].Goal;
-                
+                BannerPlan.Items = [{ID: ScoutConfig.ScoutPlanArray[i].Banner,  Goal: ScoutConfig.ScoutPlanArray[i].Goal}];
+
                 Object.assign(BannerPlan, Banner);
 
                 let SavingsResults = SavingsCalculator(ScoutConfig, BannerPlan);
@@ -377,39 +408,63 @@ function ScoutPlanningCalculator(ScoutConfig) {
     let UmaTicketScouts = 0;
     let CardTicketScouts = 0;
     let FCScouts = 0;
+
+    let ScoutItemNumber = 0;
+
     for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
-
         let BannerPlan = ScoutConfig.ActiveScoutPlanArray[i];
-        let BannerText = $(`#BannerTemplate option[value=${BannerPlan.Banner}]`).text();
 
-        let MaxPCScouts = Math.min(BannerPlan.BannerLength, BannerPlan.MaxPCScouts);
-        if (MaxPCScouts > PCScouts) {
-            PCScouts += 1;
-        }
-        else if (BannerPlan.Type == BannerTypes.Uma.Value && BannerPlan.MaxPinkTicketScouts > UmaTicketScouts) {
-            UmaTicketScouts += 1;
-        }
-        else if (BannerPlan.Type == BannerTypes.Card.Value && BannerPlan.MaxPinkTicketScouts > CardTicketScouts) {
-            CardTicketScouts += 1;
-        }
-        else if (BannerPlan.MaxFCScouts > FCScouts) {
-            FCScouts += 1;
+        let First = true;
+        let MaxScouts;
+        for (let j = 0; j < BannerPlan.Items.length; j++) {
+            
+            let Item = BannerPlan.Items[j];
+            let BannerText;
+            let MaxPCScouts = Math.min(BannerPlan.BannerLength, BannerPlan.MaxPCScouts - PCScouts);
+
+            if (First) {
+                BannerText = `${BannersInfo[Item.ID].Name}<br>${moment(BannersInfo[Item.ID].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(BannersInfo[Item.ID].GlobalEndDate, "YYYY-MM-DD").format('L')}`
+
+                MaxScouts = MaxPCScouts
+                MaxScouts += BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
+                MaxScouts += BannerPlan.MaxFCScouts - FCScouts;
+            }
+            else {
+                BannerText = BannersInfo[Item.ID].Name;
+            }
+
+            let ThisItemPCScouts = 0;
+            for (let k = 0; k < Item.Goal; k++) {
+                if (MaxPCScouts > ThisItemPCScouts) {
+                    ThisItemPCScouts += 1;
+                }
+                else if (BannerPlan.Type == BannerTypes.Uma.Value && BannerPlan.MaxPinkTicketScouts > UmaTicketScouts) {
+                    UmaTicketScouts += 1;
+                }
+                else if (BannerPlan.Type == BannerTypes.Card.Value && BannerPlan.MaxPinkTicketScouts > CardTicketScouts) {
+                    CardTicketScouts += 1;
+                }
+                else if (BannerPlan.MaxFCScouts > FCScouts) {
+                    FCScouts += 1;
+                };
+            };
+            PCScouts += ThisItemPCScouts;
+
+            // Won't display max scouts for 2nd+ item(s) in group since its repeat info and not showing it can be used as a visual indicator of groups.
+            let NewRow = $(
+                `<tr class="ScoutPlanResultsRow">
+                    <td>${BannerText}</td>
+                    <td>${Item.Goal}</td>
+                    <td>${First ? MaxScouts : ''}</td>
+                    <td>${ScoutsResults.ScoutItemResults[ScoutItemNumber]}</td>
+                </tr>`
+            );
+
+            $('#ScoutPlanningResultsBody').append(NewRow);
+
+            ScoutItemNumber++;
+            First = false;
         };
-
-        let MaxScouts = MaxPCScouts - PCScouts
-        MaxScouts += BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
-        MaxScouts += BannerPlan.MaxFCScouts - FCScouts
-
-        let NewRow = $(
-            `<tr class="ScoutPlanResultsRow">
-                <td>${BannerText}</td>
-                <td>${BannerPlan.Goal}</td>
-                <td>${MaxScouts}</td>
-                <td>${ScoutsResults.ScoutItemResults[i]}</td>
-            </tr>`
-        );
-
-        $('#ScoutPlanningResultsBody').append(NewRow);
     };
 
     $('#ScoutPlanningResultsTable tfoot').append($(
