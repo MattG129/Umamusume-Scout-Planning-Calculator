@@ -395,11 +395,11 @@
                                     <th style="width: 10%;">
                                         <!-- Vertical Grip -->
                                     </th>
-                                    <th style="width: 40%; min-width: 125px;"> <!-- TODO: Make the accel rate dynamic. -->
-                                        Scout Target <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (00:00). Dates are calculated based on the number of days between the Japanese server's launch and the banner's start date on that server. This number is then divided by the global acceleration rate (1.4) and is used to estimate the banner's global start date, based on the global server's launch date. The banner duration remains unchanged. For banners that have already been announced, the global dates will be entered manually."><i class="bi bi-question-circle" style="color: black;"></i></a>
+                                    <th style="width: 25%; min-width: 80px;">
+                                        Banner
                                     </th>
-                                    <th style="width: 10%; min-width: 80px;">
-                                        Banner#
+                                    <th style="width: 25%; min-width: 125px;"> <!-- TODO: Make the accel rate dynamic. -->
+                                        Scout Target <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (00:00). Dates are calculated based on the number of days between the Japanese server's launch and the banner's start date on that server. This number is then divided by the global acceleration rate (1.4) and is used to estimate the banner's global start date, based on the global server's launch date. The banner duration remains unchanged. For banners that have already been announced, the global dates will be entered manually."><i class="bi bi-question-circle" style="color: black;"></i></a>
                                     </th>
                                     <th style="width: 10%; min-width: 80px;">
                                         Exchange Points
@@ -436,11 +436,11 @@
                     <select id="BannerTemplate" class="form-select" style="display: none;"></select>
                     <script type="text/javascript">
                         $(function() {
-                            for (let i = 0; i < BannersInfo.length; i++) {
-                                if (BannersInfo[i].GlobalEndDate >= Today && BannersInfo[i].Disabled != true) {
+                            for (let i = 0; i < ItemsInfo.length; i++) {
+                                if (ItemsInfo[i].GlobalEndDate >= Today && ItemsInfo[i].Disabled != true) {
                                     $('#BannerTemplate').append($('<option>', {
                                         value: i,
-                                        text: `${BannersInfo[i].Name}: ${moment(BannersInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(BannersInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`,
+                                        text: `${ItemsInfo[i].Name}: ${moment(ItemsInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(ItemsInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`,
                                     }));
                                 };
                             };
@@ -453,14 +453,16 @@
                                 `<tr id="ScoutPlanRow${NewScoutPlanRowID}" data-scoutplan-rowid="${NewScoutPlanRowID}">
                                     <td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>
                                     <td>
+                                        <div class="ScoutPlanBanner"></div>
+
+                                        <div class="OutOfOrderMessage TableValidation" style="color: #800000; display: none;">Banner end dates must be in chronological order.</div>
+                                        <div class="DuplicateBannerMessage TableValidation" style="color: #800000; display: none;">Duplicate banner.</div>
+                                    </td>
+                                    <td>
                                         <center>
-                                            <select class="ScoutPlanBanner form-select" onchange="ValidateTable();" data-parsley-required="true"></select>
-                                            <div class="OutOfOrderMessage TableValidation" style="color: #800000; display: none;">This row's end date is earlier than the previous row's. Please ensure end dates are in chronological order.</div>
-                                            <div class="UngroupedMessage TableValidation" style="color: #800000; display: none;">Scout targets from the same banner must be grouped together.</div>
-                                            <div class="DuplicateBannerMessage TableValidation" style="color: #800000; display: none;">Duplicate scout target.</div>
+                                            <select class="ScoutPlanItems form-select" onchange="UpdateScoutPlanningTable();" data-parsley-required="true" multiple="multiple"></select>
                                         </center>
                                     </td>
-                                    <td class="GroupNumber"></td>
                                     <td>
                                         <center>
                                             <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
@@ -473,11 +475,11 @@
                                     </td>
                                     <td class="td-label">
                                         <label class="td-label">
-                                            <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); ValidateTable();" checked>
+                                            <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateScoutPlanningTable();" checked>
                                         </label>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="$('#ScoutPlanRow${NewScoutPlanRowID}').remove(); ValidateTable();">
+                                        <button type="button" class="btn btn-danger" onclick="$('#ScoutPlanRow${NewScoutPlanRowID}').remove(); UpdateScoutPlanningTable();">
                                             <i class="bi bi-x-lg" style=" font-weight: bold;"></i>
                                         </button>
                                     </td>
@@ -487,7 +489,7 @@
                             $('#ScoutPlanningTableBody').append(NewRow);
                             $('#ScoutPlanningTableBody').sortable("refresh");
 
-                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanBanner`).html($('#BannerTemplate').html()).val('').select2({
+                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems`).html($('#BannerTemplate').html()).val('').select2({
                                 placeholder: "Please Select"
                             });
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
@@ -502,18 +504,18 @@
 
                             $('#ScoutPlanningTableBody').sortable({
                                 handle: ".handle",
-                                update: function() {ValidateTable()}
+                                update: function() {UpdateScoutPlanningTable()}
                             });
 
-                            $("#AddRowButton").click(function() {AddScoutPlanRow(); ValidateTable();});
+                            $("#AddRowButton").click(function() {AddScoutPlanRow(); UpdateScoutPlanningTable();});
 
                             if (localStorage.getItem("SessionState") == null) {
                                 // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners.
-                                for (let i = 0; i < BannersInfo.length; i++) {
-                                    if (BannersInfo[i].GlobalEndDate >= Today && BannersInfo[i].Disabled != true) {
+                                for (let i = 0; i < ItemsInfo.length; i++) {
+                                    if (ItemsInfo[i].GlobalEndDate >= Today && ItemsInfo[i].Disabled != true) {
                                         AddScoutPlanRow();
 
-                                        $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}] td .ScoutPlanBanner`).val(i);
+                                        $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}] td .ScoutPlanItems`).val(i);
 
                                         if (NewScoutPlanRowID >= 3) {
                                             break;
@@ -525,79 +527,58 @@
                             };
                         });
 
-                        let VTLastRun = Date.now();
-                        let VTTimeOut; // Prevents the import from triggering this function several times.
-                        function ValidateTable() {
-                            clearTimeout(VTTimeOut);
+                        let USPTTimeout; // Prevents the import from triggering this function several times.
+                        function UpdateScoutPlanningTable() {
+                            clearTimeout(USPTTimeout);
 
-                            VTTimeOut = setTimeout(function() {
-                                $('.OutOfOrderMessage').hide();
-                                $('.UngroupedMessage').hide();
-                                $('.DuplicateBannerMessage').hide();
-                                $('.ScoutPlanExchangePoints').show();
-                                $('.GroupNumber').html('').css('background-color', 'white');
+                            USPTTimeout = setTimeout(function() {
+                                $('.ScoutPlanBanner').html('');
+                                // $('.ScoutPlanExchangePoints').show();
+                                $('.TableValidation').hide();
 
-                                let Groups = [];
-                                let UngroupedGroups = [];
                                 let Banners = [];
-                                let PreviousRowBannerVal = -1;
+                                let PreviousRowFirstItem = -1;
                                 $('tr[data-scoutplan-rowid]').each(function() {
 
-                                    let BannerVal = Number($(this).find('.ScoutPlanBanner').val());
+                                    let ScoutItems = $(this).find('.ScoutPlanItems').select2('data');
 
-                                    if ( $(this).find('.ScoutPlanActive').is(':checked') && BannerVal > 0 ) {
+                                    if ( $(this).find('.ScoutPlanActive').is(':checked') && ScoutItems.length > 0 ) {
 
-                                        let GroupID = BannersInfo[BannerVal].GroupID;
+                                        let FirstItem = ScoutItems[0].id
+                                        let BannerID = ItemsInfo[FirstItem].BannerID;
+                                        
+                                        for (let i = 1; i < ScoutItems.length; i++) {
+                                            if (ItemsInfo[ScoutItems[i].id].BannerID != BannerID) {
 
-                                        if (PreviousRowBannerVal != -1) {
-                                            if (BannersInfo[BannerVal].GlobalEndDate < BannersInfo[PreviousRowBannerVal].GlobalEndDate) {
-                                                $(this).find('.OutOfOrderMessage').show();
+                                                $(this).find('.ScoutPlanBanner').html('Items from multiple banners selected.').css('color', '#800000');
+
+                                                BannerID = 0;
+                                                break;
                                             };
                                         };
 
-                                        if (!Banners.includes(BannerVal)) {
-                                            Banners.push(BannerVal);
-                                        }
-                                        else {
-                                            $(this).find('.DuplicateBannerMessage').show();
-                                        };
+                                        if (BannerID != 0) {
+                                            $(this).find('.ScoutPlanBanner').html(BannerNames[BannerID]).css('color', 'black');
 
-                                        if (!Groups.includes(GroupID)) {
-                                            Groups.push(GroupID);
-                                            $(this).find('.GroupNumber').html(GroupID);
-                                        }
-                                        else {
-                                            // If an item from a group has already been added to the list but is not the most recent group ID then it must be ungrouped.
-                                            if (Groups[Groups.length-1] != GroupID) {
-                                                UngroupedGroups.push(GroupID);
+                                            if (PreviousRowFirstItem != -1) {
+                                                if (ItemsInfo[FirstItem].GlobalEndDate < ItemsInfo[PreviousRowFirstItem].GlobalEndDate) {
+                                                    $(this).find('.OutOfOrderMessage').show();
+                                                };
+                                            };
+
+                                            if (!Banners.includes(BannerID)) {
+                                                Banners.push(BannerID);
                                             }
                                             else {
-                                                $(this).find('.ScoutPlanExchangePoints').hide(); // Exchange points only needs to be specified once per group.
+                                                $(this).find('.DuplicateBannerMessage').show();
                                             };
-                                        };
 
-                                        PreviousRowBannerVal = BannerVal;
+                                            PreviousRowFirstItem = FirstItem;
+                                        };
                                     };
                                 });
 
-                                if (UngroupedGroups.length > 0) {
-                                    $('tr[data-scoutplan-rowid]').each(function() {
-
-                                        let BannerVal = $(this).find('.ScoutPlanBanner').val();
-
-                                        if ($(this).find('.ScoutPlanActive').is(':checked') && BannerVal > 0) {
-                                            let GroupID = BannersInfo[BannerVal].GroupID;
-
-                                            if (UngroupedGroups.includes(GroupID)) {
-                                                $(this).find('.UngroupedMessage').show();
-                                                $(this).find('.GroupNumber').html(GroupID).css('background-color', '#E55451');
-                                            };
-                                        };
-                                    });
-                                };
-
                                 UpdateCalculateButton();
-
                             }, 10)
                         };
                     </script>
@@ -654,7 +635,7 @@
                     Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
 
                     $('#ScoutPlanningLoadingMessage').remove();
-                    ValidateTable();
+                    UpdateScoutPlanningTable();
                 };
             });
 
@@ -751,7 +732,7 @@
                 FormValues.ScoutPlanArray = [];
                 $('tr[data-scoutplan-rowid]').each(function() {
                     FormValues.ScoutPlanArray.push({
-                        Banner:            Number($(this).find('td .ScoutPlanBanner').val()),
+                        Items:                    $(this).find('td .ScoutPlanItems').val(),
                         ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
                         Goal:              Number($(this).find('td .ScoutPlanGoal').val()),
                         Active:                   $(this).find('td .ScoutPlanActive').is(':checked')
@@ -797,26 +778,30 @@
 
                     let ExpiredActiveItems = [];
                     for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
-                        let ScoutPlanItem = JSONImport.ScoutPlanArray[i]
+                        let ScoutPlanBanner = JSONImport.ScoutPlanArray[i]
 
-                        // Technically 0 is a valid banner val, but its expired, pre-launch, so we're gonna use it to detect invalid numbers.
-                        if (ScoutPlanItem.Banner <= 0 || ScoutPlanItem.Banner >= BannersInfo.length) {
+                        let FirstItem = ScoutPlanBanner.Items[0]
+
+                        if (FirstItem <= 0 || FirstItem >= ItemsInfo.length) {
                             NewScoutPlanRowID++; // We want to keep this synced with i.
                         }
-                        else if (BannersInfo[ScoutPlanItem.Banner].GlobalEndDate < Today) {
+                        else if (ItemsInfo[FirstItem].GlobalEndDate < Today) {
                             NewScoutPlanRowID++;
 
-                            if (ScoutPlanItem.Active) {
-                                ExpiredActiveItems.push(ScoutPlanItem.Banner) ;
+                            if (ScoutPlanBanner.Active) {
+                                for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {
+                                    ExpiredActiveItems.push(ScoutPlanBanner.Items[j]) ;
+                                };
                             };
                         }
                         else {
+
                             AddScoutPlanRow();
 
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanBanner`).val(ScoutPlanItem.Banner);
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanGoal`).val(ScoutPlanItem.Goal);
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanItem.ExchangePoints);
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanItem.Active);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanItems`).val(ScoutPlanBanner.Items);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanGoal`).val(ScoutPlanBanner.Goal);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
+                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
                         };
                     };
                     
@@ -825,7 +810,7 @@
                         `
                         for (let i = 0; i < ExpiredActiveItems.length; i++) {
                             RemovedRows += `
-                                \u2022 ${BannersInfo[ExpiredActiveItems[i]].Name}`
+                                \u2022 ${ItemsInfo[ExpiredActiveItems[i]].Name}`
                         };
                         RemovedRows += `
 
@@ -890,7 +875,7 @@
             $(function(){
                 // For some reason this is the only way I've been able to get the select2 to automatically resize on window resizing.
                 $(window).on('resize', function() {
-                    $('.ScoutPlanBanner').select2("destroy").select2({placeholder: "Please Select"});
+                    $('.ScoutPlanItems').select2("destroy").select2({placeholder: "Please Select"});
                 });
 
                 SetParsleyValidations();
