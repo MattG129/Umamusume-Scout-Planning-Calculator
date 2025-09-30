@@ -539,15 +539,29 @@
                             $("#AddRowButton").click(function() {AddScoutPlanRow(); UpdateScoutPlanningTable();});
 
                             if (localStorage.getItem("SessionState") == null) {
-                                // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners.
+                                // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners and select up to 2 items from that banner.
+                                let First = true;
+                                let Selected = [];
+                                let PreviousBannerID = 0;
                                 for (let i = 0; i < ItemsInfo.length; i++) {
                                     if (ItemsInfo[i].GlobalEndDate >= Today && ItemsInfo[i].Disabled != true) {
-                                        AddScoutPlanRow();
+                                        if (ItemsInfo[i].BannerID != PreviousBannerID) {
+                                            if (!First) {
+                                                $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}] td .ScoutPlanItems`).val(Selected);
+                                            };
+                                            First = false;
 
-                                        $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}] td .ScoutPlanItems`).val(i);
+                                            if (NewScoutPlanRowID >= 3) {
+                                                break;
+                                            };
 
-                                        if (NewScoutPlanRowID >= 3) {
-                                            break;
+                                            Selected = [];
+                                            PreviousBannerID = ItemsInfo[i].BannerID;
+                                            AddScoutPlanRow();
+                                        };
+
+                                        if (Selected.length < 2) {
+                                            Selected.push(i);
                                         };
                                     };
                                 };
