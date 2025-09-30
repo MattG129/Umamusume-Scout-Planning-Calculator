@@ -24,8 +24,8 @@ for (let i = 0; i < ItemsInfo.length; i++) {
     ItemsInfo[i].WeekDiff = Math.floor(DateDiff(Today, ItemsInfo[i].GlobalEndDate) / 7);
     ItemsInfo[i].MonthDiff = 12*(ItemsInfo[i].GlobalEndDate.getFullYear() - Today.getFullYear()) + (ItemsInfo[i].GlobalEndDate.getMonth() - Today.getMonth());
 
+    CurrentBannerID = ItemsInfo[i].BannerID;
     if (ItemsInfo[i].Disabled != true) {
-        CurrentBannerID = ItemsInfo[i].BannerID;
         CurrentBannerItems.push(i);
     };
 
@@ -46,7 +46,6 @@ for (let i = 0; i < ItemsInfo.length; i++) {
 
                 let Open = ItemsInfo[CurrentBannerItems[j]].Name.indexOf('(');
                 let Close = ItemsInfo[CurrentBannerItems[j]].Name.indexOf(')');
-
                 if (Open != Close) {
                     CurrentItemSuffix = ItemsInfo[CurrentBannerItems[j]].Name.substring(Open+1, Close) // +1 Gets rid of parenthesis.
                 };
