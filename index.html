@@ -131,6 +131,10 @@
                 white-space: normal;
                 word-wrap: break-word;
             }
+
+            .select2-dropdown {
+                top: 32px; /*Moves the select2 dropdown down since it would otherwise be too high up for some reason.*/
+            }
         </style>
 
         <div id='Header'></div>
@@ -373,7 +377,7 @@
                         <!-- Not my best work. -->
                         <!-- TODO: Make this field better. -->
                         <div id="CaratPackRenewalDateSkipGroup" style="display: none;">
-                            <label for="NextCaratPackRenewalDate">Next Renewal Date</label>
+                            <label for="NextCaratPackRenewalDate" class="form-label">Next Renewal Date</label>
                             <input id="NextCaratPackRenewalDate" type="date" class="form-control" style="max-width: 300px; margin-bottom: 15px" data-parsley-required="true">
                         </div>
 
@@ -561,21 +565,20 @@
 
                                     let ScoutItems = $(this).find('.ScoutPlanItems').select2('data');
 
-                                    if ($(this).find('.ScoutPlanActive').is(':checked')) {
+                                    let BannerID = 0;
+                                    if (ScoutItems.length > 0) {
+                                        BannerID = ItemsInfo[(ScoutItems[0].id)].BannerID;
+                                    };
 
-                                        let BannerID = 0;
-                                        if (ScoutItems.length > 0) {
-                                            BannerID = ItemsInfo[(ScoutItems[0].id)].BannerID;
-                                        };
+                                    $(this).find('.ScoutPlanBanner').html(BannerID == 0 ? '' : BannerNames[BannerID]);
+
+                                    if ($(this).find('.ScoutPlanActive').is(':checked')) {
 
                                         if (BannerID != $(this).find('.ScoutPlanBanner').attr('data-banner-id')) {
                                             if (BannerID == 0) {
-                                                $(this).find('.ScoutPlanBanner').html('');
                                                 $(this).find('.ScoutPlanItems option').prop('disabled', false);
                                             }
                                             else {
-                                                $(this).find('.ScoutPlanBanner').html(BannerNames[BannerID]);
-
                                                 for (let i = 0; i < ItemsInfo.length; i++) {
                                                     if (ItemsInfo[i].BannerID != BannerID) {
                                                         $(this).find(`.ScoutPlanItems option[value=${i}]`).prop('disabled', true);
@@ -631,8 +634,6 @@
                 </div>
 
                 <a id="ScoutResultsAnchor"></a>
-
-                <div id="ScoutPlanOrderError" class="ScoutResults" style="display: none; color: #800000;"></div>
 
                 <table id="ScoutPlanningResultsTable" class="table table-bordered table-striped ScoutResults" style="font-size: min(3vw, 16px); text-align: center; border: 1px; display: none;">
                     <thead>
@@ -737,11 +738,13 @@
             function ToggleScoutPlanRow(caller, ScoutPlanRowID) {
                 if ($(caller).is(':checked')) {
                     $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input`).removeClass('InactiveScoutPlanRow');
-                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}]`).find('.select2-selection__rendered').css('color', 'black');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}] .ScoutPlanBanner`).css('color', 'black');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}] .ScoutPlanItems`).prop("disabled", false);;
                 }
                 else {
                     $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input`).addClass('InactiveScoutPlanRow');
-                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}]`).find('.select2-selection__rendered').css('color', 'gray');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}] .ScoutPlanBanner`).css('color', 'gray');
+                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}] .ScoutPlanItems`).prop("disabled", true);;
                 };
             };
 
