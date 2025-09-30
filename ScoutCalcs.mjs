@@ -7,20 +7,83 @@ const JPLaunchDate = moment('23 Feb 2021', "DD MMM YYYY").toDate()
 const GlobalLaunchDate = moment('25 Jun 2025', "DD MMM YYYY").toDate()
 const GlobalAccelRate = 1.4;
 
-for (let i = 0; i < BannersInfo.length; i++) {
+let CurrentBannerID = 0;
+let CurrentBannerItems = [];
 
-    if (!Object.hasOwn(BannersInfo[i], 'GlobalStartDate')) {
-        let BannerLength = DateDiff(BannersInfo[i].JPStartDate, BannersInfo[i].JPEndDate);
+for (let i = 0; i < ItemsInfo.length; i++) {
+    CurrentBannerID = ItemsInfo[i].BannerID;
+    CurrentBannerItems.push(i);
+
+    if (!Object.hasOwn(ItemsInfo[i], 'GlobalStartDate')) {
+        let BannerLength = DateDiff(ItemsInfo[i].JPStartDate, ItemsInfo[i].JPEndDate);
         
-        let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, BannersInfo[i].JPStartDate);
+        let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, ItemsInfo[i].JPStartDate);
         let GlobalLaunchBannerStartDateDiff = Math.round(JPLaunchBannerStartDateDiff/GlobalAccelRate);
-        BannersInfo[i].GlobalStartDate = DateAdd(GlobalLaunchDate, GlobalLaunchBannerStartDateDiff);
-        BannersInfo[i].GlobalEndDate = DateAdd(BannersInfo[i].GlobalStartDate, BannerLength);
+        ItemsInfo[i].GlobalStartDate = DateAdd(GlobalLaunchDate, GlobalLaunchBannerStartDateDiff);
+        ItemsInfo[i].GlobalEndDate = DateAdd(ItemsInfo[i].GlobalStartDate, BannerLength);
     };
 
-    BannersInfo[i].BannerLength = DateDiff(BannersInfo[i].GlobalStartDate, BannersInfo[i].GlobalEndDate);
-    BannersInfo[i].WeekDiff = Math.floor(DateDiff(Today, BannersInfo[i].GlobalEndDate) / 7);
-    BannersInfo[i].MonthDiff = 12*(BannersInfo[i].GlobalEndDate.getFullYear() - Today.getFullYear()) + (BannersInfo[i].GlobalEndDate.getMonth() - Today.getMonth());
+    ItemsInfo[i].BannerLength = DateDiff(ItemsInfo[i].GlobalStartDate, ItemsInfo[i].GlobalEndDate);
+    ItemsInfo[i].WeekDiff = Math.floor(DateDiff(Today, ItemsInfo[i].GlobalEndDate) / 7);
+    ItemsInfo[i].MonthDiff = 12*(ItemsInfo[i].GlobalEndDate.getFullYear() - Today.getFullYear()) + (ItemsInfo[i].GlobalEndDate.getMonth() - Today.getMonth());
+
+    if (i + 1 >= ItemsInfo.length || CurrentBannerID != ItemsInfo[i+1].BannerID) {
+        
+        let BannerName;
+        if (Object.hasOwn(BannerNames, CurrentBannerID)) {
+            BannerName = BannerNames[CurrentBannerID];
+        }
+        else {
+            let First = true;
+            let GenericName = '';
+            let CurrentItemSuffix;
+            let PreviousItemSuffix;
+            let ConsistentSuffix = true;
+
+            for (let j = 0; j < CurrentBannerItems.length; j++) {
+
+                let Open = ItemsInfo[CurrentBannerItems[j]].Name.indexOf('(');
+                let Close = ItemsInfo[CurrentBannerItems[j]].Name.indexOf(')');
+
+                if (Open != Close) {
+                    CurrentItemSuffix = ItemsInfo[CurrentBannerItems[j]].Name.substring(Open+1, Close) // +1 Gets rid of parenthesis.
+                };
+
+                if (First) {
+                    GenericName += ItemsInfo[CurrentBannerItems[j]].Name
+                }
+                else {
+                    if (CurrentItemSuffix != PreviousItemSuffix) {
+                        ConsistentSuffix = false;
+                    };
+
+                    GenericName += `<br>${ItemsInfo[CurrentBannerItems[j]].Name}`;
+                };
+
+                First = false;
+                PreviousItemSuffix = CurrentItemSuffix;
+            };
+
+            if (
+                ConsistentSuffix
+                && CurrentItemSuffix
+                && CurrentItemSuffix.substring(0, 2) != 'SR'
+                && CurrentItemSuffix.substring(0, 3) != 'SSR'
+                && CurrentBannerItems.length > 1
+            ) {
+                BannerName = CurrentItemSuffix;
+            }
+            else {
+                BannerName = GenericName;
+            }
+
+            CurrentBannerItems = [];
+
+            };
+
+            BannerNames[CurrentBannerID] = `${BannerName}<br>
+                ${moment(ItemsInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(ItemsInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`
+    };
 };
 
 function DateAdd(date, days) {
@@ -196,13 +259,13 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
 
     /* When a new Uma comes out, you will be able to view the first 4 chapters of there story,
     even if you haven't pulled them, and will receive 80 FC for doing so. */
-    for (let i = 0; i < BannersInfo.length; i++) {
+    for (let i = 0; i < ItemsInfo.length; i++) {
         if (
-            BannersInfo[i].GlobalStartDate > Today
-            && BannersInfo[i].GlobalStartDate <= BannerPlan.GlobalEndDate
-            && BannersInfo[i].IsNew
-            && BannersInfo[i].Type == BannerTypes['Uma'].Value
-            && BannersInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma that's already been released.
+            ItemsInfo[i].GlobalStartDate > Today
+            && ItemsInfo[i].GlobalStartDate <= BannerPlan.GlobalEndDate
+            && ItemsInfo[i].IsNew
+            && ItemsInfo[i].Type == BannerTypes['Uma'].Value
+            && ItemsInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma that's already been released.
         ) {                    
             FC += 80
         }
@@ -297,8 +360,8 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
         ScoutGoals.push(Item.Goal);
         ScoutItemsRemaining += Item.Goal;
 
-        TargetRates.push(BannersInfo[Item.ID].Rate);
-        SumOfTargetRates += BannersInfo[Item.ID].Rate;
+        TargetRates.push(ItemsInfo[Item.ID].Rate);
+        SumOfTargetRates += ItemsInfo[Item.ID].Rate;
     };
 
     let Scouts = 0;
@@ -379,10 +442,10 @@ function ScoutPlanningCalculator(ScoutConfig) {
         if (ScoutConfig.ScoutPlanArray[i].Active) {
             ScoutConfig.ActiveScoutTargets++;
 
-            let Banner = BannersInfo[ScoutConfig.ScoutPlanArray[i].Banner];
+            let Banner = ItemsInfo[ScoutConfig.ScoutPlanArray[i].Banner];
             let PreviousScoutPlanEntry = ScoutConfig.ActiveScoutPlanArray[ScoutConfig.ActiveScoutPlanArray.length-1];
 
-            if (i > 0 && Banner.GroupID == PreviousScoutPlanEntry.GroupID) {
+            if (i > 0 && Banner.BannerID == PreviousScoutPlanEntry.BannerID) {
                 PreviousScoutPlanEntry.Items.push({ID: ScoutConfig.ScoutPlanArray[i].Banner,  Goal: ScoutConfig.ScoutPlanArray[i].Goal});
             }
             else {
@@ -423,14 +486,14 @@ function ScoutPlanningCalculator(ScoutConfig) {
             let MaxPCScouts = Math.min( DateDiff(Today, BannerPlan.GlobalEndDate), BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - PCScouts );
 
             if (First) {
-                BannerText = `${BannersInfo[Item.ID].Name}<br>${moment(BannersInfo[Item.ID].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(BannersInfo[Item.ID].GlobalEndDate, "YYYY-MM-DD").format('L')}`
+                BannerText = `${ItemsInfo[Item.ID].Name}<br>${moment(ItemsInfo[Item.ID].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(ItemsInfo[Item.ID].GlobalEndDate, "YYYY-MM-DD").format('L')}`
 
                 MaxScouts = MaxPCScouts;
                 MaxScouts += BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
                 MaxScouts += BannerPlan.MaxFCScouts - FCScouts;
             }
             else {
-                BannerText = BannersInfo[Item.ID].Name;
+                BannerText = ItemsInfo[Item.ID].Name;
             }
 
             let ThisItemPCScouts = 0;
