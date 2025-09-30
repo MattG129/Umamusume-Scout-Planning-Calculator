@@ -11,9 +11,6 @@ let CurrentBannerID = 0;
 let CurrentBannerItems = [];
 
 for (let i = 0; i < ItemsInfo.length; i++) {
-    CurrentBannerID = ItemsInfo[i].BannerID;
-    CurrentBannerItems.push(i);
-
     if (!Object.hasOwn(ItemsInfo[i], 'GlobalStartDate')) {
         let BannerLength = DateDiff(ItemsInfo[i].JPStartDate, ItemsInfo[i].JPEndDate);
         
@@ -26,6 +23,11 @@ for (let i = 0; i < ItemsInfo.length; i++) {
     ItemsInfo[i].BannerLength = DateDiff(ItemsInfo[i].GlobalStartDate, ItemsInfo[i].GlobalEndDate);
     ItemsInfo[i].WeekDiff = Math.floor(DateDiff(Today, ItemsInfo[i].GlobalEndDate) / 7);
     ItemsInfo[i].MonthDiff = 12*(ItemsInfo[i].GlobalEndDate.getFullYear() - Today.getFullYear()) + (ItemsInfo[i].GlobalEndDate.getMonth() - Today.getMonth());
+
+    if (ItemsInfo[i].Disabled != true) {
+        CurrentBannerID = ItemsInfo[i].BannerID;
+        CurrentBannerItems.push(i);
+    };
 
     if (i + 1 >= ItemsInfo.length || CurrentBannerID != ItemsInfo[i+1].BannerID) {
         
@@ -77,12 +79,13 @@ for (let i = 0; i < ItemsInfo.length; i++) {
                 BannerName = GenericName;
             }
 
-            CurrentBannerItems = [];
 
-            };
+        };
 
-            BannerNames[CurrentBannerID] = `${BannerName}<br>
-                ${moment(ItemsInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(ItemsInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`
+        BannerNames[CurrentBannerID] = `${BannerName}<br>
+            ${moment(ItemsInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(ItemsInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`
+
+        CurrentBannerItems = [];
     };
 };
 
