@@ -496,7 +496,7 @@
                             $('#ScoutPlanningTableBody').append(NewRow);
                             $('#ScoutPlanningTableBody').sortable("refresh");
 
-                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems`).html($('#BannerTemplate').html()).val('').select2(Select2Config);
+                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems`).html($('#BannerTemplate').html()).select2(Select2Config);
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
 
                             SetParsleyValidations();
