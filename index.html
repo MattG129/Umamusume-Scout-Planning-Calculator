@@ -124,6 +124,13 @@
                 color: gray;
                 border-color: gray;
             }
+
+            .select2-container .select2-selection--multiple .select2-selection__choice {
+                max-width: 100%;
+                box-sizing: border-box;
+                white-space: normal;
+                word-wrap: break-word;
+            }
         </style>
 
         <div id='Header'></div>
@@ -453,7 +460,7 @@
                                 `<tr id="ScoutPlanRow${NewScoutPlanRowID}" data-scoutplan-rowid="${NewScoutPlanRowID}">
                                     <td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>
                                     <td>
-                                        <div class="ScoutPlanBanner"></div>
+                                        <div class="ScoutPlanBanner" data-banner-id="0"></div>
 
                                         <div class="OutOfOrderMessage TableValidation" style="color: #800000; display: none;">Banner end dates must be in chronological order.</div>
                                         <div class="DuplicateBannerMessage TableValidation" style="color: #800000; display: none;">Duplicate banner.</div>
@@ -489,14 +496,28 @@
                             $('#ScoutPlanningTableBody').append(NewRow);
                             $('#ScoutPlanningTableBody').sortable("refresh");
 
-                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems`).html($('#BannerTemplate').html()).val('').select2({
-                                placeholder: "Please Select"
-                            });
+                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems`).html($('#BannerTemplate').html()).val('').select2(Select2Config);
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
 
                             SetParsleyValidations();
 
                             NewScoutPlanRowID++;
+                        };
+
+                        let Select2Config = {
+                            closeOnSelect: false,
+                            placeholder: "Please Select",
+                            templateSelection: function (data) {
+                                return data.text.substring(0, data.text.length-25); // We won't need the date range once an item is selected since it will be displayed in the banner column.
+                            },
+                            matcher: function(params, data) {
+                                if (!data.disabled && ($.trim(params.term) == '' || data.text.toLowerCase().indexOf(params.term.toLowerCase()) > -1)) {
+                                    return data;
+                                }
+                                else {
+                                    return null;
+                                };
+                            }
                         };
 
                         $(function() {
@@ -532,8 +553,6 @@
                             clearTimeout(USPTTimeout);
 
                             USPTTimeout = setTimeout(function() {
-                                $('.ScoutPlanBanner').html('');
-                                // $('.ScoutPlanExchangePoints').show();
                                 $('.TableValidation').hide();
 
                                 let Banners = [];
@@ -542,23 +561,35 @@
 
                                     let ScoutItems = $(this).find('.ScoutPlanItems').select2('data');
 
-                                    if ( $(this).find('.ScoutPlanActive').is(':checked') && ScoutItems.length > 0 ) {
+                                    if ($(this).find('.ScoutPlanActive').is(':checked')) {
 
-                                        let FirstItem = ScoutItems[0].id
-                                        let BannerID = ItemsInfo[FirstItem].BannerID;
-                                        
-                                        for (let i = 1; i < ScoutItems.length; i++) {
-                                            if (ItemsInfo[ScoutItems[i].id].BannerID != BannerID) {
-
-                                                $(this).find('.ScoutPlanBanner').html('Items from multiple banners selected.').css('color', '#800000');
-
-                                                BannerID = 0;
-                                                break;
-                                            };
+                                        let BannerID = 0;
+                                        if (ScoutItems.length > 0) {
+                                            BannerID = ItemsInfo[(ScoutItems[0].id)].BannerID;
                                         };
 
+                                        if (BannerID != $(this).find('.ScoutPlanBanner').attr('data-banner-id')) {
+                                            if (BannerID == 0) {
+                                                $(this).find('.ScoutPlanBanner').html('');
+                                                $(this).find('.ScoutPlanItems option').prop('disabled', false);
+                                            }
+                                            else {
+                                                $(this).find('.ScoutPlanBanner').html(BannerNames[BannerID]);
+
+                                                for (let i = 0; i < ItemsInfo.length; i++) {
+                                                    if (ItemsInfo[i].BannerID != BannerID) {
+                                                        $(this).find(`.ScoutPlanItems option[value=${i}]`).prop('disabled', true);
+                                                    };
+                                                };
+                                            };
+
+                                            $(this).find('.ScoutPlanItems').select2('close').select2("destroy").select2(Select2Config)
+                                        };
+
+                                        $(this).find('.ScoutPlanBanner').attr('data-banner-id', BannerID);
+
                                         if (BannerID != 0) {
-                                            $(this).find('.ScoutPlanBanner').html(BannerNames[BannerID]).css('color', 'black');
+                                            let FirstItem = ScoutItems[0].id
 
                                             if (PreviousRowFirstItem != -1) {
                                                 if (ItemsInfo[FirstItem].GlobalEndDate < ItemsInfo[PreviousRowFirstItem].GlobalEndDate) {
@@ -731,12 +762,14 @@
 
                 FormValues.ScoutPlanArray = [];
                 $('tr[data-scoutplan-rowid]').each(function() {
-                    FormValues.ScoutPlanArray.push({
-                        Items:                    $(this).find('td .ScoutPlanItems').val(),
-                        ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
-                        Goal:              Number($(this).find('td .ScoutPlanGoal').val()),
-                        Active:                   $(this).find('td .ScoutPlanActive').is(':checked')
-                    });
+                    if ($(this).find('td .ScoutPlanItems').val().length > 0) {
+                        FormValues.ScoutPlanArray.push({
+                            Items:                    $(this).find('td .ScoutPlanItems').val(),
+                            ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
+                            Goal:              Number($(this).find('td .ScoutPlanGoal').val()),
+                            Active:                   $(this).find('td .ScoutPlanActive').is(':checked')
+                        });
+                    }
                 });
 
                 return FormValues
@@ -780,7 +813,7 @@
                     for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
                         let ScoutPlanBanner = JSONImport.ScoutPlanArray[i]
 
-                        let FirstItem = ScoutPlanBanner.Items[0]
+                        let FirstItem = ScoutPlanBanner.Items[0];
 
                         if (FirstItem <= 0 || FirstItem >= ItemsInfo.length) {
                             NewScoutPlanRowID++; // We want to keep this synced with i.
@@ -872,10 +905,15 @@
                 });
             };
 
-            $(function(){
+            $(function() {
                 // For some reason this is the only way I've been able to get the select2 to automatically resize on window resizing.
+                let ResizeTimeout;
                 $(window).on('resize', function() {
-                    $('.ScoutPlanItems').select2("destroy").select2({placeholder: "Please Select"});
+                    clearTimeout(ResizeTimeout);
+
+                    ResizeTimeout = setTimeout(function() {
+                        $('.ScoutPlanItems').select2("destroy").select2(Select2Config);
+                    }, 200);
                 });
 
                 SetParsleyValidations();
