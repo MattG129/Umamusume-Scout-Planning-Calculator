@@ -447,7 +447,10 @@ function ScoutPlanningCalculator(ScoutConfig) {
             let Banner = ItemsInfo[ ScoutPlan.Items[0] ] ;
             ScoutConfig.ActiveScoutTargets += ScoutPlan.Items.length;
 
-            let BannerPlan = { Items: [] };
+            let BannerPlan = {
+                Items: [],
+                ExchangePoints: ScoutPlan.ExchangePoints
+            };
             for (let j = 0; j < ScoutPlan.Items.length; j++) {
                 BannerPlan.Items.push({
                     ID: ScoutPlan.Items[j],
