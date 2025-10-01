@@ -4453,8 +4453,7 @@ const ItemsInfo = [
     JPStartDate: moment('9 Sept 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Sept 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
-    Rate: 0.0075,
-    Disabled: true
+    Rate: 0.0075
   },
   {
     Type: BannerTypes['Uma'].Value,
