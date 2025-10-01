@@ -442,26 +442,25 @@ function ScoutPlanningCalculator(ScoutConfig) {
 
     for (let i = 0; i < ScoutConfig.ScoutPlanArray.length; i++) {
         if (ScoutConfig.ScoutPlanArray[i].Active) {
-            ScoutConfig.ActiveScoutTargets++;
 
-            let Banner = ItemsInfo[ScoutConfig.ScoutPlanArray[i].Banner];
-            let PreviousScoutPlanEntry = ScoutConfig.ActiveScoutPlanArray[ScoutConfig.ActiveScoutPlanArray.length-1];
+            let ScoutPlan = ScoutConfig.ScoutPlanArray[i];
+            let Banner = ItemsInfo[ ScoutPlan.Items[0] ] ;
+            ScoutConfig.ActiveScoutTargets += ScoutPlan.Items.length;
 
-            if (i > 0 && Banner.BannerID == PreviousScoutPlanEntry.BannerID) {
-                PreviousScoutPlanEntry.Items.push({ID: ScoutConfig.ScoutPlanArray[i].Banner,  Goal: ScoutConfig.ScoutPlanArray[i].Goal});
-            }
-            else {
-                let BannerPlan = ScoutConfig.ScoutPlanArray[i];
-
-                BannerPlan.Items = [{ID: ScoutConfig.ScoutPlanArray[i].Banner,  Goal: ScoutConfig.ScoutPlanArray[i].Goal}];
-
-                Object.assign(BannerPlan, Banner);
-
-                let SavingsResults = SavingsCalculator(ScoutConfig, BannerPlan);
-                Object.assign(BannerPlan, SavingsResults);
-                
-                ScoutConfig.ActiveScoutPlanArray.push(BannerPlan);
+            let BannerPlan = { Items: [] };
+            for (let j = 0; j < ScoutPlan.Items.length; j++) {
+                BannerPlan.Items.push({
+                    ID: ScoutPlan.Items[j],
+                    Goal: ScoutPlan.Goals[ ScoutPlan.Items[j] ]
+                });
             };
+
+            Object.assign(BannerPlan, Banner);
+
+            let SavingsResults = SavingsCalculator(ScoutConfig, BannerPlan);
+            Object.assign(BannerPlan, SavingsResults);
+
+            ScoutConfig.ActiveScoutPlanArray.push(BannerPlan);
         };
     };
 
