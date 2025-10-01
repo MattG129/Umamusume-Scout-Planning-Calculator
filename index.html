@@ -535,7 +535,7 @@
 
                                     if (GoalsCell.find(`label[data-item-id=${ItemID}]`).length == 0) {
                                         GoalsCell.append($(`
-                                            <label data-item-id=${ItemID}>
+                                            <label class="form-label" data-item-id=${ItemID}>
                                                 ${ItemsInfo[ItemID].Name}
                                                 <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">
                                             </label>
@@ -807,13 +807,22 @@
 
                 FormValues.ScoutPlanArray = [];
                 $('tr[data-scoutplan-rowid]').each(function() {
-                    if ($(this).find('td .ScoutPlanItems').val().length > 0) {
-                        FormValues.ScoutPlanArray.push({
-                            Items:                    $(this).find('td .ScoutPlanItems').val(),
-                            ExchangePoints:    Number($(this).find('td .ScoutPlanExchangePoints').val()),
-                            Goal:              Number($(this).find('td .ScoutPlanGoal').val()),
-                            Active:                   $(this).find('td .ScoutPlanActive').is(':checked')
-                        });
+                    let Items = $(this).find('td .ScoutPlanItems').val();
+
+                    if (Items.length > 0) {
+                        let BannerPlan = {
+                            Items: Items,
+                            ExchangePoints: Number($(this).find('td .ScoutPlanExchangePoints').val()),
+                            Active: $(this).find('td .ScoutPlanActive').is(':checked')
+                        };
+
+                        BannerPlan.Goals = {};
+                        let GoalsCell = $(this).find('.ScoutPlanGoalsCell');
+                        for (let i = 0; i < Items.length; i++) {
+                            BannerPlan.Goals[Items[i]] = Number(GoalsCell.find(`label[data-item-id=${Items[i]}]`).find('.ScoutPlanGoal').val());
+                        };
+
+                        FormValues.ScoutPlanArray.push(BannerPlan);
                     }
                 });
 
@@ -856,8 +865,7 @@
 
                     let ExpiredActiveItems = [];
                     for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
-                        let ScoutPlanBanner = JSONImport.ScoutPlanArray[i]
-
+                        let ScoutPlanBanner = JSONImport.ScoutPlanArray[i];
                         let FirstItem = ScoutPlanBanner.Items[0];
 
                         if (FirstItem <= 0 || FirstItem >= ItemsInfo.length) {
@@ -873,13 +881,20 @@
                             };
                         }
                         else {
-
                             AddScoutPlanRow();
 
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanItems`).val(ScoutPlanBanner.Items);
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanGoal`).val(ScoutPlanBanner.Goal);
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
+
+                            UpdateGoalFields(RowID=i);
+
+                            let GoalsCell = $(`tr[data-scoutplan-rowid=${i}]`).find('.ScoutPlanGoalsCell');
+                            for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {
+                                let ItemID = ScoutPlanBanner.Items[j];
+
+                                $(`tr[data-scoutplan-rowid=${i}]`).find(`label[data-item-id=${ItemID}]`).find('.ScoutPlanGoal').val( ScoutPlanBanner.Goals[ItemID] );
+                            };
                         };
                     };
                     
