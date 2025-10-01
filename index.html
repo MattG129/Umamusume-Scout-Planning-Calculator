@@ -475,7 +475,7 @@
                                     </td>
                                     <td>
                                         <center>
-                                            <select class="ScoutPlanItems form-select" onchange="UpdateScoutPlanningTable();" data-parsley-required="true" multiple="multiple"></select>
+                                            <select class="ScoutPlanItems form-select" onchange="UpdateScoutPlanningTable(); UpdateGoalFields(${NewScoutPlanRowID});" data-parsley-required="true" multiple="multiple"></select>
                                         </center>
                                     </td>
                                     <td>
@@ -483,11 +483,7 @@
                                             <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
                                         </center>
                                     </td>
-                                    <td>
-                                        <center>
-                                            <input type="number" class="ScoutPlanGoal form-control" data-parsley-trigger="input" data-parsley-required="true" Value="1" data-parsley-min="1" min="1">
-                                        </center>
-                                    </td>
+                                    <td class="ScoutPlanGoalsCell"></td>
                                     <td class="td-label">
                                         <label class="td-label">
                                             <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateScoutPlanningTable();" checked>
@@ -526,6 +522,34 @@
                                     return null;
                                 };
                             }
+                        };
+                        
+                        function UpdateGoalFields(RowID) {
+                            let Items = $(`tr[data-scoutplan-rowid=${RowID}] .ScoutPlanItems`).val();
+                            let GoalsCell = $(`tr[data-scoutplan-rowid=${RowID}] .ScoutPlanGoalsCell`);
+                            let GoalLabels = GoalsCell.find('label'); // Using labels since we're gonna wrap the goal fields in them. This way we don't have to remove both.
+
+                            if (Items.length > GoalLabels.length) { // Add goal fields.
+                                for (let i = 0; i < Items.length; i++) {
+                                    let ItemID = Items[i];
+
+                                    if (GoalsCell.find(`label[data-item-id=${ItemID}]`).length == 0) {
+                                        GoalsCell.append($(`
+                                            <label data-item-id=${ItemID}>
+                                                ${ItemsInfo[ItemID].Name}
+                                                <input type="number" class="ScoutPlanGoal form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">
+                                            </label>
+                                        `))
+                                    };
+                                };
+                            }
+                            else if (Items.length < GoalLabels.length) { // Remove goal fields.
+                                GoalLabels.each(function() {
+                                    if (!Items.includes($(this).attr('data-item-id'))) {
+                                        $(this).remove();
+                                    };
+                                });
+                            };
                         };
 
                         $(function() {
