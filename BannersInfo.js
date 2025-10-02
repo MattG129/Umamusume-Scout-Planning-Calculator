@@ -297,12 +297,156 @@ const ItemsInfo = [
   },
   {
     Type: BannerTypes['Uma'].Value,
-    Name: 'Gray Week',
+    Name: 'Oguri Cap',
+    BannerID: 332,
     JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
     JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
-    IsNew: false,
-    Rate: 0.001765,
-    Disabled: true
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Mejiro McQueen',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Biwa Hayahide',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Mejiro McQueen (Anime Collab)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Curren Chan',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Seiun Sky',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Oguri Cap (Christmas)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Biwa Hayahide (Christmas)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Tamamo Cross',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Seiun Sky (Ballroom)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Curren Chan (Wedding)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Mejiro McQueen (Summer)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001765
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Gold Ship (Summer)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001764
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Tamamo Cross (Festival)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001764
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Hishi Miracle',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001764
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Gold Ship (Project L\'Arc)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001764
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Biwa Hayahide (Mecha)',
+    BannerID: 332,
+    JPStartDate: moment('29 Apr 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('20 May 2025', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.001764
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -1111,12 +1255,48 @@ const ItemsInfo = [
   },
   {
     Type: BannerTypes['Uma'].Value,
-    Name: 'Gochi Week',
+    Name: 'Hishi Amazon',
+    BannerID: 238,
     JPStartDate: moment('29 Apr 2024', "DD MMM YYYY").toDate(),
     JPEndDate: moment('9 May 2024', "DD MMM YYYY").toDate(),
-    IsNew: false,
-    Rate: 0.006,
-    Disabled: true
+    IsNew: false, 
+    Rate: 0.006
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Sakura Chiyono O',
+    BannerID: 238,
+    JPStartDate: moment('29 Apr 2024', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('9 May 2024', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.006
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Sakura Chiyono O (Ballroom)',
+    BannerID: 238,
+    JPStartDate: moment('29 Apr 2024', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('9 May 2024', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.006
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Hishi Amazon (Wedding)',
+    BannerID: 238,
+    JPStartDate: moment('29 Apr 2024', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('9 May 2024', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.006
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Katsuragi Ace',
+    BannerID: 238,
+    JPStartDate: moment('29 Apr 2024', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('9 May 2024', "DD MMM YYYY").toDate(),
+    IsNew: false, 
+    Rate: 0.006
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -2349,6 +2529,16 @@ const ItemsInfo = [
   },
   {
     Type: BannerTypes['Uma'].Value,
+    Name: 'Twin Turbo',
+    BannerID: 150,
+    JPStartDate: moment('23 Feb 2023', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('19 Mar 2023', "DD MMM YYYY").toDate(),
+    IsNew: false,
+    Rate: 0.1,
+    Disabled: true
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
     Name: 'Mr. C.B.',
     BannerID: 150,
     JPStartDate: moment('23 Feb 2023', "DD MMM YYYY").toDate(),
@@ -3488,6 +3678,7 @@ const ItemsInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Mejiro Ryan (SR stamina)',
+    BannerID: 75,
     JPStartDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3497,6 +3688,7 @@ const ItemsInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Admire Vega (SR guts)',
+    BannerID: 75,
     JPStartDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -3506,6 +3698,7 @@ const ItemsInfo = [
   {
     Type: BannerTypes['Card'].Value,
     Name: 'Sakura Bakushin O (SR power)',
+    BannerID: 75,
     JPStartDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
     JPEndDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
@@ -5047,5 +5240,6 @@ const ItemsInfo = [
 
 // Most group/banner names will be filled in dynamically but there are a few we want to manually assign so we will do that here.
 let BannerNames = {
-  64: '1st Anniversary Rerun'
+  64: '1st Anniversary Rerun',
+  332: 'Gray Week'
 };
