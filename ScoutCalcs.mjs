@@ -245,16 +245,16 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     // Club Rewards - Provides a reward each month based on your ranking.
     let ExpectedClubCarats = 0;
     switch (ScoutConfig.ExpectedClubRank) {
-        case 1:  ExpectedClubCarats = 3000; break;
-        case 2:  ExpectedClubCarats = 2400; break;
-        case 3:  ExpectedClubCarats = 2100; break;
-        case 4:  ExpectedClubCarats = 1800; break;
-        case 5:  ExpectedClubCarats = 1500; break;
-        case 6:  ExpectedClubCarats = 1200; break;
-        case 7:  ExpectedClubCarats = 900;  break;
-        case 8:  ExpectedClubCarats = 600;  break;
-        case 9:  ExpectedClubCarats = 300;  break;
-        case 10: ExpectedClubCarats = 150;  break;
+        case 1:  ExpectedClubCarats = 4500; break;
+        case 2:  ExpectedClubCarats = 3600; break;
+        case 3:  ExpectedClubCarats = 3150; break;
+        case 4:  ExpectedClubCarats = 2700; break;
+        case 5:  ExpectedClubCarats = 2250; break;
+        case 6:  ExpectedClubCarats = 1800; break;
+        case 7:  ExpectedClubCarats = 1350;  break;
+        case 8:  ExpectedClubCarats = 900;  break;
+        case 9:  ExpectedClubCarats = 450;  break;
+        case 10: ExpectedClubCarats = 225;  break;
         case 11: ExpectedClubCarats = 0;    break;
     };
     FC += ExpectedClubCarats * BannerPlan.MonthDiff;
