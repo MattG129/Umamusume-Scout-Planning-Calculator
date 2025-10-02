@@ -410,17 +410,17 @@
                                     <th style="width: 10%;">
                                         <!-- Vertical Grip -->
                                     </th>
-                                    <th style="width: 25%; min-width: 80px;">
+                                    <th style="width: 20%; min-width: 80px;">
                                         Banner
                                     </th>
-                                    <th style="width: 25%; min-width: 125px;"> <!-- TODO: Make the accel rate dynamic. -->
+                                    <th style="width: 20%; min-width: 125px;"> <!-- TODO: Make the accel rate dynamic. -->
                                         Scout Target <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (00:00). Dates are calculated based on the number of days between the Japanese server's launch and the banner's start date on that server. This number is then divided by the global acceleration rate (1.4) and is used to estimate the banner's global start date, based on the global server's launch date. The banner duration remains unchanged. For banners that have already been announced, the global dates will be entered manually."><i class="bi bi-question-circle" style="color: black;"></i></a>
+                                    </th>
+                                    <th style="width: 20%; min-width: 80px;">
+                                        Copies
                                     </th>
                                     <th style="width: 10%; min-width: 80px;">
                                         Exchange Points
-                                    </th>
-                                    <th style="width: 10%; min-width: 80px;">
-                                        Copies
                                     </th>
                                     <th style="width: 10%;">
                                         Active
@@ -478,12 +478,12 @@
                                             <select class="ScoutPlanItems form-select" onchange="UpdateScoutPlanningTable(); UpdateGoalFields(${NewScoutPlanRowID});" data-parsley-required="true" multiple="multiple"></select>
                                         </center>
                                     </td>
+                                    <td class="ScoutPlanGoalsCell"></td>
                                     <td>
                                         <center>
                                             <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
                                         </center>
                                     </td>
-                                    <td class="ScoutPlanGoalsCell"></td>
                                     <td class="td-label">
                                         <label class="td-label">
                                             <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateScoutPlanningTable();" checked>
@@ -491,7 +491,7 @@
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-danger" onclick="$('#ScoutPlanRow${NewScoutPlanRowID}').remove(); UpdateScoutPlanningTable();">
-                                            <i class="bi bi-x-lg" style=" font-weight: bold;"></i>
+                                            <i class="bi bi-x-lg" style="font-weight: bold;"></i>
                                         </button>
                                     </td>
                                 </tr>`
@@ -683,7 +683,9 @@
                         <tr>
                             <th style="width: 40%">Scout Target</th>
                             <th style="width: 20%">Copies</th>
-                            <th style="width: 20%">Maximum Possible Scouts</th>
+                            <th style="width: 20%">
+                                Max Scouts <a data-toggle="tooltip" title="An estimate of how many scouts you can make on the banner. This is assuming all prior items are acquired with as few scouts as possible."><i class="bi bi-question-circle" style="color: black;"></i></a>
+                            </th>
                             <th style="width: 20%">Chance of Success</th>
                         </tr>
                     </thead>
