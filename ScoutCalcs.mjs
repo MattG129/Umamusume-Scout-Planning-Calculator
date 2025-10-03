@@ -305,7 +305,7 @@ let CardTicketsSpent;
 function RunAndEvaluateScoutSimulations(ScoutConfig) {
     const Start = Date.now();
     let Successes = 0;
-    let ScoutItemResults = new Array(ScoutConfig.ActiveScoutTargets).fill(0);
+    let ScoutItemResults = new Array(ScoutConfig.ActiveScoutItems).fill(0);
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
@@ -354,16 +354,16 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
 function ScoutSimulator(ScoutConfig, BannerPlan) {
     let ScoutGoals = [];
     let ScoutItemsRemaining = 0;
-    let TargetRates = [];
-    let SumOfTargetRates = 0;
+    let ItemRates = [];
+    let SumOfItemRates = 0;
     for (let i = 0; i < BannerPlan.Items.length; i++) {
         let Item = BannerPlan.Items[i];
 
         ScoutGoals.push(Item.Goal);
         ScoutItemsRemaining += Item.Goal;
 
-        TargetRates.push(ItemsInfo[Item.ID].Rate);
-        SumOfTargetRates += ItemsInfo[Item.ID].Rate;
+        ItemRates.push(ItemsInfo[Item.ID].Rate);
+        SumOfItemRates += ItemsInfo[Item.ID].Rate;
     };
 
     let Scouts = 0;
@@ -381,14 +381,14 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
         Scouts++;
         ExchangePoints++;
 
-        NonFiveStarChance *= (1 - SumOfTargetRates);
+        NonFiveStarChance *= (1 - SumOfItemRates);
 
         if (FiveStarChance > NonFiveStarChance) {
             let CumulativeItemChance = 0;
-            let ScoutRandomizer = Math.random() * SumOfTargetRates;
+            let ScoutRandomizer = Math.random() * SumOfItemRates;
 
             for (let i = 0; i < ScoutGoals.length; i++) {
-                CumulativeItemChance += TargetRates[i];
+                CumulativeItemChance += ItemRates[i];
 
                 if (ScoutRandomizer < CumulativeItemChance) {
                     if (ScoutGoals[i] > 0) {
@@ -437,7 +437,7 @@ function CalcFCScouts(ScoutItemType, Scouts, MaxPCScouts, MaxPinkTicketScouts) {
 };
 
 function ScoutPlanningCalculator(ScoutConfig) {
-    ScoutConfig.ActiveScoutTargets = 0;
+    ScoutConfig.ActiveScoutItems = 0;
     ScoutConfig.ActiveScoutPlanArray = [];
 
     for (let i = 0; i < ScoutConfig.ScoutPlanArray.length; i++) {
@@ -445,7 +445,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
 
             let ScoutPlan = ScoutConfig.ScoutPlanArray[i];
             let Banner = ItemsInfo[ ScoutPlan.Items[0] ] ;
-            ScoutConfig.ActiveScoutTargets += ScoutPlan.Items.length;
+            ScoutConfig.ActiveScoutItems += ScoutPlan.Items.length;
 
             let BannerPlan = {
                 Items: [],
@@ -486,18 +486,12 @@ function ScoutPlanningCalculator(ScoutConfig) {
         for (let j = 0; j < BannerPlan.Items.length; j++) {
             
             let Item = BannerPlan.Items[j];
-            let BannerText;
             let MaxPCScouts = Math.min( DateDiff(Today, BannerPlan.GlobalEndDate), BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - PCScouts );
 
             if (First) {
-                BannerText = `${ItemsInfo[Item.ID].Name}<br>${moment(ItemsInfo[Item.ID].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(ItemsInfo[Item.ID].GlobalEndDate, "YYYY-MM-DD").format('L')}`
-
                 MaxScouts = MaxPCScouts;
                 MaxScouts += BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
                 MaxScouts += BannerPlan.MaxFCScouts - FCScouts;
-            }
-            else {
-                BannerText = ItemsInfo[Item.ID].Name;
             }
 
             let ThisItemPCScouts = 0;
@@ -517,17 +511,17 @@ function ScoutPlanningCalculator(ScoutConfig) {
             };
             PCScouts += ThisItemPCScouts;
 
-            // Won't display max scouts for 2nd+ item(s) in group since its repeat info and not showing it can be used as a visual indicator of groups.
-            let NewRow = $(
-                `<tr class="ScoutPlanResultsRow">
-                    <td>${BannerText}</td>
-                    <td>${Item.Goal}</td>
-                    <td>${First ? MaxScouts : ''}</td>
-                    <td>${ScoutsResults.ScoutItemResults[ScoutItemNumber]}</td>
-                </tr>`
-            );
+            let NewRow = '<tr class="ScoutPlanResultsRow">'
+            if (First) {
+                NewRow +=  `<td rowspan="${BannerPlan.Items.length}">${BannerNames[ ItemsInfo[Item.ID].BannerID ]}</td>
+                            <td rowspan="${BannerPlan.Items.length}">${MaxScouts}</td>`
+            };
+            NewRow +=      `<td>${ItemsInfo[Item.ID].Name}</td>
+                            <td>${Item.Goal}</td>
+                            <td>${ScoutsResults.ScoutItemResults[ScoutItemNumber]}</td>
+                          </tr>`
 
-            $('#ScoutPlanningResultsBody').append(NewRow);
+            $('#ScoutPlanningResultsBody').append($(NewRow));
 
             ScoutItemNumber++;
             First = false;
