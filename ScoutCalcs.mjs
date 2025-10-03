@@ -13,9 +13,10 @@ let CurrentBannerItems = [];
 for (let i = 0; i < ItemsInfo.length; i++) {
     if (!Object.hasOwn(ItemsInfo[i], 'GlobalStartDate')) {
         let BannerLength = DateDiff(ItemsInfo[i].JPStartDate, ItemsInfo[i].JPEndDate);
-        
+
         let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, ItemsInfo[i].JPStartDate);
         let GlobalLaunchBannerStartDateDiff = Math.round(JPLaunchBannerStartDateDiff/GlobalAccelRate);
+
         ItemsInfo[i].GlobalStartDate = DateAdd(GlobalLaunchDate, GlobalLaunchBannerStartDateDiff);
         ItemsInfo[i].GlobalEndDate = DateAdd(ItemsInfo[i].GlobalStartDate, BannerLength);
     };
