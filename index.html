@@ -561,7 +561,15 @@
                                 update: function() {UpdateScoutPlanningTable()}
                             });
 
-                            $("#AddRowButton").click(function() {AddScoutPlanRow();});
+                            $("#AddRowButton").click(function() {
+                                if ( $('tr[data-scoutplan-rowid]').length >= 100 ) {
+                                    swal({icon: 'error', text: 'Row limit reached.'});
+
+                                    return;
+                                };
+
+                                AddScoutPlanRow();
+                            });
 
                             if (localStorage.getItem("SessionState") == null) {
                                 // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners and select up to 2 items from that banner.
