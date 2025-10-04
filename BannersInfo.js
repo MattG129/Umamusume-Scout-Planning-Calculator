@@ -5290,8 +5290,8 @@ const ItemsInfo = [
 
 // Most group/banner names will be filled in dynamically but there are a few we want to manually assign so we will do that here.
 let BannerNames = {
-  64: '1st Anniversary Rerun',
-  164: 'Gal Week',
-  238: 'Gochi Week',
-  332: 'Gray Week'
+  63: '1st Anniversary Rerun',
+  163: 'Gal Week',
+  226: 'Gochi Week',
+  282: 'Gray Week'
 };
