@@ -139,6 +139,11 @@
             .select2-search__field::placeholder {
                 text-align: center;
             }
+
+            .TableValidation {
+                color: #800000;
+                display: none;
+            }
         </style>
 
         <div id='Header'></div>
@@ -223,7 +228,7 @@
 
                         <div class="col-md-6">
                             <h3>
-                                Champions Meeting <a data-toggle="tooltip" title="The calculator will assume that Champions Meeting rewards will be given once per month and at the end of the month."><i class="bi bi-question-circle"></i></a>
+                                Champions Meeting <a data-toggle="tooltip" title="The calculator will assume that Champions Meeting rewards are given once per month, at the end of the month if not already claimed."><i class="bi bi-question-circle"></i></a>
                             </h3>
 
                             <div class="row">
@@ -319,7 +324,7 @@
                     <div>
                         <hr>
                         <h2>
-                            Events <a data-toggle="tooltip" title="The calculator will assume that Event rewards will be given once per month and at the end of the month."><i class="bi bi-question-circle"></i></a>
+                            Events <a data-toggle="tooltip" title="The calculator will assume that Event rewards are given once per month, at the end of the month if not already claimed."><i class="bi bi-question-circle"></i></a>
                         </h2>
                         <br>
 
@@ -470,13 +475,11 @@
                                     <td>
                                         <div class="ScoutPlanBanner" data-banner-id="0"></div>
 
-                                        <div class="OutOfOrderMessage TableValidation" style="color: #800000; display: none;">Banner end dates must be in chronological order.</div>
-                                        <div class="DuplicateBannerMessage TableValidation" style="color: #800000; display: none;">Duplicate banner.</div>
+                                        <div class="OutOfOrderMessage TableValidation">Banner end dates must be in chronological order.</div>
+                                        <div class="DuplicateBannerMessage TableValidation">Duplicate banner.</div>
                                     </td>
                                     <td>
-                                        <center>
-                                            <select class="ScoutPlanItems form-select" onchange="UpdateScoutPlanningTable(); UpdateGoalFields(${NewScoutPlanRowID});" data-parsley-required="true" multiple="multiple"></select>
-                                        </center>
+                                        <select class="ScoutPlanItems form-select" onchange="UpdateScoutPlanningTable(); UpdateGoalFields(${NewScoutPlanRowID});" data-parsley-required="true" multiple="multiple"></select>
                                     </td>
                                     <td class="ScoutPlanGoalsCell"></td>
                                     <td>
@@ -524,7 +527,7 @@
                                 };
                             }
                         };
-                        
+
                         function UpdateGoalFields(RowID) {
                             let Items = $(`tr[data-scoutplan-rowid=${RowID}] .ScoutPlanItems`).val();
                             let GoalsCell = $(`tr[data-scoutplan-rowid=${RowID}] .ScoutPlanGoalsCell`);
@@ -540,7 +543,7 @@
                                                 ${ItemsInfo[ItemID].Name}
                                                 <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">
                                             </label>
-                                        `))
+                                        `));
                                     };
                                 };
                             }
@@ -572,7 +575,7 @@
                             });
 
                             if (localStorage.getItem("SessionState") == null) {
-                                // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners and select up to 2 items from that banner.
+                                // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners and select up to 3 items from that banner.
                                 let First = true;
                                 let Selected = [];
                                 let PreviousBannerID = 0;
@@ -593,7 +596,7 @@
                                             AddScoutPlanRow();
                                         };
 
-                                        if (Selected.length < 2) {
+                                        if (Selected.length < 3) {
                                             Selected.push(i);
                                         };
                                     };
@@ -663,7 +666,16 @@
                                     };
                                 });
 
-                                UpdateCalculateButton();
+                                if (
+                                    $('tr[data-scoutplan-rowid]:not(.InactiveScoutPlanRow)').length > 0
+                                    && $('tr[data-scoutplan-rowid]').find('.TableValidation:visible').length == 0
+                                ) {
+                                    $("#Calculate").removeClass('disabled');
+                                }
+                                else {
+                                    $("#Calculate").addClass('disabled');
+                                };
+
                             }, 10)
                         };
                     </script>
@@ -689,11 +701,11 @@
                 <table id="ScoutPlanningResultsTable" class="table table-bordered table-striped ScoutResults" style="font-size: min(3vw, 16px); text-align: center; border: 1px; display: none;">
                     <thead>
                         <tr>
-                            <th style="width: 20%">Banner</th>
-                            <th style="width: 20%">
+                            <th style="width: 25%">Banner</th>
+                            <th style="width: 10%">
                                 Max Scouts <a data-toggle="tooltip" title="An estimate of how many scouts you can make on the banner. This is assuming all prior items are acquired with as few scouts as possible."><i class="bi bi-question-circle" style="color: black;"></i></a>
                             </th>
-                            <th style="width: 20%">Scout Item(s)</th>
+                            <th style="width: 25%">Scout Item(s)</th>
                             <th style="width: 20%">Copies</th>
                             <th style="width: 20%">Chance of Success</th>
                         </tr>
@@ -721,7 +733,7 @@
                     Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
 
                     $('#ScoutPlanningLoadingMessage').remove();
-                    UpdateScoutPlanningTable();
+                    UpdateScoutPlanningTable(); // TODO: I don't think this call is needed.
                 };
             });
 
@@ -737,25 +749,6 @@
                 return InvalidFields;
             };
 
-            let ResultsLoaded = false;
-            function UpdateCalculateButton() {
-                let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
-
-                if (
-                    $('tr[data-scoutplan-rowid]:not(.InactiveScoutPlanRow)').length > 0
-                    && $('tr[data-scoutplan-rowid]').find('.TableValidation:visible').length == 0
-                ) {
-                    $("#Calculate").html(CalculateText);
-                    $("#Calculate").removeClass('disabled');
-                }
-                else {
-                    $("#Calculate").html(CalculateText);
-                    $("#Calculate").addClass('disabled');
-                };
-            };
-
-            UpdateCalculateButton();
-
             $("#Calculate").on('click', function() {
                 $('.ScoutResults').hide();
 
@@ -768,17 +761,17 @@
                     };
                 }
                 else {
-                    setTimeout(function () {$("#Calculate").hide()}, 0);
+                    $("#Calculate").hide();
 
                     $('#LoadingGroup').show();
 
                     $('html, body').animate({scrollTop: $("#LoadingGroup").offset().top, easing: 'linear'}, 100);
 
                     setTimeout(function () {
-                        ScoutPlanningCalculator(CompileForm());
+                        let ScoutConfig = CompileForm();
+                        ScoutPlanningCalculator(ScoutConfig);
 
-                        ResultsLoaded = true;
-                        UpdateCalculateButton();
+                        $("#Calculate").html('Recalculate');
 
                         $('#LoadingGroup').hide();
 
@@ -840,7 +833,7 @@
             };
 
             function Import(RunCalcs, ImportState, Scroll) {
-                let isValidImport = true;
+                let ValidImport = true;
                 let JSONImport;
 
                 try {
@@ -848,13 +841,13 @@
 
                     // Since some of the import code explicitly references the scout plan array it needs to be defined.
                     if (JSONImport.ScoutPlanArray == undefined) {
-                        isValidImport = false;
+                        ValidImport = false;
                     };
                 } catch (error) {
-                    isValidImport = false;
+                    ValidImport = false;
                 };
 
-                if (!isValidImport) {
+                if (!ValidImport) {
                     $('#InvalidImportMessage').show();
                 }
                 else {
@@ -897,9 +890,9 @@
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
                             $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
 
-                            /* This is similar to the code used by UpdateGoalFields to add a goal field, but we removed some if statements that wouldn't be needed in this
-                            context, added the ability the specify goal value (instead of it defaulting to 1), and we want to use the item array from the import, as this will
-                            allow us to order the goal fields correctly. */
+                            /* This is similar to the code used by UpdateGoalFields to add a goal field, but we removed some if statements that wouldn't be
+                            needed in this context, added the ability the specify goal value (instead of it defaulting to 1), and we want to use the item array
+                            from the import, as this will allow us to order the goal fields correctly. */
                             let GoalsCell = $(`tr[data-scoutplan-rowid=${i}]`).find('.ScoutPlanGoalsCell');
                             for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {
                                 let ItemID = ScoutPlanBanner.Items[j];
