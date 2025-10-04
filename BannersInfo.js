@@ -1,9 +1,17 @@
 const BannerTypes = {
-    Uma:   {Value: 1},
-    Card:  {Value: 2}
+    Uma:  {Value: 1},
+    Card: {Value: 2}
 };
 
-const ItemsInfo = [
+// Most group/banner names will be filled in dynamically but there are a few we want to manually assign so we will do that here.
+const BannerNames = {
+  63: '1st Anniversary Rerun',
+  163: 'Gal Week',
+  226: 'Gochi Week',
+  282: 'Gray Week'
+};
+
+let ItemsInfo = [
   {
     Type: BannerTypes['Uma'].Value,
     Name: 'Believe',
@@ -5287,11 +5295,3 @@ const ItemsInfo = [
     Disabled: true
   }
 ].reverse();
-
-// Most group/banner names will be filled in dynamically but there are a few we want to manually assign so we will do that here.
-let BannerNames = {
-  63: '1st Anniversary Rerun',
-  163: 'Gal Week',
-  226: 'Gochi Week',
-  282: 'Gray Week'
-};

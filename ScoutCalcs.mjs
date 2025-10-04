@@ -52,6 +52,9 @@ for (let i = 0; i < ItemsInfo.length; i++) {
     };
 
     if (i + 1 == ItemsInfo.length || Item.BannerID != ItemsInfo[i+1].BannerID) {
+        /* If the banner does not already have a specified name, then we will check if there is a consistent suffix across the banner items,
+        such as (Christmas) or (Summer). If there is then we will use that for the banner name. If there isn't, then we will just use the names
+        of each item in the banner. We will lastly append the banner's date range to it's name. */
         if (!Object.hasOwn(BannerNames, Item.BannerID)) {
             if (ConsistentSuffix && CurrentBannerItemCount > 1 && CurrentItemSuffix.substring(0, 2) != 'SR' && CurrentItemSuffix.substring(0, 3) != 'SSR') {
                 BannerNames[Item.BannerID] = CurrentItemSuffix;
@@ -145,8 +148,9 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     FC += 150 * BannerPlan.WeekDiff;
 
-    // Team Trials - Provides a reward each week based on your class.
-    let TeamTrialCarats = 0;
+    /* Team Trials - Provides a reward each Monday based on your class. The day of the week function will set Monday as 1 and Sunday as 7. This means
+    that if the current DayOfWeek is greater than the end date's DayOfWeek then we must loop around to a Monday, one more time, in order to reach the end date. */
+    let TeamTrialCarats;
     switch (ScoutConfig.TeamTrialsClass) {
         case 1: TeamTrialCarats = 0;   break;
         case 2: TeamTrialCarats = 35;  break;
@@ -198,20 +202,17 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     // We don't need to run the function for round 3 since its just one race. Round 3 will also award pink tickets.
     // League: 1 = Open, 2 = Graded
     // Group: 1 = A, 2 = B
-    if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 1) {
-        
+    if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 1) {        
         UmaTickets  += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
         CardTickets += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
         FC          += NumberOfCMs * [900, 700, 500][ScoutConfig.CMR3Placement-1];
     }
-    else if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 2) {
-        
+    else if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 2) { 
         UmaTickets  += NumberOfCMs * [2, 2, 1][ScoutConfig.CMR3Placement-1];
         CardTickets += NumberOfCMs * [1, 0, 0][ScoutConfig.CMR3Placement-1];
         FC          += NumberOfCMs * [500, 300, 200][ScoutConfig.CMR3Placement-1];
     }
     else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 1) {
-
         UmaTickets  += NumberOfCMs * [5, 4, 3][ScoutConfig.CMR3Placement-1];
         CardTickets += NumberOfCMs * [5, 4, 3][ScoutConfig.CMR3Placement-1];
         FC          += NumberOfCMs * [2000, 1500, 1000][ScoutConfig.CMR3Placement-1];
@@ -244,10 +245,11 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     for (let i = 0; i < ItemsInfo.length; i++) {
         if (
             ItemsInfo[i].GlobalStartDate > Today
+            && ItemsInfo[i].Disabled != true
             && ItemsInfo[i].GlobalStartDate <= BannerPlan.GlobalEndDate
             && ItemsInfo[i].IsNew
             && ItemsInfo[i].Type == BannerTypes['Uma'].Value
-            && ItemsInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma that's already been released.
+            && ItemsInfo[i].Name.at(-1) != ')' // Hacky way of making sure this isn't an alternate version of an Uma that's already been released. ex: Oguri Cap (Christmas)
         ) {                    
             FC += 80
         }
@@ -255,9 +257,8 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
 
     /* Paid Carats are a paid currency that can be converted to Free Carats at a 1:1 rate. They can also be used to make a heavily discounted
     scout (50 PC), once per day. For simplicity's sake, the calculator will currently only allow these to be used on the once daily scout. */
-    // Note that the MaxPCScouts does not factor in how many pulls could be made given the banner's duration, but instead focuses on how many PC scouts could possibly be made all together by it's end date.
+    // MaxPCScouts does not focus on how many pulls could be made given the banner's duration, but instead focuses on how many PC scouts could possibly be made all together by it's end date.
     let MaxPCScouts = Math.floor(ScoutConfig.PC/50);
-
 
     // A monthly purchase that will reward 500 PC (10 scouts) upfront and 50 FC every day for the next 30 days.
     if (ScoutConfig.HasDailyCaratPack && BannerPlan.GlobalEndDate >= moment(ScoutConfig.NextCaratPackRenewalDate)) {
@@ -278,12 +279,11 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
 
 let TotalFCScouts;
 let TotalPCScouts;
-
 let UmaTicketsSpent;
 let CardTicketsSpent;
 
 function RunAndEvaluateScoutSimulations(ScoutConfig) {
-    const Start = Date.now();
+    let Start = Date.now();
     let Successes = 0;
     let ScoutItemResults = new Array(ScoutConfig.ActiveScoutItems).fill(0);
 
@@ -297,10 +297,12 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
         let ScoutItemNumber = 0;
         let MissedScoutItems = false;
         for (let i = 0; i < ScoutConfig.ActiveScoutPlanArray.length; i++) {
-            let SimulationResults = ScoutSimulator(ScoutConfig, ScoutConfig.ActiveScoutPlanArray[i]);
 
-            for (let j = 0; j < SimulationResults.length; j++) {
-                if (SimulationResults[j] > 0) {
+            // An array that lists how many items are still needed to reach each goal.
+            let ItemsRemaining = ScoutSimulator(ScoutConfig, ScoutConfig.ActiveScoutPlanArray[i]);
+
+            for (let j = 0; j < ItemsRemaining.length; j++) {
+                if (ItemsRemaining[j] > 0) {
                     MissedScoutItems = true;
                 }
                 else {
@@ -311,7 +313,7 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
             };
         };
 
-        if (MissedScoutItems == false) {
+        if (!MissedScoutItems) {
             Successes++
         };
 
@@ -332,15 +334,15 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
 };
 
 function ScoutSimulator(ScoutConfig, BannerPlan) {
-    let ScoutGoals = [];
-    let ScoutItemsRemaining = 0;
+    let ItemsRemaining = [];
+    let TotalItemsRemaining = 0;
     let ItemRates = [];
     let SumOfItemRates = 0;
     for (let i = 0; i < BannerPlan.Items.length; i++) {
         let Item = BannerPlan.Items[i];
 
-        ScoutGoals.push(Item.Goal);
-        ScoutItemsRemaining += Item.Goal;
+        ItemsRemaining.push(Item.Goal);
+        TotalItemsRemaining += Item.Goal;
 
         ItemRates.push(ItemsInfo[Item.ID].Rate);
         SumOfItemRates += ItemsInfo[Item.ID].Rate;
@@ -367,13 +369,13 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
             let CumulativeItemChance = 0;
             let ScoutRandomizer = Math.random() * SumOfItemRates;
 
-            for (let i = 0; i < ScoutGoals.length; i++) {
+            for (let i = 0; i < ItemsRemaining.length; i++) {
                 CumulativeItemChance += ItemRates[i];
 
                 if (ScoutRandomizer < CumulativeItemChance) {
-                    if (ScoutGoals[i] > 0) {
-                        ScoutGoals[i] -= 1;
-                        ScoutItemsRemaining -= 1;
+                    if (ItemsRemaining[i] > 0) {
+                        ItemsRemaining[i] -= 1;
+                        TotalItemsRemaining -= 1;
                     };
                     break;
                 };
@@ -383,21 +385,21 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
             NonFiveStarChance = 1;
         };
 
-        if (ScoutItemsRemaining - Math.floor(ExchangePoints/200) <= 0) {
+        if (TotalItemsRemaining - Math.floor(ExchangePoints/200) <= 0) {
             break;
         };
     };
 
-    for (let i = 0; i < ScoutGoals.length; i++) {
-        while (ScoutGoals[i] > 0 && ExchangePoints >= 200) {
-            ScoutGoals[i] -= 1;
+    for (let i = 0; i < ItemsRemaining.length; i++) {
+        while (ItemsRemaining[i] > 0 && ExchangePoints >= 200) {
+            ItemsRemaining[i] -= 1;
             ExchangePoints -= 200;
         };
     };
 
     CalcFCScouts(BannerPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
 
-    return ScoutGoals;
+    return ItemsRemaining;
 };
 
 // Since we will want to use both paid carats and pink tickets first, this function will determine how many free carats were actually used.
@@ -424,8 +426,6 @@ function ScoutPlanningCalculator(ScoutConfig) {
         if (ScoutConfig.ScoutPlanArray[i].Active) {
 
             let ScoutPlan = ScoutConfig.ScoutPlanArray[i];
-            let Banner = ItemsInfo[ ScoutPlan.Items[0] ] ;
-            ScoutConfig.ActiveScoutItems += ScoutPlan.Items.length;
 
             let BannerPlan = {
                 Items: [],
@@ -438,12 +438,13 @@ function ScoutPlanningCalculator(ScoutConfig) {
                 });
             };
 
-            Object.assign(BannerPlan, Banner);
+            Object.assign(BannerPlan, ItemsInfo[ScoutPlan.Items[0]]); // We can use item 0 since all of them will have the same date info.
 
             let SavingsResults = SavingsCalculator(ScoutConfig, BannerPlan);
             Object.assign(BannerPlan, SavingsResults);
 
             ScoutConfig.ActiveScoutPlanArray.push(BannerPlan);
+            ScoutConfig.ActiveScoutItems += ScoutPlan.Items.length;
         };
     };
 
@@ -467,10 +468,11 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
 
         let First = true;
         let MaxScouts;
+        let ThisBannerPCScouts = 0;
+        let MaxPCScouts = Math.min( DateDiff(Today, BannerPlan.GlobalEndDate), BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - PCScouts );
         for (let j = 0; j < BannerPlan.Items.length; j++) {
-            
+
             let Item = BannerPlan.Items[j];
-            let MaxPCScouts = Math.min( DateDiff(Today, BannerPlan.GlobalEndDate), BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - PCScouts );
 
             if (First) {
                 MaxScouts = MaxPCScouts;
@@ -478,10 +480,9 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
                 MaxScouts += BannerPlan.MaxFCScouts - FCScouts;
             };
 
-            let ThisItemPCScouts = 0;
             for (let k = 0; k < Item.Goal; k++) {
-                if (MaxPCScouts > ThisItemPCScouts) {
-                    ThisItemPCScouts += 1;
+                if (MaxPCScouts > ThisBannerPCScouts) {
+                    ThisBannerPCScouts += 1;
                 }
                 else if (BannerPlan.Type == BannerTypes.Uma.Value && BannerPlan.MaxPinkTicketScouts > UmaTicketScouts) {
                     UmaTicketScouts += 1;
@@ -493,7 +494,6 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
                     FCScouts += 1;
                 };
             };
-            PCScouts += ThisItemPCScouts;
 
             let NewRow = '<tr class="ScoutPlanResultsRow">'
             if (First) {
@@ -510,6 +510,7 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
             ScoutItemNumber++;
             First = false;
         };
+        PCScouts += ThisBannerPCScouts;
     };
 
     $('#ScoutPlanningResultsTable tfoot').append($(
