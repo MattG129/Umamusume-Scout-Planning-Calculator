@@ -775,10 +775,10 @@
                     $('html, body').animate({scrollTop: $("#LoadingGroup").offset().top, easing: 'linear'}, 100);
 
                     setTimeout(function () {
-                        if (ScoutPlanningCalculator(CompileForm()).Success) {
-                            ResultsLoaded = true;
-                            UpdateCalculateButton();
-                        };
+                        ScoutPlanningCalculator(CompileForm());
+
+                        ResultsLoaded = true;
+                        UpdateCalculateButton();
 
                         $('#LoadingGroup').hide();
 

@@ -447,8 +447,12 @@ function ScoutPlanningCalculator(ScoutConfig) {
         };
     };
 
-    ScoutsResults = RunAndEvaluateScoutSimulations(ScoutConfig);
+    let ScoutsResults = RunAndEvaluateScoutSimulations(ScoutConfig);
 
+    RenderScoutResults(ScoutConfig, ScoutsResults);
+};
+
+function RenderScoutResults(ScoutConfig, ScoutsResults) {
     $('#ScoutPlanningResultsTable .ScoutPlanResultsRow').remove();
 
     let PCScouts = 0;
@@ -472,7 +476,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
                 MaxScouts = MaxPCScouts;
                 MaxScouts += BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
                 MaxScouts += BannerPlan.MaxFCScouts - FCScouts;
-            }
+            };
 
             let ThisItemPCScouts = 0;
             for (let k = 0; k < Item.Goal; k++) {
@@ -515,6 +519,4 @@ function ScoutPlanningCalculator(ScoutConfig) {
     ));
 
     $('#ScoutPlanningResultsTable').show();
-
-    return {Success: true};
 };
