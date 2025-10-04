@@ -432,19 +432,23 @@ function ScoutPlanningCalculator(ScoutConfig) {
                 ExchangePoints: ScoutPlan.ExchangePoints
             };
             for (let j = 0; j < ScoutPlan.Items.length; j++) {
-                BannerPlan.Items.push({
-                    ID: ScoutPlan.Items[j],
-                    Goal: ScoutPlan.Goals[ ScoutPlan.Items[j] ]
-                });
+                if (ScoutPlan.Goals[ScoutPlan.Items[j]] > 0) {
+                    BannerPlan.Items.push({
+                        ID: ScoutPlan.Items[j],
+                        Goal: ScoutPlan.Goals[ScoutPlan.Items[j]]
+                    });
+                };
             };
 
-            Object.assign(BannerPlan, ItemsInfo[ScoutPlan.Items[0]]); // We can use item 0 since all of them will have the same date info.
+            if (BannerPlan.Items.length > 0) {
+                Object.assign(BannerPlan, ItemsInfo[ScoutPlan.Items[0]]); // We can use item 0 since all of them will have the same date info.
 
-            let SavingsResults = SavingsCalculator(ScoutConfig, BannerPlan);
-            Object.assign(BannerPlan, SavingsResults);
+                let SavingsResults = SavingsCalculator(ScoutConfig, BannerPlan);
+                Object.assign(BannerPlan, SavingsResults);
 
-            ScoutConfig.ActiveScoutPlanArray.push(BannerPlan);
-            ScoutConfig.ActiveScoutItems += ScoutPlan.Items.length;
+                ScoutConfig.ActiveScoutPlanArray.push(BannerPlan);
+                ScoutConfig.ActiveScoutItems += ScoutPlan.Items.length;
+            };
         };
     };
 

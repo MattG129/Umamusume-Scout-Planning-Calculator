@@ -469,7 +469,7 @@
                                         <div class="DuplicateBannerMessage TableValidation">Duplicate banner.</div>
                                     </td>
                                     <td>
-                                        <select class="ScoutPlanItems form-select" onchange="UpdateScoutPlanningTable(); UpdateGoalFields(${NewScoutPlanRowID});" data-parsley-required="true" multiple="multiple"></select>
+                                        <select class="ScoutPlanItems form-select" onchange="UpdateScoutPlanningTable(); UpdateGoalFields(${NewScoutPlanRowID});" multiple="multiple"></select>
                                     </td>
                                     <td class="ScoutPlanGoalsCell"></td>
                                     <td>
@@ -531,7 +531,7 @@
                                         GoalsCell.append($(`
                                             <label class="form-label" data-item-id=${ItemID}>
                                                 ${ItemsInfo[ItemID].Name}
-                                                <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">
+                                                <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="1">
                                             </label>
                                         `));
                                     };
@@ -730,7 +730,7 @@
             function getInvalidFields() {
                 let InvalidFields = [];
                 
-                $('input:not([type="checkbox"]), select').each(function() {
+                $('input:not([type="checkbox"])').each(function() {
                     if (!$(this).parsley().isValid() && $(this).is(":visible")) {
                         InvalidFields.push($(this).attr('id'));
                     };
@@ -890,7 +890,7 @@
                                 GoalsCell.append($(`
                                     <label class="form-label" data-item-id=${ItemID}>
                                         ${ItemsInfo[ItemID].Name}
-                                        <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="${ScoutPlanBanner.Goals[ItemID]}">
+                                        <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="${ScoutPlanBanner.Goals[ItemID]}">
                                     </label>
                                 `));
                             };
@@ -959,7 +959,7 @@
                     };
                 });
 
-                $('input:not([type="checkbox"]), select').each(function() {
+                $('input:not([type="checkbox"])').each(function() {
                     $(this).parsley().validate();
                 });
             };
