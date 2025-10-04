@@ -7,85 +7,64 @@ const JPLaunchDate = moment('23 Feb 2021', "DD MMM YYYY").toDate()
 const GlobalLaunchDate = moment('25 Jun 2025', "DD MMM YYYY").toDate()
 const GlobalAccelRate = 1.4;
 
-let CurrentBannerID = 0;
-let CurrentBannerItems = [];
+let FirstBannerItem = true;
+let GenericName;
+let CurrentItemSuffix;
+let PreviousItemSuffix;
+let ConsistentSuffix = true;
+let CurrentBannerItemCount = 0;
 
 for (let i = 0; i < ItemsInfo.length; i++) {
-    if (!Object.hasOwn(ItemsInfo[i], 'GlobalStartDate')) {
-        let BannerLength = DateDiff(ItemsInfo[i].JPStartDate, ItemsInfo[i].JPEndDate);
+    let Item = ItemsInfo[i];
 
-        let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, ItemsInfo[i].JPStartDate);
+    if (!Object.hasOwn(Item, 'GlobalStartDate')) {
+        let BannerLength = DateDiff(Item.JPStartDate, Item.JPEndDate);
+
+        let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, Item.JPStartDate);
         let GlobalLaunchBannerStartDateDiff = Math.round(JPLaunchBannerStartDateDiff/GlobalAccelRate);
 
-        ItemsInfo[i].GlobalStartDate = DateAdd(GlobalLaunchDate, GlobalLaunchBannerStartDateDiff);
-        ItemsInfo[i].GlobalEndDate = DateAdd(ItemsInfo[i].GlobalStartDate, BannerLength);
+        Item.GlobalStartDate = DateAdd(GlobalLaunchDate, GlobalLaunchBannerStartDateDiff);
+        Item.GlobalEndDate = DateAdd(Item.GlobalStartDate, BannerLength);
     };
 
-    ItemsInfo[i].BannerLength = DateDiff(ItemsInfo[i].GlobalStartDate, ItemsInfo[i].GlobalEndDate);
-    ItemsInfo[i].WeekDiff = Math.floor(DateDiff(Today, ItemsInfo[i].GlobalEndDate) / 7);
-    ItemsInfo[i].MonthDiff = 12*(ItemsInfo[i].GlobalEndDate.getFullYear() - Today.getFullYear()) + (ItemsInfo[i].GlobalEndDate.getMonth() - Today.getMonth());
+    Item.BannerLength = DateDiff(Item.GlobalStartDate, Item.GlobalEndDate);
+    Item.WeekDiff = Math.floor(DateDiff(Today, Item.GlobalEndDate) / 7);
+    Item.MonthDiff = 12*(Item.GlobalEndDate.getFullYear() - Today.getFullYear()) + (Item.GlobalEndDate.getMonth() - Today.getMonth());
 
-    CurrentBannerID = ItemsInfo[i].BannerID;
-    if (ItemsInfo[i].Disabled != true) {
-        CurrentBannerItems.push(i);
-    };
+    if (Item.Disabled != true) {
+        CurrentBannerItemCount++;
 
-    if (i + 1 >= ItemsInfo.length || CurrentBannerID != ItemsInfo[i+1].BannerID) {
-        
-        let BannerName;
-        if (Object.hasOwn(BannerNames, CurrentBannerID)) {
-            BannerName = BannerNames[CurrentBannerID];
+        let OpenIndex = Item.Name.indexOf('(');
+        CurrentItemSuffix = Item.Name.substring(OpenIndex+1, Item.Name.length-1) // Checks for things like (Christmas) or (Summer);
+
+        if (FirstBannerItem) {
+            GenericName = Item.Name;
         }
         else {
-            let First = true;
-            let GenericName = '';
-            let CurrentItemSuffix;
-            let PreviousItemSuffix;
-            let ConsistentSuffix = true;
+            GenericName += `<br>${Item.Name}`;            
 
-            for (let j = 0; j < CurrentBannerItems.length; j++) {
-
-                let Open = ItemsInfo[CurrentBannerItems[j]].Name.indexOf('(');
-                let Close = ItemsInfo[CurrentBannerItems[j]].Name.indexOf(')');
-                if (Open != Close) {
-                    CurrentItemSuffix = ItemsInfo[CurrentBannerItems[j]].Name.substring(Open+1, Close) // +1 Gets rid of parenthesis.
-                };
-
-                if (First) {
-                    GenericName += ItemsInfo[CurrentBannerItems[j]].Name
-                }
-                else {
-                    if (CurrentItemSuffix != PreviousItemSuffix) {
-                        ConsistentSuffix = false;
-                    };
-
-                    GenericName += `<br>${ItemsInfo[CurrentBannerItems[j]].Name}`;
-                };
-
-                First = false;
-                PreviousItemSuffix = CurrentItemSuffix;
+            if (OpenIndex < 0 || CurrentItemSuffix != PreviousItemSuffix) {
+                ConsistentSuffix = false;
             };
+        };        
+        FirstBannerItem = false;
+        PreviousItemSuffix = CurrentItemSuffix;
+    };
 
-            if (
-                ConsistentSuffix
-                && CurrentItemSuffix
-                && CurrentItemSuffix.substring(0, 2) != 'SR'
-                && CurrentItemSuffix.substring(0, 3) != 'SSR'
-                && CurrentBannerItems.length > 1
-            ) {
-                BannerName = CurrentItemSuffix;
+    if (i + 1 == ItemsInfo.length || Item.BannerID != ItemsInfo[i+1].BannerID) {
+        if (!Object.hasOwn(BannerNames, Item.BannerID)) {
+            if (ConsistentSuffix && CurrentBannerItemCount > 1 && CurrentItemSuffix.substring(0, 2) != 'SR' && CurrentItemSuffix.substring(0, 3) != 'SSR') {
+                BannerNames[Item.BannerID] = CurrentItemSuffix;
             }
             else {
-                BannerName = GenericName;
-            }
-
-
+                BannerNames[Item.BannerID] = GenericName;
+            };
         };
+        BannerNames[Item.BannerID] += `<br>${moment(Item.GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(Item.GlobalEndDate, "YYYY-MM-DD").format('L')}`;
 
-        BannerNames[CurrentBannerID] = `${BannerName}<br>
-            ${moment(ItemsInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(ItemsInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`
-
-        CurrentBannerItems = [];
+        FirstBannerItem = true;
+        ConsistentSuffix = true;
+        CurrentBannerItemCount = 0;
     };
 };
 
