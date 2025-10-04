@@ -454,7 +454,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
 };
 
 function RenderScoutResults(ScoutConfig, ScoutsResults) {
-    $('#ScoutPlanningResultsTable .ScoutPlanResultsRow').remove();
+    $('#ScoutResultsTable .ScoutPlanResultsRow').remove();
 
     let PCScouts = 0;
     let UmaTicketScouts = 0;
@@ -513,11 +513,11 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
         PCScouts += ThisBannerPCScouts;
     };
 
-    $('#ScoutPlanningResultsTable tfoot').append($(
+    $('#ScoutResultsTable tfoot').append($(
         `<tr class="ScoutPlanResultsRow">
             <td colspan="5"><b>Chance of reaching all scout goals: ${ScoutsResults.TotalSuccessRate}</b></td>
         </tr>`
     ));
 
-    $('#ScoutPlanningResultsTable').show();
+    $('#ScoutResultsTable').show();
 };

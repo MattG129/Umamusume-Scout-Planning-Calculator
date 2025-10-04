@@ -109,16 +109,6 @@
             .btn-add:not([disabled]):hover {
                 background: #90D5FF;
             }
-
-            #ScoutPlanningResultsTable {
-                width: 75%;
-            }
-
-            @media only screen and (max-width: 600px) {
-                #ScoutPlanningResultsTable {
-                    width: 100%;
-                }
-            }
             
             .InactiveScoutPlanRow {
                 color: gray;
@@ -698,16 +688,16 @@
 
                 <a id="ScoutResultsAnchor"></a>
 
-                <table id="ScoutPlanningResultsTable" class="table table-bordered table-striped ScoutResults" style="font-size: min(3vw, 16px); text-align: center; border: 1px; display: none;">
+                <table id="ScoutResultsTable" class="table table-bordered table-striped" style="width: 100%; font-size: min(3vw, 16px); text-align: center; border: 1px; display: none;">
                     <thead>
                         <tr>
-                            <th style="width: 25%">Banner</th>
-                            <th style="width: 10%">
+                            <th style="width: 30%">Banner</th>
+                            <th style="width: 15%">
                                 Max Scouts <a data-toggle="tooltip" title="An estimate of how many scouts you can make on the banner. This is assuming all prior items are acquired with as few scouts as possible."><i class="bi bi-question-circle" style="color: black;"></i></a>
                             </th>
-                            <th style="width: 25%">Scout Item(s)</th>
-                            <th style="width: 20%">Copies</th>
-                            <th style="width: 20%">Chance of Success</th>
+                            <th style="width: 30%">Scout Item(s)</th>
+                            <th style="width: 10%">Copies</th>
+                            <th style="width: 15%">Chance of Success</th>
                         </tr>
                     </thead>
                     <tbody id="ScoutPlanningResultsBody"> <!--- Will be filled in by ScoutPlanningCalculator. ---> </tbody>
@@ -750,7 +740,7 @@
             };
 
             $("#Calculate").on('click', function() {
-                $('.ScoutResults').hide();
+                $('#ScoutResultsTable').hide();
 
                 let InvalidFields = getInvalidFields();
                 if (InvalidFields.length > 0) {
