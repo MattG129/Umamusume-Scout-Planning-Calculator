@@ -199,28 +199,30 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     FC -= NumberOfCMs * 30 * Math.max(0, ScoutConfig.CMR1Sets - 6);
     FC -= NumberOfCMs * 30 * Math.max(0, ScoutConfig.CMR2Sets - 6);
 
-    // We don't need to run the function for round 3 since its just one race. Round 3 will also award pink tickets.
-    // League: 1 = Open, 2 = Graded
-    // Group: 1 = A, 2 = B
-    if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 1) {        
-        UmaTickets  += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
-        CardTickets += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
-        FC          += NumberOfCMs * [900, 700, 500][ScoutConfig.CMR3Placement-1];
-    }
-    else if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 2) { 
-        UmaTickets  += NumberOfCMs * [2, 2, 1][ScoutConfig.CMR3Placement-1];
-        CardTickets += NumberOfCMs * [1, 0, 0][ScoutConfig.CMR3Placement-1];
-        FC          += NumberOfCMs * [500, 300, 200][ScoutConfig.CMR3Placement-1];
-    }
-    else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 1) {
-        UmaTickets  += NumberOfCMs * [5, 4, 3][ScoutConfig.CMR3Placement-1];
-        CardTickets += NumberOfCMs * [5, 4, 3][ScoutConfig.CMR3Placement-1];
-        FC          += NumberOfCMs * [2000, 1500, 1000][ScoutConfig.CMR3Placement-1];
-    }
-    else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 2) {
-        UmaTickets  += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
-        CardTickets += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
-        FC          += NumberOfCMs * [1000, 750, 500][ScoutConfig.CMR3Placement-1];
+    if (ScoutConfig.CMR3Qualify) {
+        // We don't need to run the function for round 3 since its just one race. Round 3 will also award pink tickets.
+        // League: 1 = Open, 2 = Graded
+        // Group: 1 = A, 2 = B
+        if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 1) {        
+            UmaTickets  += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+            CardTickets += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+            FC          += NumberOfCMs * [900, 700, 500][ScoutConfig.CMR3Placement-1];
+        }
+        else if (ScoutConfig.CMLeague == 1 && ScoutConfig.CMR3Group == 2) { 
+            UmaTickets  += NumberOfCMs * [2, 2, 1][ScoutConfig.CMR3Placement-1];
+            CardTickets += NumberOfCMs * [1, 0, 0][ScoutConfig.CMR3Placement-1];
+            FC          += NumberOfCMs * [500, 300, 200][ScoutConfig.CMR3Placement-1];
+        }
+        else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 1) {
+            UmaTickets  += NumberOfCMs * [5, 4, 3][ScoutConfig.CMR3Placement-1];
+            CardTickets += NumberOfCMs * [5, 4, 3][ScoutConfig.CMR3Placement-1];
+            FC          += NumberOfCMs * [2000, 1500, 1000][ScoutConfig.CMR3Placement-1];
+        }
+        else if (ScoutConfig.CMLeague == 2 && ScoutConfig.CMR3Group == 2) {
+            UmaTickets  += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+            CardTickets += NumberOfCMs * [3, 2, 1][ScoutConfig.CMR3Placement-1];
+            FC          += NumberOfCMs * [1000, 750, 500][ScoutConfig.CMR3Placement-1];
+        };
     };
 
     // Club Rewards - Provides a reward each month based on your ranking.
