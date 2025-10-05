@@ -52,9 +52,9 @@ for (let i = 0; i < ItemsInfo.length; i++) {
     };
 
     if (i + 1 == ItemsInfo.length || Item.BannerID != ItemsInfo[i+1].BannerID) {
-        /* If the banner does not already have a specified name, then we will check if there is a consistent suffix across the banner items,
-        such as (Christmas) or (Summer). If there is then we will use that for the banner name. If there isn't, then we will just use the names
-        of each item in the banner. We will lastly append the banner's date range to it's name. */
+        /* If the banner does not already have a specified name, then we will check if there is a consistent suffix across
+        the banner items, such as (Christmas) or (Summer). If there is then we will use that for the banner name. If there isn't,
+        then we will just use the names of each item in the banner. We will lastly append the banner's date range to it's name. */
         if (!Object.hasOwn(BannerNames, Item.BannerID)) {
             if (ConsistentSuffix && CurrentBannerItemCount > 1 && CurrentItemSuffix.substring(0, 2) != 'SR' && CurrentItemSuffix.substring(0, 3) != 'SSR') {
                 BannerNames[Item.BannerID] = CurrentItemSuffix;
@@ -91,9 +91,10 @@ function DayOfWeek(Date) {
 };
 
 function CalculateRoundRewards(ScoutConfig, Round) {
-    /* CM Rewards will be given out based on how many races were won out of five, for a given set. Since the amount of rewards per win increases at a
-    non-linear rate, and for simplicity's sake, we will estimate the results using max and min wins per set. The max wins per set will represent a rate that
-    would be just above the win rate. Similar for the min wins per set. (ex: If our win rate is 30 then our max is 2 and min is 1 as 2/5 -> 40% and 1/5 -> 20%.) */
+    /* CM Rewards will be given out based on how many races were won out of five, for a given set. Since the amount of
+    rewards per win increases at a non-linear rate, and for simplicity's sake, we will estimate the results using max
+    and min wins per set. The max wins per set will represent a rate that would be just above the win rate. Similar for
+    the min wins per set. (ex: If our win rate is 30 then our max is 2 and min is 1 as 2/5 -> 40% and 1/5 -> 20%.) */
     MaxWinsPerFinish = 1;
     while (ScoutConfig[`CMR${Round}WR`] > 20*MaxWinsPerFinish) {
         MaxWinsPerFinish += 1
@@ -148,8 +149,9 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     // TODO: Will have to add a field to specify what day the login bonus gives which rewards, for individual users, since that can affect calcs.
     FC += 150 * BannerPlan.WeekDiff;
 
-    /* Team Trials - Provides a reward each Monday based on your class. The day of the week function will set Monday as 1 and Sunday as 7. This means
-    that if the current DayOfWeek is greater than the end date's DayOfWeek then we must loop around to a Monday, one more time, in order to reach the end date. */
+    /* Team Trials - Provides a reward each Monday based on your class. The day of the week function will
+    set Monday as 1 and Sunday as 7. This means that if the current DayOfWeek is greater than the end
+    date's DayOfWeek then we must loop around to a Monday, one more time, in order to reach the end date. */
     let TeamTrialCarats;
     switch (ScoutConfig.TeamTrialsClass) {
         case 1: TeamTrialCarats = 0;   break;
@@ -163,10 +165,10 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
 
     // Each month there will be an event that gives out carats and pink tickets for completing stories, bingo cards, and reaching certain event point milestones.
 
-    /* Since we don't have exact dates for when the events will occur on, we can't just use month diff. Instead we will use the month diff to tell us
-    how many months will have ended between now and the target banner's end date and assume that the rewards would be given out at the very end of 
-    the month. We won't however, give out rewards for the month that the banner ends on, even if it ends on the last day of the month, in order to avoid any
-    potential edge case issues with time zones and what not. */
+    /* Since we don't have exact dates for when the events will occur on, we can't just use month diff. Instead we will use the
+    month diff to tell us how many months will have ended between now and the target banner's end date and assume that the rewards
+    would be given out at the very end of the month. We won't however, give out rewards for the month that the banner ends on, even
+    if it ends on the last day of the month, in order to avoid any potential edge case issues with time zones and what not. */
     let NumberOfEvents = Math.max(0, BannerPlan.MonthDiff - (ScoutConfig.CurrentMonthsEventCompleted ? 1 : 0));
 
     if (ScoutConfig.CompletesEventStories) {
@@ -242,8 +244,8 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     };
     FC += ExpectedClubCarats * BannerPlan.MonthDiff;
 
-    /* When a new Uma comes out, you will be able to view the first 4 chapters of there story,
-    even if you haven't pulled them, and will receive 80 FC for doing so. */
+    /* When a new Uma comes out, you will be able to view the first 4 chapters of there
+    story, even if you haven't pulled them, and will receive 80 FC for doing so. */
     for (let i = 0; i < ItemsInfo.length; i++) {
         if (
             ItemsInfo[i].GlobalStartDate > Today
@@ -267,8 +269,8 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
 
         let RenewalToEndDateDiff = DateDiff(moment(ScoutConfig.NextCaratPackRenewalDate), BannerPlan.GlobalEndDate);
 
-        /* We will add 10 PC scouts for every renewal date between the next renewal date and the banner's end date, except for the last renewal date between the two.
-        For the last one, we need to check how many of the pulls could actually be used by the banner's end date. */
+        /* We will add 10 PC scouts for every renewal date between the next renewal date and the banner's end date, except for the last renewal
+        date between the two. For the last one, we need to check how many of the pulls could actually be used by the banner's end date. */
         MaxPCScouts += 10 * Math.floor(RenewalToEndDateDiff/30) + Math.min(10, RenewalToEndDateDiff % 30 + 1);
     };
 
