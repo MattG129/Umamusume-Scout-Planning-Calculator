@@ -876,6 +876,7 @@
                         let ScoutPlanBanner = JSONImport.ScoutPlanArray[i];
                         let FirstItem = ScoutPlanBanner.Items[0];
 
+                        // TODO: Review if this is really necessary.
                         if (FirstItem <= 0 || FirstItem >= ItemsInfo.length) {
                             NewScoutPlanRowID++; // We want to keep this synced with i.
                         }
