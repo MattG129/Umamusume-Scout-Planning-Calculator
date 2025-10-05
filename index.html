@@ -460,7 +460,7 @@
                     <script type="text/javascript">
                         function AddScoutPlanRow() {
                             let NewRow = $(
-                                `<tr id="ScoutPlanRow${NewScoutPlanRowID}" data-scoutplan-rowid="${NewScoutPlanRowID}">
+                                `<tr data-scoutplan-rowid="${NewScoutPlanRowID}">
                                     <td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>
                                     <td>
                                         <div class="ScoutPlanBanner" data-banner-id="0"></div>
@@ -483,7 +483,7 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="$('#ScoutPlanRow${NewScoutPlanRowID}').remove(); UpdateScoutPlanningTable();">
+                                        <button type="button" class="btn btn-danger" onclick="$('tr[data-scoutplan-rowid=${NewScoutPlanRowID}]').remove(); UpdateScoutPlanningTable();">
                                             <i class="bi bi-x-lg" style="font-weight: bold;"></i>
                                         </button>
                                     </td>
