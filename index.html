@@ -516,6 +516,9 @@
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems`).html($('#BannerTemplate').html()).select2(Select2Config);
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
 
+                            // This should prevent the options from being ctrl-f searchable but shouldn't prevent them from showing up in the select 2 like normal.
+                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems option`).hide();
+
                             SetParsleyValidations();
 
                             NewScoutPlanRowID++;
