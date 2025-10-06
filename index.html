@@ -28,8 +28,8 @@
 
         <script type="text/javascript">
             let Page = 'index';
-
             let NewScoutPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
+            let UpdateTableTimeout; // Prevents the import from triggering this function several times.
         </script>
     </head>
     <body>
@@ -161,6 +161,7 @@
                                 <center>
                                     <textarea id="ImportState" class="form-control" style="border-color: black;" rows="5"></textarea><br>
                                     <p id="InvalidImportMessage" style="color: red; display: none;">Invalid Import.</p>
+                                    <p id="LoadingImportMessage" style="display: none;">Loading...</p>
                                     
                                     <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=false, ImportState=$('#ImportState').val(), Scroll=true);">
                                         Import
@@ -618,11 +619,10 @@
                             };
                         });
 
-                        let USPTTimeout; // Prevents the import from triggering this function several times.
                         function UpdateScoutPlanningTable() {
-                            clearTimeout(USPTTimeout);
+                            clearTimeout(UpdateTableTimeout);
 
-                            USPTTimeout = setTimeout(function() {
+                            UpdateTableTimeout = setTimeout(function() {
                                 $('.TableValidation').hide();
 
                                 let Banners = [];
@@ -864,88 +864,98 @@
                 }
                 else {
                     $('#InvalidImportMessage').hide();
+                    $('#LoadingImportMessage').show();
 
-                    $('#form input:not(.ScoutPlanField), #form select:not(.ScoutPlanField)').each(function() {
-                        if ($(this).is(':checkbox')) {
-                            $(this).prop('checked', JSONImport[this.id]);
-                        }
-                        else {
-                            $(this).val(JSONImport[this.id]);
-                        };
-                    });
+                    setTimeout(function() {
+                        $('#form input:not(.ScoutPlanField), #form select:not(.ScoutPlanField)').each(function() {
+                            if ($(this).is(':checkbox')) {
+                                $(this).prop('checked', JSONImport[this.id]);
+                            }
+                            else {
+                                $(this).val(JSONImport[this.id]);
+                            };
+                        });
 
-                    // We will remove the existing scout planning rows to avoid any potential conflicts with the imported ones.
-                    $('tr[data-scoutplan-rowid]').remove();
-                    NewScoutPlanRowID = 0; // We will set this to zero so that each row's id will line up with the scout plan item's index.
+                        // We will remove the existing scout planning rows to avoid any potential conflicts with the imported ones.
+                        $('tr[data-scoutplan-rowid]').remove();
+                        NewScoutPlanRowID = 0; // We will set this to zero so that each row's id will line up with the scout plan item's index.
 
-                    let ExpiredActiveItems = [];
-                    for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
-                        let ScoutPlanBanner = JSONImport.ScoutPlanArray[i];
-                        let FirstItem = ScoutPlanBanner.Items[0];
+                        let ExpiredActiveItems = [];
+                        for (let i = 0; i < JSONImport.ScoutPlanArray.length; i++) {
+                            let ScoutPlanBanner = JSONImport.ScoutPlanArray[i];
+                            let FirstItem = ScoutPlanBanner.Items[0];
 
-                        // TODO: Review if this is really necessary.
-                        if (FirstItem <= 0 || FirstItem >= ItemsInfo.length) {
-                            NewScoutPlanRowID++; // We want to keep this synced with i.
-                        }
-                        else if (ItemsInfo[FirstItem].GlobalEndDate < Today) {
-                            NewScoutPlanRowID++;
+                            // TODO: Review if this is really necessary.
+                            if (FirstItem <= 0 || FirstItem >= ItemsInfo.length) {
+                                NewScoutPlanRowID++; // We want to keep this synced with i.
+                            }
+                            else if (ItemsInfo[FirstItem].GlobalEndDate < Today) {
+                                NewScoutPlanRowID++;
 
-                            if (ScoutPlanBanner.Active) {
+                                if (ScoutPlanBanner.Active) {
+                                    for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {
+                                        ExpiredActiveItems.push(ScoutPlanBanner.Items[j]) ;
+                                    };
+                                };
+                            }
+                            else {
+                                AddScoutPlanRow();
+
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanItems`).val(ScoutPlanBanner.Items);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
+
+                                /* This is similar to the code used by UpdateGoalFields to add a goal field, but we removed some
+                                if statements that wouldn't be needed in this context, added the ability the specify goal value
+                                (instead of it defaulting to 1), and we want to use the item array from the import, as this will
+                                allow us to order the goal fields correctly. */
+                                let GoalsCell = $(`tr[data-scoutplan-rowid=${i}]`).find('.ScoutPlanGoalsCell');
                                 for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {
-                                    ExpiredActiveItems.push(ScoutPlanBanner.Items[j]) ;
+                                    let ItemID = ScoutPlanBanner.Items[j];
+
+                                    GoalsCell.append($(`
+                                        <label class="form-label" data-item-id=${ItemID}>
+                                            ${ItemsInfo[ItemID].Name}
+                                            <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="${ScoutPlanBanner.Goals[ItemID]}">
+                                        </label>
+                                    `));
                                 };
                             };
-                        }
-                        else {
-                            AddScoutPlanRow();
-
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanItems`).val(ScoutPlanBanner.Items);
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
-                            $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
-
-                            /* This is similar to the code used by UpdateGoalFields to add a goal field, but we removed some
-                            if statements that wouldn't be needed in this context, added the ability the specify goal value
-                            (instead of it defaulting to 1), and we want to use the item array from the import, as this will
-                            allow us to order the goal fields correctly. */
-                            let GoalsCell = $(`tr[data-scoutplan-rowid=${i}]`).find('.ScoutPlanGoalsCell');
-                            for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {
-                                let ItemID = ScoutPlanBanner.Items[j];
-
-                                GoalsCell.append($(`
-                                    <label class="form-label" data-item-id=${ItemID}>
-                                        ${ItemsInfo[ItemID].Name}
-                                        <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="${ScoutPlanBanner.Goals[ItemID]}">
-                                    </label>
-                                `));
+                        };
+                        
+                        if (ExpiredActiveItems.length > 0) {
+                            let RemovedRows = `Expired wish plan row(s) were detected in the import. The following row(s) have been automatically removed:
+                            `
+                            for (let i = 0; i < ExpiredActiveItems.length; i++) {
+                                RemovedRows += `
+                                    \u2022 ${ItemsInfo[ExpiredActiveItems[i]].Name}`
                             };
-                        };
-                    };
-                    
-                    if (ExpiredActiveItems.length > 0) {
-                        let RemovedRows = `Expired wish plan row(s) were detected in the import. The following row(s) have been automatically removed:
-                        `
-                        for (let i = 0; i < ExpiredActiveItems.length; i++) {
                             RemovedRows += `
-                                \u2022 ${ItemsInfo[ExpiredActiveItems[i]].Name}`
+
+                            All other information has been successfully imported.`
+
+                            swal({icon: 'info', text: RemovedRows});
                         };
-                        RemovedRows += `
 
-                        All other information has been successfully imported.`
+                        $('input, select').change().trigger('input');
 
-                        swal({icon: 'info', text: RemovedRows});
-                    };
+                        if (RunCalcs == true) {
+                            $('#Calculate').trigger('click');
+                        }
+                        else if (Scroll == true) {
+                            /* We will prevent UpdateScoutPlanningTable from running till the scroll is complete.
+                            As otherwise it would delay the scrolling animation. */
+                            clearTimeout(UpdateTableTimeout);
 
-                    $('input, select').change().trigger('input');
+                            $('html, body').animate({
+                                scrollTop: $("#CalculatorHeaderAnchor").offset().top,
+                                easing: 'linear'
+                            }, 500, function() {UpdateScoutPlanningTable()});
 
-                    if (RunCalcs == true) {
-                        $('#Calculate').trigger('click');
-                    }
-                    else if (Scroll == true) {
-                        $('html, body').animate({
-                            scrollTop: $("#CalculatorHeaderAnchor").offset().top,
-                            easing: 'linear'
-                        }, 500);
-                    };
+                        };
+
+                        $('#LoadingImportMessage').hide();
+                    }, 100);
                 };
             };
 
