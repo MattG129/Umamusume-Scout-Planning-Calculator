@@ -31,6 +31,7 @@
             let NewScoutPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
             let UpdateTableTimeout; // Prevents the import from triggering this function several times.
             let ImportInProgress = true;
+            let UnsavedChanges = false;
         </script>
     </head>
     <body>
@@ -504,7 +505,7 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="$('tr[data-scoutplan-rowid=${NewScoutPlanRowID}]').remove(); UpdateScoutPlanningTable();">
+                                        <button type="button" class="btn btn-danger" onclick="$('tr[data-scoutplan-rowid=${NewScoutPlanRowID}]').remove(); UpdateScoutPlanningTable(); CheckForUnsavedChanges();">
                                             <i class="bi bi-x-lg" style="font-weight: bold;"></i>
                                         </button>
                                     </td>
@@ -522,7 +523,7 @@
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems option`).hide();
 
                             SetParsleyValidations();
-
+                            UpdateUnsavedChangesListener();
                             NewScoutPlanRowID++;
                         };
 
@@ -987,6 +988,18 @@
                 });
             };
 
+            function UpdateUnsavedChangesListener() {
+                $("input, select").on('change', function() {
+                    CheckForUnsavedChanges();
+                });
+            };
+
+            function CheckForUnsavedChanges() {
+                if (!ImportInProgress) {
+                    UnsavedChanges = true;
+                };
+            };
+
             $(function() {
                 // For some reason this is the only way I've been able to get the select2 to automatically resize on window resizing.
                 let ResizeTimeout;
@@ -1002,13 +1015,9 @@
 
                 $('input, select').change().trigger('input');
 
-                let UnsavedChanges = false;
-
-                $("input, select").on('change', function() {
-                    if (!ImportInProgress) {
-                        UnsavedChanges = true;
-                    };
-                });
+                /* This is called in the add row function and since that will probably 
+                always be run this probably isn't needed but better safe than sorry. */
+                UpdateUnsavedChangesListener();
 
                 /* When leaving the page, we will save the users form inputs to local storage so that we can import them
                 again after the page has been refreshed. This is needed to reconstruct the scout planning table. */
