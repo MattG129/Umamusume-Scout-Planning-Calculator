@@ -30,6 +30,7 @@
             let Page = 'index';
             let NewScoutPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
             let UpdateTableTimeout; // Prevents the import from triggering this function several times.
+            let ImportInProgress = true;
         </script>
     </head>
     <body>
@@ -732,19 +733,6 @@
         </div>
 
         <script type="text/javascript">
-            // When leaving the page, we will save the users form inputs to local storage so that we can import them again after the page has been refreshed. This is needed to reconstruct the scout planning table.
-            $(document).on('visibilitychange', function() {
-                localStorage.setItem("SessionState", JSON.stringify(CompileForm()));
-            });
-
-            $(function() {
-                let SessionState = localStorage.getItem("SessionState");
-
-                if (SessionState != null) {
-                    // TODO: Add a toggle to turn this off.
-                    Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
-                };
-            });
 
             function getInvalidFields() {
                 let InvalidFields = [];
@@ -842,6 +830,7 @@
             };
 
             function Import(RunCalcs, ImportState, Scroll) {
+                ImportInProgress = true;
                 let ValidImport = true;
                 let JSONImport;
 
@@ -858,6 +847,7 @@
 
                 if (!ValidImport) {
                     $('#InvalidImportMessage').show();
+                    ImportInProgress = false;
                 }
                 else {
                     $('#InvalidImportMessage').hide();
@@ -953,6 +943,7 @@
                         };
 
                         $('#LoadingImportMessage').hide();
+                        ImportInProgress = false;
                     }, 100);
                 };
             };
@@ -1011,14 +1002,34 @@
 
                 $('input, select').change().trigger('input');
 
-                let Unsaved = false;
-                
+                let UnsavedChanges = false;
+
                 $("input, select").on('change', function() {
-                    Unsaved = true;
+                    if (!ImportInProgress) {
+                        UnsavedChanges = true;
+                    };
                 });
 
+                /* When leaving the page, we will save the users form inputs to local storage so that we can import them
+                again after the page has been refreshed. This is needed to reconstruct the scout planning table. */
+                $(document).on('visibilitychange', function() {
+                    if (UnsavedChanges) {
+                        localStorage.setItem("SessionState", JSON.stringify(CompileForm()));
+                    };
+                });
+
+                let SessionState = localStorage.getItem("SessionState");
+
+                if (SessionState != null) {
+                    // TODO: Add a toggle to turn this off.
+                    Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
+                }
+                else {
+                    ImportInProgress = false;
+                };
+
                 window.onbeforeunload = function() {
-                    if (Unsaved && !$('#DisableUnsavedChangesWarning').is(':checked')) {
+                    if (UnsavedChanges && !$('#DisableUnsavedChangesWarning').is(':checked')) {
                         return "You have unsaved changes on this page. If you wish to save your changes, then please export them before leaving this page.";
                     };
                 };
