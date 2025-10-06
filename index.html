@@ -422,14 +422,14 @@
 
                     <div style="overflow-x: auto;">
                         <table id="BonusTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
-                            <thead>
+                            <thead id="BonusTableHeader" style="display: none;">
                                 <tr>
-                                    <th style="width: 15%;"> Reward Frequency           </th>
-                                    <th style="width: 15%;"> Free Carats                </th>
-                                    <th style="width: 15%;"> Trainee Scout Tickets      </th>
-                                    <th style="width: 15%;"> Support Card Scout Tickets </th>
-                                    <th style="width: 15%;"> Login Bonuses Remaining    </th>
-                                    <th style="width: 10%;"> <!-- Remove button -->     </th>
+                                    <th style="width: 15%; min-width: 120px;"> Reward Frequency           </th>
+                                    <th style="width: 15%; min-width: 100px;"> Free Carats                </th>
+                                    <th style="width: 15%; min-width: 100px;"> Trainee Scout Tickets      </th>
+                                    <th style="width: 15%; min-width: 100px;"> Support Card Scout Tickets </th>
+                                    <th style="width: 15%; min-width: 100px;"> Login Bonuses Remaining    </th>
+                                    <th style="width: 10%; min-width: 100px;"> <!-- Remove button -->     </th>
                                 </tr>
                             </thead>
                             <tbody id="BonusTableBody">
@@ -470,7 +470,7 @@
                                         <input type="number" class="BonusRemaining BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="$(this).closest('tr').remove(); CheckForUnsavedChanges();">
+                                        <button type="button" class="btn btn-danger" onclick="$(this).closest('tr').remove(); CheckForUnsavedChanges(); ToggleBonusTableHeader();">
                                             <i class="bi bi-x-lg" style="font-weight: bold;"></i>
                                         </button>
                                     </td>
@@ -479,6 +479,16 @@
 
                             SetParsleyValidations();
                             UpdateUnsavedChangesListener();
+                            $('#BonusTableHeader').show()
+                        };
+
+                        function ToggleBonusTableHeader() {
+                            if ($('.BonusTableRow').length > 0) {
+                                $('#BonusTableHeader').show()
+                            }
+                            else {
+                                $('#BonusTableHeader').hide()
+                            };
                         };
                     </script>
 
