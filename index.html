@@ -911,7 +911,11 @@
                                 };
                             };
                         };
-                        
+
+                        if (JSONImport.ScoutPlanArray.length == 0) {
+                            $('#ScoutPlanningLoadingMessage').hide();
+                        };
+
                         if (ExpiredActiveItems.length > 0) {
                             let RemovedRows = `Expired wish plan row(s) were detected in the import. The following row(s) have been automatically removed:
                             `
