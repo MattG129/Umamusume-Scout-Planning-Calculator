@@ -204,12 +204,12 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="UmaTickets" class="form-label">Trainee Scout Ticket</label>
+                            <label for="UmaTickets" class="form-label">Trainee Scout Tickets</label>
                             <input type="number" id="UmaTickets" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
 
                         <div class="col-md-3">
-                            <label for="CardTickets" class="form-label">Support Card Scout Ticket</label>
+                            <label for="CardTickets" class="form-label">Support Card Scout Tickets</label>
                             <input type="number" id="CardTickets" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
                         </div>
                     </div>
@@ -418,17 +418,18 @@
                         </script>
                     </div>
 
-                    <hr><h2>Custom Login Bonus</h2><br>
+                    <hr><h2>Custom Login Bonuses</h2><br>
 
                     <div style="overflow-x: auto;">
                         <table id="BonusTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
                             <thead>
                                 <tr>
-                                    <th style="width: 20%;"> Reward Frequency          </th>
-                                    <th style="width: 20%;"> Free Carats               </th>
-                                    <th style="width: 20%;"> Trainee Scout Ticket      </th>
-                                    <th style="width: 20%;"> Support Card Scout Ticket </th>
-                                    <th style="width: 20%;"> Login Bonuses Remaining   </th>
+                                    <th style="width: 15%;"> Reward Frequency           </th>
+                                    <th style="width: 15%;"> Free Carats                </th>
+                                    <th style="width: 15%;"> Trainee Scout Tickets      </th>
+                                    <th style="width: 15%;"> Support Card Scout Tickets </th>
+                                    <th style="width: 15%;"> Login Bonuses Remaining    </th>
+                                    <th style="width: 10%;"> <!-- Remove button -->     </th>
                                 </tr>
                             </thead>
                             <tbody id="BonusTableBody">
@@ -467,6 +468,11 @@
                                     </td>
                                     <td>
                                         <input type="number" class="BonusRemaining BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" onclick="$(this).closest('tr').remove(); CheckForUnsavedChanges();">
+                                            <i class="bi bi-x-lg" style="font-weight: bold;"></i>
+                                        </button>
                                     </td>
                                 </tr>`
                             ));
