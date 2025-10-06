@@ -614,8 +614,6 @@
                                         };
                                     };
                                 };
-
-                                $('#ScoutPlanningLoadingMessage').remove();
                             };
                         });
 
@@ -688,6 +686,8 @@
                                     $("#Calculate").addClass('disabled');
                                 };
 
+                                /* UpdateScoutPlanningTable will hide the loading message since updating the table after the import can take a non-negligible amount of time, during which we would want the loading message to still be present. */
+                                $('#ScoutPlanningLoadingMessage').remove();
                             }, 10)
                         };
                     </script>
@@ -743,9 +743,6 @@
                 if (SessionState != null) {
                     // TODO: Add a toggle to turn this off.
                     Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
-
-                    $('#ScoutPlanningLoadingMessage').remove();
-                    UpdateScoutPlanningTable(); // TODO: I don't think this call is needed.
                 };
             });
 
