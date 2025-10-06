@@ -687,7 +687,7 @@
                                 };
 
                                 /* UpdateScoutPlanningTable will hide the loading message since updating the table after the import can take a non-negligible amount of time, during which we would want the loading message to still be present. */
-                                $('#ScoutPlanningLoadingMessage').remove();
+                                $('#ScoutPlanningLoadingMessage').hide();
                             }, 10)
                         };
                     </script>
@@ -862,6 +862,7 @@
                 else {
                     $('#InvalidImportMessage').hide();
                     $('#LoadingImportMessage').show();
+                    $('#ScoutPlanningLoadingMessage').show();
 
                     setTimeout(function() {
                         $('#form input:not(.ScoutPlanField), #form select:not(.ScoutPlanField)').each(function() {
