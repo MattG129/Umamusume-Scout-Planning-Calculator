@@ -418,6 +418,64 @@
                         </script>
                     </div>
 
+                    <hr><h2>Custom Login Bonus</h2><br>
+
+                    <div style="overflow-x: auto;">
+                        <table id="BonusTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;"> Reward Frequency          </th>
+                                    <th style="width: 20%;"> Free Carats               </th>
+                                    <th style="width: 20%;"> Trainee Scout Ticket      </th>
+                                    <th style="width: 20%;"> Support Card Scout Ticket </th>
+                                    <th style="width: 20%;"> Login Bonuses Remaining   </th>
+                                </tr>
+                            </thead>
+                            <tbody id="BonusTableBody">
+                                <!--- Rows will be added by the script below. --->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7">
+                                        <button id="AddBonusRowButton" type="button" style="width: 100%" class="btn btn-add" onclick="AddBonusRow();">
+                                            <b><i class="bi bi-plus-lg" style="font-size: 30px; font-weight: bold; color: white;"></i></b>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <script type="text/javascript">
+                        function AddBonusRow() {
+                            $('#BonusTableBody').append($(
+                                `<tr class="BonusTableRow">
+                                    <td>
+                                        <select class="BonusFrequency BonusTableField TableField form-select">
+                                            <option value="1">Daily</option>
+                                            <option value="2">Weekly</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="BonusFC BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="BonusUmaTickets BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="BonusCardTickets BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="BonusRemaining BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    </td>
+                                </tr>`
+                            ));
+
+                            SetParsleyValidations();
+                            UpdateUnsavedChangesListener();
+                        };
+                    </script>
+
                     <hr><h2>Scout Planning</h2><br>
 
                     <div style="overflow-x: auto;">
@@ -796,7 +854,7 @@
             function CompileForm(){
                 let FormValues = {};
 
-                $('#form input:not(.ScoutPlanField), #form select:not(.ScoutPlanField)').each(function() {
+                $('#form input:not(.ScoutPlanField, .BonusTableField), #form select:not(.ScoutPlanField, .BonusTableField)').each(function() {
                     if ($(this).is(':checkbox')) {
                         FormValues[this.id] = $(this).is(':checked');
                     }
@@ -806,6 +864,17 @@
                     else {
                         FormValues[this.id] = this.value == '' ? '' : Number(this.value);
                     };
+                });
+
+                FormValues.LoginBonusArray = [];
+                $('tr.BonusTableRow').each(function() {
+                    FormValues.LoginBonusArray.push({
+                        Frequency:   $(this).find('td .BonusFrequency').val(),
+                        FC:          $(this).find('td .BonusFC').val(),
+                        UmaTickets:  $(this).find('td .BonusUmaTickets').val(),
+                        CardTickets: $(this).find('td .BonusCardTickets').val(),
+                        Remaining:   $(this).find('td .BonusRemaining').val()
+                    });
                 });
 
                 FormValues.ScoutPlanArray = [];
@@ -855,8 +924,17 @@
                     $('#LoadingImportMessage').show();
                     $('#ScoutPlanningLoadingMessage').show();
 
+                    $('tr.BonusTableRow').remove();
+                    for (let i = 0; i < JSONImport.LoginBonusArray.length; i++) {
+                        AddBonusRow();
+
+                        for (let Key in JSONImport.LoginBonusArray[i]) {
+                            $(`.BonusTableRow .Bonus${Key}`)[i].value = JSONImport.LoginBonusArray[i][Key];
+                        };
+                    };
+
                     setTimeout(function() {
-                        $('#form input:not(.ScoutPlanField), #form select:not(.ScoutPlanField)').each(function() {
+                        $('#form input:not(.ScoutPlanField, .BonusTableField), #form select:not(.ScoutPlanField, .BonusTableField)').each(function() {
                             if ($(this).is(':checkbox')) {
                                 $(this).prop('checked', JSONImport[this.id]);
                             }
