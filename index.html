@@ -1094,7 +1094,7 @@
             };
 
             function UpdateUnsavedChangesListener() {
-                $("input, select").on('change', function() {
+                $("input, select").on('input', function() {
                     CheckForUnsavedChanges();
                 });
             };
