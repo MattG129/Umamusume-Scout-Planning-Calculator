@@ -259,6 +259,21 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
         }
     };
 
+    // The calculator is not preprogrammed for temporary login bonuses, so users will be able to add them in on their own and this code block will handle the calcs for them.
+    let DailyResetsLeft = DateDiff(Today, BannerPlan.GlobalEndDate);
+    let WeeklyResetsLeft = BannerPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(BannerPlan.GlobalEndDate) ? 1 : 0);
+
+    for (let i = 0; i < ScoutConfig.LoginBonusArray.length; i++) {
+        let BonusRow = ScoutConfig.LoginBonusArray[i];
+
+        // Frequency: 1=Daily, 2=Weekly
+        let Claims = Math.min(BonusRow.Remaining, BonusRow.Frequency == 1 ? DailyResetsLeft : WeeklyResetsLeft);
+
+        FC          += Claims * BonusRow.FC;
+        UmaTickets  += Claims * BonusRow.UmaTickets;
+        CardTickets += Claims * BonusRow.CardTickets;
+    };
+
     /* Paid Carats are a paid currency that can be converted to Free Carats at a 1:1 rate. They can also be used to make a heavily discounted
     scout (50 PC), once per day. For simplicity's sake, the calculator will currently only allow these to be used on the once daily scout. */
     // MaxPCScouts does not focus on how many pulls could be made given the banner's duration, but instead focuses on how many PC scouts could possibly be made all together by it's end date.
