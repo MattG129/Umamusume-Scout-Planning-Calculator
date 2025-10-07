@@ -654,7 +654,10 @@
 
                             $('#ScoutPlanningTableBody').sortable({
                                 handle: ".handle",
-                                update: function() {UpdateScoutPlanningTable()}
+                                update: function() {
+                                    UpdateScoutPlanningTable();
+                                    UnsavedChanges = true;
+                                }
                             });
 
                             $("#AddRowButton").click(function() {
