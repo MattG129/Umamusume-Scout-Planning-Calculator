@@ -670,7 +670,7 @@
                                 AddScoutPlanRow();
                             });
 
-                            if (localStorage.getItem("SessionState") == null) {
+                            if (localStorage.getItem("UmaSessionState") == null) {
                                 // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners and select up to 3 items from that banner.
                                 let First = true;
                                 let Selected = [];
@@ -1124,19 +1124,20 @@
                 always be run this probably isn't needed but better safe than sorry. */
                 UpdateUnsavedChangesListener();
 
-                /* When leaving the page, we will save the users form inputs to local storage so that we can import them
-                again after the page has been refreshed. This is needed to reconstruct the scout planning table. */
+                /* When leaving the page, we will save the users form inputs to local storage so that we can import them again after the page
+                has been refreshed. This is needed to reconstruct the scout planning table. We are calling this variable UmaSessionState
+                instead of just SessionState as that var name is used by the Genshin calculator and we don't want any storage conflicts. */
                 $(document).on('visibilitychange', function() {
                     if (UnsavedChanges) {
-                        localStorage.setItem("SessionState", JSON.stringify(CompileForm()));
+                        localStorage.setItem("UmaSessionState", JSON.stringify(CompileForm()));
                     };
                 });
 
-                let SessionState = localStorage.getItem("SessionState");
+                let UmaSessionState = localStorage.getItem("UmaSessionState");
 
-                if (SessionState != null) {
+                if (UmaSessionState != null) {
                     // TODO: Add a toggle to turn this off.
-                    Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
+                    Import(RunCalcs=false, ImportState=UmaSessionState, Scroll=false);
                 }
                 else {
                     ImportInProgress = false;
