@@ -889,6 +889,8 @@
                     };
                 });
 
+                FormValues.ValidationErrors = getInvalidFields().length + $('tr[data-scoutplan-rowid]').find('.TableValidation:visible').length;
+
                 FormValues.LoginBonusArray = [];
                 $('tr.BonusTableRow').each(function() {
                     FormValues.LoginBonusArray.push({
@@ -941,6 +943,11 @@
                 if (!ValidImport) {
                     $('#InvalidImportMessage').show();
                     ImportInProgress = false;
+                }
+                else if (RunCalcs && JSONImport.ValidationErrors > 0) {
+                    swal({icon: 'error', text: 'Validation issues were detected in the import. The import will proceed, but calculations will not be performed.'}).then(function() {
+                        Import(RunCalcs=false, ImportState=ImportState, Scroll=true);
+                    });
                 }
                 else {
                     $('#InvalidImportMessage').hide();
@@ -1045,7 +1052,6 @@
                                 scrollTop: $("#CalculatorHeaderAnchor").offset().top,
                                 easing: 'linear'
                             }, 500, function() {UpdateScoutPlanningTable()});
-
                         };
 
                         $('#LoadingImportMessage').hide();
@@ -1055,19 +1061,14 @@
             };
 
             function Export() {
-                if (getInvalidFields().length != 0) {
-                    swal({icon: 'error', text: 'Invalid information detected. Cannot generate export.'});
-                }
-                else {
-                    let ExportState = JSON.stringify(CompileForm());
-                    var temp = $("<input>");
-                    $("body").append(temp);
-                    temp.val(ExportState).select();
-                    document.execCommand("copy");
-                    temp.remove();
+                let ExportState = JSON.stringify(CompileForm());
+                var temp = $("<input>");
+                $("body").append(temp);
+                temp.val(ExportState).select();
+                document.execCommand("copy");
+                temp.remove();
 
-                    swal({icon: 'success', text: 'Export copied to clipboard.', timer: 2000});
-                };
+                swal({icon: 'success', text: 'Export copied to clipboard.', timer: 2000});
             };
 
             $(function () {
