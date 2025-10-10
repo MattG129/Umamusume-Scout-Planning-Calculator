@@ -8,7 +8,7 @@ $(function() {
 	let Footer = '<center> <p>&#xA9; All rights reserved by Cygames, Inc. Other properties belong to their respective owners.</p>';
 
 	if (Page != 'index') {
-		Footer += '<a href="index.html" style="color: #054295; margin: 5px;"><i class="bi bi-arrow-left"></i> Back to calculator</a>'
+		Footer += '<a href="index.html" style="color: #054295; margin: 5px;"><i class="bi bi-arrow-left"></i> Back to Calculator</a>'
 	};
 
 	if (Page != 'MoreInfo') {
