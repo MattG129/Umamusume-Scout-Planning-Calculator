@@ -515,7 +515,7 @@
                                         Copies <a data-toggle="tooltip" title="You can sort items by dragging and dropping them. Exchange points will be used on items in order from highest to lowest."><i class="bi bi-question-circle" style="color: black;"></i></a>
                                     </th>
                                     <th style="width: 10%; min-width: 80px;">
-                                        Exchange Points
+                                        Banner Config
                                     </th>
                                     <th style="width: 10%;">
                                         Active
@@ -574,7 +574,15 @@
                                     <td class="ScoutPlanGoalsCell"></td>
                                     <td>
                                         <center>
-                                            <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
+                                            <label class="form-label">
+                                                Exchange Points
+                                                <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
+                                            </label>
+
+                                            <label class="form-label">
+                                                Scout Limit
+                                                <input type="number" class="ScoutPlanLimit form-control" data-parsley-trigger="input" min="1" data-parsley-min="1">
+                                            </label>
                                         </center>
                                     </td>
                                     <td class="td-label">
@@ -916,7 +924,8 @@
                             Items: Items,
                             Goals: Goals,
                             ExchangePoints: Number($(this).find('td .ScoutPlanExchangePoints').val()),
-                            Active: $(this).find('td .ScoutPlanActive').is(':checked')
+                            Active: $(this).find('td .ScoutPlanActive').is(':checked'),
+                            Limit: $(this).find('td .ScoutPlanLimit').val()
                         });
                     };
                 });
@@ -1000,6 +1009,7 @@
 
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanItems`).val(ScoutPlanBanner.Items);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanLimit`).val(ScoutPlanBanner.Limit);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
 
                                 /* This is similar to the code used by UpdateGoalFields to add a goal field, but we removed some

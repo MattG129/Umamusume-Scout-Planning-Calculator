@@ -375,6 +375,10 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
     let MaxPinkTicketScouts = BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketsSpent : CardTicketsSpent);
     let MaxScouts = MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts;
 
+    if (BannerPlan.Limit != '') {
+        MaxScouts = Math.min(MaxScouts, BannerPlan.Limit)
+    };
+
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
 
@@ -448,6 +452,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
 
             let BannerPlan = {
                 Items: [],
+                Limit: ScoutPlan.Limit,
                 ExchangePoints: ScoutPlan.ExchangePoints
             };
             for (let j = 0; j < ScoutPlan.Items.length; j++) {
@@ -501,6 +506,10 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
                 MaxScouts = MaxPCScouts;
                 MaxScouts += BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
                 MaxScouts += BannerPlan.MaxFCScouts - FCScouts;
+
+                if (BannerPlan.Limit != '') {
+                    MaxScouts = Math.min(MaxScouts, BannerPlan.Limit)
+                };
             };
 
             for (let k = 0; k < Item.Goal; k++) {
