@@ -28,6 +28,7 @@ for (let i = 0; i < ItemsInfo.length; i++) {
     };
 
     Item.BannerLength = DateDiff(Item.GlobalStartDate, Item.GlobalEndDate);
+    Item.DaysLeft = DateDiff(Today, Item.GlobalEndDate);
     Item.WeekDiff = Math.floor(DateDiff(Today, Item.GlobalEndDate) / 7);
     Item.MonthDiff = 12*(Item.GlobalEndDate.getFullYear() - Today.getFullYear()) + (Item.GlobalEndDate.getMonth() - Today.getMonth());
 
@@ -353,25 +354,14 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
 };
 
 function ScoutSimulator(ScoutConfig, BannerPlan) {
-    let ItemsRemaining = [];
-    let TotalItemsRemaining = 0;
-    let ItemRates = [];
-    let SumOfItemRates = 0;
-    for (let i = 0; i < BannerPlan.Items.length; i++) {
-        let Item = BannerPlan.Items[i];
-
-        ItemsRemaining.push(Item.Goal);
-        TotalItemsRemaining += Item.Goal;
-
-        ItemRates.push(ItemsInfo[Item.ID].Rate);
-        SumOfItemRates += ItemsInfo[Item.ID].Rate;
-    };
+    let ItemsRemaining = BannerPlan.ItemsRemaining.slice();
+    let TotalItemsRemaining = BannerPlan.TotalItemsRemaining;
 
     let Scouts = 0;
     let ExchangePoints = BannerPlan.ExchangePoints;
 
     let MaxFCScouts = BannerPlan.MaxFCScouts - TotalFCScouts;
-    let MaxPCScouts = Math.min( DateDiff(Today, BannerPlan.GlobalEndDate), BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - TotalPCScouts );
+    let MaxPCScouts = Math.min( BannerPlan.DaysLeft, BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - TotalPCScouts );
     let MaxPinkTicketScouts = BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketsSpent : CardTicketsSpent);
     let MaxScouts = MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts;
 
@@ -379,37 +369,43 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
         MaxScouts = Math.min(MaxScouts, BannerPlan.Limit)
     };
 
-    let FiveStarChance = Math.random();
-    let NonFiveStarChance = 1;
+    let MaxScoutsRemaining = Math.min(MaxScouts-Scouts, 200*TotalItemsRemaining-ExchangePoints);
 
-    while (Scouts < MaxScouts) {
-        Scouts++;
-        ExchangePoints++;
+    while (MaxScoutsRemaining > 0) {
+        let ScoutsNeededForNextItem = Math.ceil( Math.log(Math.random()) / Math.log(1-BannerPlan.SumOfItemRates) );
 
-        NonFiveStarChance *= (1 - SumOfItemRates);
+        if (ScoutsNeededForNextItem > MaxScoutsRemaining) {
+            Scouts += MaxScoutsRemaining;
+            ExchangePoints += MaxScoutsRemaining;
 
-        if (FiveStarChance > NonFiveStarChance) {
-            let CumulativeItemChance = 0;
-            let ScoutRandomizer = Math.random() * SumOfItemRates;
+            break;
+        }
+        else{
+            Scouts += ScoutsNeededForNextItem;
+            ExchangePoints += ScoutsNeededForNextItem;
 
-            for (let i = 0; i < ItemsRemaining.length; i++) {
-                CumulativeItemChance += ItemRates[i];
+            if (ItemsRemaining.length == 1) {
+                ItemsRemaining[0] -= 1;
+                TotalItemsRemaining -= 1;
+            }
+            else {
+                let CumulativeItemChance = 0;
+                let ScoutRandomizer = Math.random() * BannerPlan.SumOfItemRates;
 
-                if (ScoutRandomizer < CumulativeItemChance) {
-                    if (ItemsRemaining[i] > 0) {
-                        ItemsRemaining[i] -= 1;
-                        TotalItemsRemaining -= 1;
+                for (let i = 0; i < ItemsRemaining.length; i++) {
+                    CumulativeItemChance += BannerPlan.ItemRates[i];
+
+                    if (ScoutRandomizer < CumulativeItemChance) {
+                        if (ItemsRemaining[i] > 0) {
+                            ItemsRemaining[i] -= 1;
+                            TotalItemsRemaining -= 1;
+                        };
+                        break;
                     };
-                    break;
                 };
             };
 
-            FiveStarChance = Math.random();
-            NonFiveStarChance = 1;
-        };
-
-        if (TotalItemsRemaining - Math.floor(ExchangePoints/200) <= 0) {
-            break;
+            MaxScoutsRemaining = Math.min(MaxScouts-Scouts, 200*TotalItemsRemaining-ExchangePoints);
         };
     };
 
@@ -453,7 +449,11 @@ function ScoutPlanningCalculator(ScoutConfig) {
             let BannerPlan = {
                 Items: [],
                 Limit: ScoutPlan.Limit,
-                ExchangePoints: ScoutPlan.ExchangePoints
+                ExchangePoints: ScoutPlan.ExchangePoints,
+                ItemsRemaining: [],
+                TotalItemsRemaining: 0,
+                ItemRates: [],
+                SumOfItemRates: 0
             };
             for (let j = 0; j < ScoutPlan.Items.length; j++) {
                 if (ScoutPlan.Goals[ScoutPlan.Items[j]] > 0) {
@@ -461,6 +461,12 @@ function ScoutPlanningCalculator(ScoutConfig) {
                         ID: ScoutPlan.Items[j],
                         Goal: ScoutPlan.Goals[ScoutPlan.Items[j]]
                     });
+
+                    BannerPlan.ItemsRemaining.push(ScoutPlan.Goals[ScoutPlan.Items[j]]);
+                    BannerPlan.TotalItemsRemaining += ScoutPlan.Goals[ScoutPlan.Items[j]];
+
+                    BannerPlan.ItemRates.push(ItemsInfo[ScoutPlan.Items[j]].Rate);
+                    BannerPlan.SumOfItemRates += ItemsInfo[ScoutPlan.Items[j]].Rate;
                 };
             };
 
