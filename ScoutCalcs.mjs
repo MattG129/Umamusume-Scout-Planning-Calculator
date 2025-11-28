@@ -185,15 +185,21 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
         FC += NumberOfEvents * 450
     };
 
-    if (ScoutConfig.ExpectedEventPoints >= 1) {FC          += NumberOfEvents * 100};
-    if (ScoutConfig.ExpectedEventPoints >= 2) {CardTickets += NumberOfEvents * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 3) {FC          += NumberOfEvents * 100};
-    if (ScoutConfig.ExpectedEventPoints >= 4) {UmaTickets  += NumberOfEvents * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 5) {FC          += NumberOfEvents * 100};
-    if (ScoutConfig.ExpectedEventPoints >= 6) {CardTickets += NumberOfEvents * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 7) {FC          += NumberOfEvents * 150};
-    if (ScoutConfig.ExpectedEventPoints >= 8) {UmaTickets  += NumberOfEvents * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 9) {FC          += NumberOfEvents * 150};
+    for (let i = 1; i <= ScoutConfig.ExpectedEventPoints; i++) {
+        let Event = StoryEventRewards[i-1]
+
+        switch (Event.RewardType.Value) {
+            case StoryEventRewardTypes.Carat.Value:
+                FC += NumberOfEvents * Event.Quantity;
+                break;
+            case StoryEventRewardTypes.UmaTicket.Value:
+                UmaTickets += NumberOfEvents * Event.Quantity;
+                break;
+            case StoryEventRewardTypes.CardTicket.Value:
+                CardTickets += NumberOfEvents * Event.Quantity;
+                break;
+        };
+    };
 
     /* Champion meets are recurring tournaments that give out rewards based on how well you perform. Since there have only been two CMs as of
     the time of writing this, it would be difficult to come up with accurate estimates for future dates. As such, we will simplify things by
