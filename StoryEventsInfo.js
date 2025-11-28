@@ -324,7 +324,7 @@ const StoryEvents = [
 has already started, we will only factor in future events into the savings calcs. To simplify this
 process, we will use the below variable to mark the first event that can be used in calcs. */
 let StartingEvent = 0;
-for (i = 0; i < StoryEvents.length; i++) {
+for (let i = 0; i < StoryEvents.length; i++) {
     let Event = StoryEvents[i];
     
     if (!Object.hasOwn(Event, 'GlobalStartDate')) {

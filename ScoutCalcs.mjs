@@ -168,7 +168,7 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     
     // For the sake of simplicity, all event rewards will be given on the last day of the event.
     let NumberOfEvents = 0;
-    for (i = StartingEvent; i < StoryEvents.length; i++) {
+    for (let i = StartingEvent; i < StoryEvents.length; i++) {
         if (StoryEvents[i].JPEndDate <= BannerPlan.JPEndDate) {
             NumberOfEvents++;
         }
