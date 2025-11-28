@@ -1,26 +1,27 @@
 const StoryEventRewardTypes = {
-    Carats: 1,
-    UmaTicket: 2,
-    CardTicket: 3,
-    CrystalShard: 4,
+    Carats:       {Value: 1, Label: 'Carats'},
+    UmaTicket:    {Value: 2, Label: 'Trainee Scout Ticket'},
+    CardTicket:   {Value: 3, Label: 'Support Card Scout Ticket'},
+    CrystalShard: {Value: 4, Label: 'Rainbow Crystal Shard'},
 }
 
 const StoryEventRewards = [
-    {Points: 100000,  Reward: StoryEventRewardTypes.Carats,       Quantity: 100},
-    {Points: 105000,  Reward: StoryEventRewardTypes.CardTicket,   Quantity: 1},
-    {Points: 150000,  Reward: StoryEventRewardTypes.Carats,       Quantity: 100},
-    {Points: 195000,  Reward: StoryEventRewardTypes.UmaTicket,    Quantity: 1},
-    {Points: 200000,  Reward: StoryEventRewardTypes.Carats,       Quantity: 150},
-    {Points: 300000,  Reward: StoryEventRewardTypes.CrystalShard, Quantity: 1},
-    {Points: 310000,  Reward: StoryEventRewardTypes.Carats,       Quantity: 150},
-    {Points: 460000,  Reward: StoryEventRewardTypes.Carats,       Quantity: 200},
-    {Points: 520000,  Reward: StoryEventRewardTypes.CardTicket,   Quantity: 1},
-    {Points: 600000,  Reward: StoryEventRewardTypes.CrystalShard, Quantity: 1},
-    {Points: 660000,  Reward: StoryEventRewardTypes.Carats,       Quantity: 300},
-    {Points: 720000,  Reward: StoryEventRewardTypes.UmaTicket,    Quantity: 1},
-    {Points: 920000,  Reward: StoryEventRewardTypes.CrystalShard, Quantity: 1},
-    {Points: 1000000, Reward: StoryEventRewardTypes.Carats,       Quantity: 500},
-    {Points: 1500000, Reward: StoryEventRewardTypes.Carats,       Quantity: 750}
+    {Points: 100000,  RewardType: StoryEventRewardTypes['Carats'],       Quantity: 100},
+    {Points: 105000,  RewardType: StoryEventRewardTypes['CardTicket'],   Quantity: 1},
+    {Points: 150000,  RewardType: StoryEventRewardTypes['Carats'],       Quantity: 100},
+    {Points: 195000,  RewardType: StoryEventRewardTypes['UmaTicket'],    Quantity: 1},
+    {Points: 200000,  RewardType: StoryEventRewardTypes['Carats'],       Quantity: 150},
+    {Points: 300000,  RewardType: StoryEventRewardTypes['CrystalShard'], Quantity: 1},
+    {Points: 310000,  RewardType: StoryEventRewardTypes['Carats'],       Quantity: 150},
+    {Points: 460000,  RewardType: StoryEventRewardTypes['Carats'],       Quantity: 200},
+    {Points: 520000,  RewardType: StoryEventRewardTypes['CardTicket'],   Quantity: 1},
+    {Points: 600000,  RewardType: StoryEventRewardTypes['CrystalShard'], Quantity: 1},
+    {Points: 660000,  RewardType: StoryEventRewardTypes['Carats'],       Quantity: 300},
+    {Points: 720000,  RewardType: StoryEventRewardTypes['UmaTicket'],    Quantity: 1},
+    {Points: 920000,  RewardType: StoryEventRewardTypes['CrystalShard'], Quantity: 1},
+    {Points: 1000000, RewardType: StoryEventRewardTypes['Carats'],       Quantity: 500},
+    // TODO: Need to think about how this should be added to the dropdown.
+    // {Points: 1500000, RewardType: StoryEventRewardTypes['Carats'],       Quantity: 750}
 ]
 
 const StoryEvents = [
