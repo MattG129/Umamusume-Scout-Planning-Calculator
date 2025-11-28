@@ -165,12 +165,17 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     FC += TeamTrialCarats * ( BannerPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(BannerPlan.GlobalEndDate) ? 1 : 0) );
 
     // Each month there will be an event that gives out carats and pink tickets for completing stories, bingo cards, and reaching certain event point milestones.
-
-    /* Since we don't have exact dates for when the events will occur on, we can't just use month diff. Instead we will use the
-    month diff to tell us how many months will have ended between now and the target banner's end date and assume that the rewards
-    would be given out at the very end of the month. We won't however, give out rewards for the month that the banner ends on, even
-    if it ends on the last day of the month, in order to avoid any potential edge case issues with time zones and what not. */
-    let NumberOfEvents = Math.max(0, BannerPlan.MonthDiff - (ScoutConfig.CurrentMonthsEventCompleted ? 1 : 0));
+    
+    // For the sake of simplicity, all event rewards will be given on the last day of the event.
+    let NumberOfEvents = 0;
+    for (i = StartingEvent; i < StoryEvents.length; i++) {
+        if (StoryEvents[i].JPEndDate <= BannerPlan.JPEndDate) {
+            NumberOfEvents++;
+        }
+        else {
+            break;
+        };
+    };
 
     if (ScoutConfig.CompletesEventStories) {
         FC += NumberOfEvents * 210
