@@ -201,10 +201,24 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
         };
     };
 
-    /* Champion meets are recurring tournaments that give out rewards based on how well you perform. Since there have only been two CMs as of
-    the time of writing this, it would be difficult to come up with accurate estimates for future dates. As such, we will simplify things by
-    having the calculator assume 1 CM per month. We will calculate the NumberOfCMs similarly to how NumberOfEvents is calculated. */
-    let NumberOfCMs = Math.max(0, BannerPlan.MonthDiff - (ScoutConfig.CurrentMonthsCMCompleted ? 1 : 0));
+    // Champion meets are recurring tournaments that give out rewards based on how well you perform.
+
+    // For the sake of simplicity, all CM rewards will be given on the last day of the CM.
+    let NumberOfCMs = 0;
+
+    for (let i = StartingCM; i < ChampionsMeetings.length; i++) {
+        let CM = ChampionsMeetings[i]
+
+        if (
+            (Object.hasOwn(CM, 'GlobalEndDate') && ChampionsMeetings[i].GlobalEndDate <= BannerPlan.GlobalEndDate)
+            || (!Object.hasOwn(CM, 'GlobalEndDate') && ChampionsMeetings[i].JPEndDate <= BannerPlan.JPEndDate)
+        ) {
+            NumberOfCMs++;
+        }
+        else {
+            break;
+        };
+    };
 
     FC += NumberOfCMs * CalculateRoundRewards(ScoutConfig, 1);
     FC += NumberOfCMs * CalculateRoundRewards(ScoutConfig, 2);
