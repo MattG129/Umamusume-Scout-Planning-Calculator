@@ -59,8 +59,9 @@ for (let i = 0; i < ChampionsMeetings.length; i++) {
         let GlobalLaunchCMStartDateDiff = Math.round(JPLaunchCMStartDateDiff/GlobalAccelRate);
 
         CM.GlobalStartDate = DateAdd(GlobalLaunchDate, GlobalLaunchCMStartDateDiff);
-        CM.GlobalEndDate = DateAdd(CM.GlobalStartDate, 6);
     };
+
+    CM.GlobalEndDate = DateAdd(CM.GlobalStartDate, 6);
   
     if (StartingCM == 0 && CM.GlobalStartDate > Today) {
         StartingCM = i;
