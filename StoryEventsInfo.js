@@ -281,7 +281,10 @@ const StoryEvents = [
         Name: "The Sounds of Autumn",
         JPStartDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
         JPEndDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
-        PointLimit: 1000000
+        PointLimit: 1000000,
+
+        GlobalStartDate: moment('14 Dec 2025', "DD MMM YYYY").toDate(),
+        GlobalEndDate: moment('25 Dec 2025', "DD MMM YYYY").toDate()
     },
     {
         Name: "Make up in Halloween!",
