@@ -19,6 +19,7 @@
         <script src="BannersInfo.js" type="text/javascript"></script>
         <script src="ScoutCalcs.mjs" type="text/javascript"></script>
         <script src="StoryEventsInfo.js" type="text/javascript"></script>
+        <script src="ChampionsMeetingsInfo.js" type="text/javascript"></script>
 
         <script src="https://parsleyjs.org/dist/parsley.js" integrity="sha384-0HmdHQBHe/sSM1qEobdZMf43ZJs6BLvTd73EqZSM6VrXo2ICjuQ5aYrka2MbVt9U" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" integrity="sha384-RIQuldGV8mnjGdob13cay/K1AJa+LR7VKHqSXrrB5DPGryn4pMUXRLh92Ev8KlGF" crossorigin="anonymous"></script>
@@ -228,21 +229,11 @@
                                 Champions Meeting <a data-toggle="tooltip" title="The calculator will assume that Champions Meeting rewards are given once per month, at the end of the month if not already claimed."><i class="bi bi-question-circle"></i></a>
                             </h3>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check form-check-inline" style="max-width: 300px; margin-bottom: 15px">
-                                        <input type="checkbox" id="CurrentMonthsCMCompleted" class="form-check-input">
-                                        <label for="CurrentMonthsCMCompleted" class="form-label">Current Month's Completed</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="CMLeague" class="form-label">League</label>
-                                    <select id="CMLeague" class="form-select" style="max-width: 300px; margin-bottom: 15px">
-                                        <option value="1">Open</option>
-                                        <option value="2">Graded</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <label for="CMLeague" class="form-label">League</label>
+                            <select id="CMLeague" class="form-select" style="max-width: 300px; margin-bottom: 15px">
+                                <option value="1">Open</option>
+                                <option value="2">Graded</option>
+                            </select>
 
                             <h4>Round 1</h4>
                             <div class="row">
