@@ -165,12 +165,17 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     FC += TeamTrialCarats * ( BannerPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(BannerPlan.GlobalEndDate) ? 1 : 0) );
 
     // Each month there will be an event that gives out carats and pink tickets for completing stories, bingo cards, and reaching certain event point milestones.
-
-    /* Since we don't have exact dates for when the events will occur on, we can't just use month diff. Instead we will use the
-    month diff to tell us how many months will have ended between now and the target banner's end date and assume that the rewards
-    would be given out at the very end of the month. We won't however, give out rewards for the month that the banner ends on, even
-    if it ends on the last day of the month, in order to avoid any potential edge case issues with time zones and what not. */
-    let NumberOfEvents = Math.max(0, BannerPlan.MonthDiff - (ScoutConfig.CurrentMonthsEventCompleted ? 1 : 0));
+    
+    // For the sake of simplicity, all event rewards will be given on the last day of the event.
+    let NumberOfEvents = 0;
+    for (let i = StartingEvent; i < StoryEvents.length; i++) {
+        if (StoryEvents[i].JPEndDate <= BannerPlan.JPEndDate) {
+            NumberOfEvents++;
+        }
+        else {
+            break;
+        };
+    };
 
     if (ScoutConfig.CompletesEventStories) {
         FC += NumberOfEvents * 210
@@ -180,20 +185,40 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
         FC += NumberOfEvents * 450
     };
 
-    if (ScoutConfig.ExpectedEventPoints >= 1) {FC          += NumberOfEvents * 100};
-    if (ScoutConfig.ExpectedEventPoints >= 2) {CardTickets += NumberOfEvents * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 3) {FC          += NumberOfEvents * 100};
-    if (ScoutConfig.ExpectedEventPoints >= 4) {UmaTickets  += NumberOfEvents * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 5) {FC          += NumberOfEvents * 100};
-    if (ScoutConfig.ExpectedEventPoints >= 6) {CardTickets += NumberOfEvents * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 7) {FC          += NumberOfEvents * 150};
-    if (ScoutConfig.ExpectedEventPoints >= 8) {UmaTickets  += NumberOfEvents * 1};
-    if (ScoutConfig.ExpectedEventPoints >= 9) {FC          += NumberOfEvents * 150};
+    for (let i = 1; i <= ScoutConfig.ExpectedEventPoints; i++) {
+        let Event = StoryEventRewards[i-1]
 
-    /* Champion meets are recurring tournaments that give out rewards based on how well you perform. Since there have only been two CMs as of
-    the time of writing this, it would be difficult to come up with accurate estimates for future dates. As such, we will simplify things by
-    having the calculator assume 1 CM per month. We will calculate the NumberOfCMs similarly to how NumberOfEvents is calculated. */
-    let NumberOfCMs = Math.max(0, BannerPlan.MonthDiff - (ScoutConfig.CurrentMonthsCMCompleted ? 1 : 0));
+        switch (Event.RewardType.Value) {
+            case StoryEventRewardTypes.Carat.Value:
+                FC += NumberOfEvents * Event.Quantity;
+                break;
+            case StoryEventRewardTypes.UmaTicket.Value:
+                UmaTickets += NumberOfEvents * Event.Quantity;
+                break;
+            case StoryEventRewardTypes.CardTicket.Value:
+                CardTickets += NumberOfEvents * Event.Quantity;
+                break;
+        };
+    };
+
+    // Champion meets are recurring tournaments that give out rewards based on how well you perform.
+
+    // For the sake of simplicity, all CM rewards will be given on the last day of the CM.
+    let NumberOfCMs = 0;
+
+    for (let i = StartingCM; i < ChampionsMeetings.length; i++) {
+        let CM = ChampionsMeetings[i]
+
+        if (
+            (Object.hasOwn(CM, 'GlobalEndDate') && ChampionsMeetings[i].GlobalEndDate <= BannerPlan.GlobalEndDate)
+            || (!Object.hasOwn(CM, 'GlobalEndDate') && ChampionsMeetings[i].JPEndDate <= BannerPlan.JPEndDate)
+        ) {
+            NumberOfCMs++;
+        }
+        else {
+            break;
+        };
+    };
 
     FC += NumberOfCMs * CalculateRoundRewards(ScoutConfig, 1);
     FC += NumberOfCMs * CalculateRoundRewards(ScoutConfig, 2);

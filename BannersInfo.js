@@ -4436,7 +4436,10 @@ let ItemsInfo = [
     JPEndDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
     Rate: 0.0225,
-    Disabled: true
+    Disabled: true,
+
+    GlobalStartDate: moment('28 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4445,7 +4448,10 @@ let ItemsInfo = [
     JPStartDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('28 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4454,7 +4460,10 @@ let ItemsInfo = [
     JPStartDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('28 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4463,7 +4472,10 @@ let ItemsInfo = [
     JPStartDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('18 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('29 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4472,7 +4484,10 @@ let ItemsInfo = [
     JPStartDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('18 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('29 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4481,7 +4496,10 @@ let ItemsInfo = [
     JPStartDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('18 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('18 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('29 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4490,7 +4508,10 @@ let ItemsInfo = [
     JPStartDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('14 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('25 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4499,7 +4520,10 @@ let ItemsInfo = [
     JPStartDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('14 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('25 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4508,7 +4532,10 @@ let ItemsInfo = [
     JPStartDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('14 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('25 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4517,7 +4544,10 @@ let ItemsInfo = [
     JPStartDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('7 Nov 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('14 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('25 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4527,7 +4557,10 @@ let ItemsInfo = [
     JPEndDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
     Rate: 0.0225,
-    Disabled: true
+    Disabled: true,
+
+    GlobalStartDate: moment('14 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('25 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4536,7 +4569,10 @@ let ItemsInfo = [
     JPStartDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('8 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('16 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4545,7 +4581,10 @@ let ItemsInfo = [
     JPStartDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('27 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('8 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('16 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4554,7 +4593,10 @@ let ItemsInfo = [
     JPStartDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('1 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('10 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4563,7 +4605,10 @@ let ItemsInfo = [
     JPStartDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('1 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('10 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4572,7 +4617,10 @@ let ItemsInfo = [
     JPStartDate: moment('10 Oct 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('19 Oct 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('1 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('10 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
