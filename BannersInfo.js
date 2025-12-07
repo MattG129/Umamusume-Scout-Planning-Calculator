@@ -4559,8 +4559,8 @@ let ItemsInfo = [
     Rate: 0.0225,
     Disabled: true,
 
-    GlobalStartDate: moment('14 Dec 2025', "DD MMM YYYY").toDate(),
-    GlobalEndDate: moment('25 Dec 2025', "DD MMM YYYY").toDate()
+    GlobalStartDate: moment('8 Dec 2025', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('16 Dec 2025', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
