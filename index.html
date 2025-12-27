@@ -20,6 +20,7 @@
         <script src="ScoutCalcs.mjs" type="text/javascript"></script>
         <script src="Fields.js" type="text/javascript"></script>
         <script src="Parsley.js" type="text/javascript"></script>
+        <script src="Scripts/Modal.js" type="text/javascript"></script>
         <script src="StoryEventsInfo.js" type="text/javascript"></script>
         <script src="ChampionsMeetingsInfo.js" type="text/javascript"></script>
 
@@ -36,8 +37,11 @@
             let Page = 'index';
             let NewScoutPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
             let UpdateTableTimeout; // Prevents the import from triggering this function several times.
+            let UpdateModalTimeout; // Prevents the import from triggering this function several times.
             let ImportInProgress = true;
             let UnsavedChanges = false;
+            let PreviousModalCallingRowID = -1; // Will be used to tell the modal if the selector is being opened up from the same row it was last opened for or not.
+            let CurrentModalCallingRowID = -1; // Will be used to tell the modal if the selector is being opened up from the same row it was last opened for or not.
         </script>
     </head>
     <body>
@@ -147,6 +151,10 @@
                 font-size: min(3vw, 16px) /* Makes the select2 option text dynamic like the rest of the scout planning table text.*/
             }
 
+            .SelectorField {
+                border-color: black;
+            }
+
             .form-date { /* We want the form-control styling except for display:block which would cause the calendar button to appear on the next row. */
                 width: 100%;
                 padding: .375rem .75rem;
@@ -178,6 +186,27 @@
                 border: var(--bs-border-width) solid var(--bs-border-color);
                 border-radius: 0 0.375rem 0.375rem 0;
                 transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            }
+
+            #FullScreenButton {
+                color: black;
+                font-size: 18px;
+            }
+
+            #FullScreenButton:hover {
+                color: gray;
+            }
+
+            .ModalCellActive {
+                color: black;
+            }
+
+            .ModalCellInactive {
+                color: gray;
+            }
+
+            .ModalCellInactive:hover {
+                color: gray;
             }
         </style>
 
@@ -532,6 +561,59 @@
 
                     <hr><h2>Scout Planning</h2><br>
 
+                    <div class="modal fade" id="SelectionModal" tabindex="-1" aria-labelledby="SelectionModalLabel" aria-hidden="true">
+                        <div id="SelectionModalDialog" class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="SelectionModalLabel">Scout Target Selector</h1>
+                                    &nbsp;&nbsp;
+                                    <i id="FullScreenButton" type="button" class="bi bi-arrows-fullscreen" onclick="
+                                        $('#SelectionModalDialog').toggleClass('modal-fullscreen');
+                                        $('#FullScreenButton').toggleClass('bi-arrows-fullscreen').toggleClass('bi-fullscreen-exit');
+                                        UpdateModalSelection();
+                                    "></i>
+
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <label for="ItemNameFilter" class="form-label">Name</label>
+                                            <input id="ItemNameFilter" class="form-control SelectorField" type="text" style="max-width: 300px;">
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label for="BannerTypeFilter" class="form-label">Banner Type</label>
+                                            <select id="BannerTypeFilter" class="form-select SelectorField" style="max-width: 300px;">
+                                                <option value="0" selected>Any</option>
+                                                <option value="1">Trainee</option>
+                                                <option value="2">Support Card</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label for="BannerIDFilter" class="form-label">Banner ID</label>
+                                            <button type="button" class=" btn btn-danger" onclick="$('#BannerIDFilter').val(0).trigger('input')"
+                                                style="color: white; font-size: 13px; padding-top: 2px; padding-left: 5px; padding-right: 5px; padding-bottom: 2px;"
+                                            >
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                            <select id="BannerIDFilter" class="form-select SelectorField" style="max-width: 300px;">
+                                                <option value="0" selected>Any</option>
+                                                <!-- Other options will be filled in via Modal.js -->
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <center>
+                                        <div id="ModalSelectionResults"></div>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="overflow-x: auto;">
                         <table id="ScoutPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
                             <thead>
@@ -542,13 +624,10 @@
                                     <th style="width: 20%; min-width: 80px;"> <!-- TODO: Make the accel rate dynamic. -->
                                         Banner <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (00:00). Dates are calculated based on the number of days between the Japanese server's launch and the banner's start date on that server. This number is then divided by the global acceleration rate (1.4) and is used to estimate the banner's global start date, based on the global server's launch date. The banner duration remains unchanged. For banners that have already been announced, the global dates will be entered manually."><i class="bi bi-question-circle" style="color: black;"></i></a>
                                     </th>
-                                    <th style="width: 20%; min-width: 125px;">
-                                        Scout Item(s) <a data-toggle="tooltip" title="You can select multiple items, but only from a single banner. Once you select your first item, items from other banners will be removed from the dropdown. Clearing the dropdown will bring back other options."><i class="bi bi-question-circle" style="color: black;"></i></a>
-                                    </th>
                                     <th style="width: 20%; min-width: 80px;">
                                         Copies <a data-toggle="tooltip" title="You can sort items by dragging and dropping them. Exchange points will be used on items in order from highest to lowest."><i class="bi bi-question-circle" style="color: black;"></i></a>
                                     </th>
-                                    <th style="width: 15%; min-width: 80px;">
+                                    <th style="width: 35%; min-width: 80px;">
                                         Banner Config
                                     </th>
                                     <th style="width: 7.5%;">
@@ -599,33 +678,38 @@
                                     <td>
                                         <div class="ScoutPlanBanner" data-banner-id="0"></div>
 
+                                        <button type="button" class="ScoutPlanSelector btn btn-add" style="width: 90%" data-bs-toggle="modal" data-bs-target="#SelectionModal">
+                                            <i class="bi bi-plus-lg" style="font-size: 20px; color: white;"></i>
+                                        </button>
+
                                         <div class="OutOfOrderMessage TableValidation">Banner end dates must be in chronological order.</div>
                                         <div class="DuplicateBannerMessage TableValidation">Duplicate banner.</div>
                                     </td>
-                                    <td>
-                                        <select class="ScoutPlanItems form-select" onchange="UpdateScoutPlanningTable(); UpdateGoalFields(${NewScoutPlanRowID});" multiple="multiple"></select>
-                                    </td>
                                     <td class="ScoutPlanGoalsCell"></td>
                                     <td>
-                                        <center>
-                                            <label class="form-label">
-                                                Exchange Pts
-                                                <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
-                                            </label>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label class="form-label">
+                                                    Exchange Pts
+                                                    <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
+                                                </label>
+                                            </div>
 
-                                            <label class="form-label">
-                                                Scout Limit
-                                                <input type="number" class="ScoutPlanLimit form-control" data-parsley-trigger="input" min="1" data-parsley-min="1">
-                                            </label>
-                                        </center>
+                                            <div class="col-sm-6">
+                                                <label class="form-label">
+                                                    Scout Limit
+                                                    <input type="number" class="ScoutPlanLimit form-control" data-parsley-trigger="input" min="1" data-parsley-min="1">
+                                                </label>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td class="td-label">
                                         <label class="td-label">
-                                            <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); UpdateScoutPlanningTable();" checked>
+                                            <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); ValidateScoutPlanningTable();" checked>
                                         </label>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="$('tr[data-scoutplan-rowid=${NewScoutPlanRowID}]').remove(); UpdateScoutPlanningTable(); CheckForUnsavedChanges();">
+                                        <button type="button" class="btn btn-danger" onclick="$('tr[data-scoutplan-rowid=${NewScoutPlanRowID}]').remove(); ValidateScoutPlanningTable(); CheckForUnsavedChanges();">
                                             <i class="bi bi-x-lg" style="font-weight: bold;"></i>
                                         </button>
                                     </td>
@@ -636,11 +720,7 @@
                             $('#ScoutPlanningTableBody').sortable("refresh");
 
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanGoalsCell`).sortable();
-                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems`).html($('#BannerTemplate').html()).select2(Select2Config);
                             $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] input, tr[data-scoutplan-rowid=${NewScoutPlanRowID}] select`).addClass('ScoutPlanField TableField');
-
-                            // This should prevent the options from being ctrl-f searchable but shouldn't prevent them from showing up in the select 2 like normal.
-                            $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID}] .ScoutPlanItems option`).hide();
 
                             SetParsleyValidations();
                             UpdateUnsavedChangesListener();
@@ -663,41 +743,13 @@
                             }
                         };
 
-                        function UpdateGoalFields(RowID) {
-                            let Items = $(`tr[data-scoutplan-rowid=${RowID}] .ScoutPlanItems`).val();
-                            let GoalsCell = $(`tr[data-scoutplan-rowid=${RowID}] .ScoutPlanGoalsCell`);
-                            let GoalLabels = GoalsCell.find('label'); // Using labels since we're gonna wrap the goal fields in them. This way we don't have to remove both.
-
-                            if (Items.length > GoalLabels.length) { // Add goal fields.
-                                for (let i = 0; i < Items.length; i++) {
-                                    let ItemID = Items[i];
-
-                                    if (GoalsCell.find(`label[data-item-id=${ItemID}]`).length == 0) {
-                                        GoalsCell.append($(`
-                                            <label class="form-label" data-item-id=${ItemID}>
-                                                ${ItemsInfo[ItemID].Name}
-                                                <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="1">
-                                            </label>
-                                        `));
-                                    };
-                                };
-                            }
-                            else if (Items.length < GoalLabels.length) { // Remove goal fields.
-                                GoalLabels.each(function() {
-                                    if (!Items.includes($(this).attr('data-item-id'))) {
-                                        $(this).remove();
-                                    };
-                                });
-                            };
-                        };
-
                         $(function() {
                             NewScoutPlanRowID = 0;
 
                             $('#ScoutPlanningTableBody').sortable({
                                 handle: ".handle",
                                 update: function() {
-                                    UpdateScoutPlanningTable();
+                                    ValidateScoutPlanningTable();
                                     UnsavedChanges = true;
                                 }
                             });
@@ -714,16 +766,11 @@
 
                             if (localStorage.getItem("UmaSessionState") == null) {
                                 // We want the table to load with 3 rows by default. We will also have these rows use the 3 closest banners and select up to 3 items from that banner.
-                                let First = true;
                                 let Selected = [];
                                 let PreviousBannerID = 0;
                                 for (let i = 0; i < ItemsInfo.length; i++) {
                                     if (ItemsInfo[i].GlobalEndDate >= Today && ItemsInfo[i].Disabled != true) {
                                         if (ItemsInfo[i].BannerID != PreviousBannerID) {
-                                            if (!First) {
-                                                $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}] td .ScoutPlanItems`).val(Selected);
-                                            };
-                                            First = false;
 
                                             if (NewScoutPlanRowID >= 3) {
                                                 break;
@@ -734,57 +781,35 @@
                                             AddScoutPlanRow();
                                         };
 
-                                        if (Selected.length < 3) {
-                                            Selected.push(i);
+                                        let TargetRow = $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}]`);
+                                        if (TargetRow.find('.ScoutPlanGoalsCell').find('label').length < 3) {
+                                            TargetRow.find('.ScoutPlanGoalsCell').append($(`
+                                                <label class="form-label" data-item-id=${i}>
+                                                    ${ItemsInfo[i].Name}
+                                                    <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="1">
+                                                </label>
+                                            `));
                                         };
                                     };
                                 };
                             };
                         });
 
-                        function UpdateScoutPlanningTable() {
+                        function ValidateScoutPlanningTable() {
                             clearTimeout(UpdateTableTimeout);
 
                             UpdateTableTimeout = setTimeout(function() {
                                 $('.TableValidation').hide();
 
                                 let Banners = [];
-                                let PreviousRowFirstItem = -1;
+                                let PreviousRowBannerID = -1;
                                 $('tr[data-scoutplan-rowid]').each(function() {
-
-                                    let ScoutItems = $(this).find('.ScoutPlanItems').select2('data');
-
-                                    let BannerID = 0;
-                                    if (ScoutItems.length > 0) {
-                                        BannerID = ItemsInfo[(ScoutItems[0].id)].BannerID;
-                                    };
-
-                                    $(this).find('.ScoutPlanBanner').html(BannerID == 0 ? '' : BannerNames[BannerID]);
+                                    let BannerID = $(this).find('.ScoutPlanBanner').attr('data-banner-id');
 
                                     if ($(this).find('.ScoutPlanActive').is(':checked')) {
-
-                                        if (BannerID != $(this).find('.ScoutPlanBanner').attr('data-banner-id')) {
-                                            if (BannerID == 0) {
-                                                $(this).find('.ScoutPlanItems option').prop('disabled', false);
-                                            }
-                                            else {
-                                                for (let i = 0; i < ItemsInfo.length; i++) {
-                                                    if (ItemsInfo[i].BannerID != BannerID) {
-                                                        $(this).find(`.ScoutPlanItems option[value=${i}]`).prop('disabled', true);
-                                                    };
-                                                };
-                                            };
-
-                                            $(this).find('.ScoutPlanItems').select2('close').select2("destroy").select2(Select2Config)
-                                        };
-
-                                        $(this).find('.ScoutPlanBanner').attr('data-banner-id', BannerID);
-
                                         if (BannerID != 0) {
-                                            let FirstItem = ScoutItems[0].id
-
-                                            if (PreviousRowFirstItem != -1) {
-                                                if (ItemsInfo[FirstItem].GlobalEndDate < ItemsInfo[PreviousRowFirstItem].GlobalEndDate) {
+                                            if (PreviousRowBannerID != -1) {
+                                                if (BannersInfo[BannerID].EndDate < BannersInfo[PreviousRowBannerID].EndDate) {
                                                     $(this).find('.OutOfOrderMessage').show();
                                                 };
                                             };
@@ -796,7 +821,7 @@
                                                 $(this).find('.DuplicateBannerMessage').show();
                                             };
 
-                                            PreviousRowFirstItem = FirstItem;
+                                            PreviousRowBannerID = BannerID;
                                         };
                                     };
                                 });
@@ -811,9 +836,46 @@
                                     $("#Calculate").addClass('disabled');
                                 };
 
-                                /* UpdateScoutPlanningTable will hide the loading message since updating the table after the import can take a non-negligible amount of time, during which we would want the loading message to still be present. */
+                                /* ValidateScoutPlanningTable will hide the loading message since updating the table after the import can take a non-negligible amount of time, during which we would want the loading message to still be present. */
                                 $('#ScoutPlanningLoadingMessage').hide();
                             }, 10)
+                        };
+
+                        function UpdateScoutPlanningTableSelection(BannerID, ItemID, CurrentModalCallingRowID) {
+                            let CallingRow = $(`tr[data-scoutplan-rowid="${CurrentModalCallingRowID}"]`);
+                            let TargetRow = CallingRow;
+
+                            $(`tr div[data-banner-id="${BannerID}"]`).parent().parent().attr('data-scoutplan-rowid')
+
+                            if ( $(`.ScoutPlanBanner[data-banner-id="${BannerID}"]`).length == 0 ) {
+                                if ( CallingRow.find('.ScoutPlanBanner').attr('data-banner-id') == 0 ) {
+                                    PreviousModalCallingRowID = -1; // If a row's banner id is updated, then clicking on it again should have the modal focus on that banner id.
+                                }
+                                else {
+                                    AddScoutPlanRow();
+                                    TargetRow = $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}]`)
+                                };
+
+                                TargetRow.find('.ScoutPlanBanner').attr('data-banner-id', BannerID).html(BannersInfo[BannerID].Name);
+                            }
+                            else if (TargetRow.find('.ScoutPlanBanner').attr('data-banner-id') != BannerID) {
+                                TargetRowID = $(`div[data-banner-id="${BannerID}"]`).parent().parent().attr('data-scoutplan-rowid')
+                                TargetRow = $(`tr[data-scoutplan-rowid=${TargetRowID}]`);
+                            };
+
+                            if (TargetRow.find(`label[data-item-id="${ItemID}"]`).length == 1) {
+                                TargetRow.find(`label[data-item-id="${ItemID}"]`).remove();
+                            }
+                            else {
+                                TargetRow.find('.ScoutPlanGoalsCell').append($(`
+                                    <label class="form-label" data-item-id=${ItemID}>
+                                        ${ItemsInfo[ItemID].Name}
+                                        <input type="number" class="ScoutPlanGoal ScoutPlanField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="1">
+                                    </label>
+                                `));
+                            };
+
+                            ValidateScoutPlanningTable();
                         };
                     </script>
 
@@ -842,7 +904,6 @@
                             <th style="width: 15%">
                                 Max Scouts <a data-toggle="tooltip" title="An estimate of how many scouts you can make on the banner. This is assuming all prior items are acquired with as few scouts as possible."><i class="bi bi-question-circle" style="color: black;"></i></a>
                             </th>
-                            <th style="width: 30%">Scout Item(s)</th>
                             <th style="width: 10%">Copies</th>
                             <th style="width: 15%">Chance of Success</th>
                         </tr>
@@ -907,12 +968,10 @@
                 if ($(caller).is(':checked')) {
                     $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input`).removeClass('InactiveScoutPlanRow');
                     $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}] .ScoutPlanBanner`).css('color', 'black');
-                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}] .ScoutPlanItems`).prop("disabled", false);;
                 }
                 else {
                     $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}], tr[data-scoutplan-rowid=${ScoutPlanRowID}] input`).addClass('InactiveScoutPlanRow');
                     $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}] .ScoutPlanBanner`).css('color', 'gray');
-                    $(`tr[data-scoutplan-rowid=${ScoutPlanRowID}] .ScoutPlanItems`).prop("disabled", true);;
                 };
             };
 
@@ -1041,15 +1100,15 @@
                             else {
                                 AddScoutPlanRow();
 
-                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanItems`).val(ScoutPlanBanner.Items);
+                                let BannerID = ItemsInfo[FirstItem].BannerID;
+                                let TargetRow = $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}]`);
+                                TargetRow.find('.ScoutPlanBanner').attr('data-banner-id', BannerID);
+                                TargetRow.find('.ScoutPlanBanner').html( BannersInfo[ BannerID ].Name );
+
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanLimit`).val(ScoutPlanBanner.Limit);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
 
-                                /* This is similar to the code used by UpdateGoalFields to add a goal field, but we removed some
-                                if statements that wouldn't be needed in this context, added the ability the specify goal value
-                                (instead of it defaulting to 1), and we want to use the item array from the import, as this will
-                                allow us to order the goal fields correctly. */
                                 let GoalsCell = $(`tr[data-scoutplan-rowid=${i}]`).find('.ScoutPlanGoalsCell');
                                 for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {
                                     let ItemID = ScoutPlanBanner.Items[j];
@@ -1088,14 +1147,15 @@
                             $('#Calculate').trigger('click');
                         }
                         else if (Scroll == true) {
-                            /* We will prevent UpdateScoutPlanningTable from running till the scroll is complete.
+                            /* We will prevent ValidateScoutPlanningTable from running till the scroll is complete.
                             As otherwise it would delay the scrolling animation. */
+                            // TODO: The above comment will need to be revisted as this was made prior to the select2 dropdowns being replaced with modal selection.
                             clearTimeout(UpdateTableTimeout);
 
                             $('html, body').animate({
                                 scrollTop: $("#CalculatorHeaderAnchor").offset().top,
                                 easing: 'linear'
-                            }, 500, function() {UpdateScoutPlanningTable()});
+                            }, 500, function() {ValidateScoutPlanningTable()});
                         };
 
                         $('#LoadingImportMessage').hide();
@@ -1154,11 +1214,7 @@
                 // For some reason this is the only way I've been able to get the select2 to automatically resize on window resizing.
                 let ResizeTimeout;
                 $(window).on('resize', function() {
-                    clearTimeout(ResizeTimeout);
-
-                    ResizeTimeout = setTimeout(function() {
-                        $('.ScoutPlanItems').select2("destroy").select2(Select2Config);
-                    }, 200);
+                    UpdateModalSelection();
                 });
 
                 SetParsleyValidations();

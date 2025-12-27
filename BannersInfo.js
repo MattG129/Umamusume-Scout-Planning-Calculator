@@ -4,11 +4,11 @@ const BannerTypes = {
 };
 
 // Most group/banner names will be filled in dynamically but there are a few we want to manually assign so we will do that here.
-const BannerNames = {
-  63: '1st Anniversary Rerun',
-  163: 'Gal Week',
-  226: 'Gochi Week',
-  282: 'Gray Week'
+let BannersInfo = {
+  63:  {Name: '1st Anniversary Rerun'},
+  163: {Name: 'Gal Week'},
+  226: {Name: 'Gochi Week'},
+  282: {Name: 'Gray Week'}
 };
 
 let ItemsInfo = [

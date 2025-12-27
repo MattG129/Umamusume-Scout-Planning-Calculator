@@ -1,0 +1,94 @@
+$(function() {
+    $('#SelectionModal').on('show.bs.modal', function(e) {
+        let BannerID = $(e.relatedTarget).parent().find('.ScoutPlanBanner').attr('data-banner-id');
+        CurrentModalCallingRowID = $(e.relatedTarget).parent().parent().attr('data-scoutplan-rowid');
+
+        /* When you open the modal from an empty row the params should be empty but if you open it
+        from a row with a banner then the name should be set empty but the type and bannerID should
+        be set to match that banner.
+        
+        But if you open the modal from the same row that you just opened it from, then the params shouldn't be touched.
+
+        Except if you open the modal from a row that just had its banner changed. In that case,
+        reopening it should cause the params to act as if its being opened for the first time. */
+        
+        if (PreviousModalCallingRowID != CurrentModalCallingRowID) {
+            $('#ItemNameFilter').val('');
+            $('#BannerIDFilter').val(BannerID);
+
+            if (BannerID != 0) {
+                $('#BannerTypeFilter').val(BannersInfo[BannerID].Type);
+            }
+            else {
+                $('#BannerTypeFilter').val(0);
+            };
+        };
+
+        PreviousModalCallingRowID = CurrentModalCallingRowID;
+
+        UpdateModalSelection();
+    });
+
+    $('.SelectorField').on('input', function(caller) {
+        UpdateModalSelection(this);
+    });
+
+    for (const key in BannersInfo) {
+        if (BannersInfo[key].EndDate >= Today) {
+            $('#BannerIDFilter').append($('<option>', {value: key, text: key}));
+        };
+    };
+});
+
+
+function UpdateModalSelection() {
+    clearTimeout(UpdateModalTimeout);
+
+    UpdateModalTimeout = setTimeout(function() {
+        let ItemWidth = 250;
+        let TableColumnLimit = Math.floor($('#SelectionModal').find('.modal-body').width()/ItemWidth);
+
+        let Table = `<center><table><tr>`;
+        let ItemCount = 0;
+        for (i = 0; i < ItemsInfo.length; i++) {
+            let Item = ItemsInfo[i];
+
+            if (
+                Item.GlobalEndDate >= Today
+                && Item.Disabled != true
+                && Item.Name.toLowerCase().indexOf($('#ItemNameFilter').val().toLowerCase()) > -1
+                && ($('#BannerTypeFilter').val() == 0 || Item.Type == $('#BannerTypeFilter').val())
+                && [0, Item.BannerID].includes(Number($('#BannerIDFilter').val()))
+            ) {
+                if (ItemCount > 0 && ItemCount % TableColumnLimit == 0) {
+                    Table += `</tr><tr>`;
+                };
+
+                Table += `
+                    <td
+                        type="button"
+                        style="text-align: center; width: ${ItemWidth}px; height: 100px; margin-bottom: 1px"
+                        onclick="UpdateScoutPlanningTableSelection(${Item.BannerID}, ${i}, ${CurrentModalCallingRowID}); $(this).toggleClass('ModalCellActive').toggleClass('ModalCellInactive')"
+                        class="${$(`label[data-item-id="${i}"]`).length == 1 ? 'ModalCellActive' : 'ModalCellInactive'} btn btn-light"
+                    >
+                        ${Item.Name}
+                        <br>
+                        ${moment(Item.GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(Item.GlobalEndDate, "YYYY-MM-DD").format('L')}
+                    </td>
+                `;
+                ItemCount++;
+            };
+        };
+
+        /*TODO: Review this part.*/
+        let Count = 1;
+        while (ItemCount % TableColumnLimit != 0 && Count < 10000) {
+            Count++;
+            ItemCount++;
+        };
+
+        Table += `</tr></table></center>`
+
+        $('#ModalSelectionResults').html(Table);
+    }, 200);
+};

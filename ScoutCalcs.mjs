@@ -53,19 +53,26 @@ for (let i = 0; i < ItemsInfo.length; i++) {
     };
 
     if (i + 1 == ItemsInfo.length || Item.BannerID != ItemsInfo[i+1].BannerID) {
-        /* If the banner does not already have a specified name, then we will check if there is a consistent suffix across
-        the banner items, such as (Christmas) or (Summer). If there is then we will use that for the banner name. If there isn't,
-        then we will just use the names of each item in the banner. We will lastly append the banner's date range to it's name. */
-        if (!Object.hasOwn(BannerNames, Item.BannerID)) {
-            if (ConsistentSuffix && CurrentBannerItemCount > 1 && CurrentItemSuffix.substring(0, 2) != 'SR' && CurrentItemSuffix.substring(0, 3) != 'SSR') {
-                BannerNames[Item.BannerID] = CurrentItemSuffix;
-            }
-            else {
-                BannerNames[Item.BannerID] = GenericName;
+        if (CurrentBannerItemCount > 0) {
+            /* If the banner does not already have a specified name, then we will check if there is a consistent suffix across
+            the banner items, such as (Christmas) or (Summer). If there is then we will use that for the banner name. If there isn't,
+            then we will just use the names of each item in the banner. We will lastly append the banner's date range to it's name. */
+            if (!Object.hasOwn(BannersInfo, Item.BannerID)) {
+                if (ConsistentSuffix && CurrentBannerItemCount > 1 && CurrentItemSuffix.substring(0, 2) != 'SR' && CurrentItemSuffix.substring(0, 3) != 'SSR') {
+                    BannersInfo[Item.BannerID] = {Name: CurrentItemSuffix};
+                }
+                else {
+                    BannersInfo[Item.BannerID] = {Name: GenericName};
+                };
             };
-        };
-        BannerNames[Item.BannerID] += `<br>${moment(Item.GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(Item.GlobalEndDate, "YYYY-MM-DD").format('L')}`;
+            BannersInfo[Item.BannerID].Name += `<br>${moment(Item.GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(Item.GlobalEndDate, "YYYY-MM-DD").format('L')}`;
 
+            BannersInfo[Item.BannerID].Type      = Item.Type;
+            BannersInfo[Item.BannerID].StartDate = Item.GlobalStartDate;
+            BannersInfo[Item.BannerID].EndDate   = Item.GlobalEndDate;
+        }
+
+        GenericName = '';
         FirstBannerItem = true;
         ConsistentSuffix = true;
         CurrentBannerItemCount = 0;
@@ -560,7 +567,7 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
 
             let NewRow = '<tr class="ScoutPlanResultsRow">'
             if (First) {
-                NewRow +=  `<td rowspan="${BannerPlan.Items.length}">${BannerNames[ ItemsInfo[Item.ID].BannerID ]}</td>
+                NewRow +=  `<td rowspan="${BannerPlan.Items.length}">${BannersInfo[ ItemsInfo[Item.ID].BannerID ].Name}</td>
                             <td rowspan="${BannerPlan.Items.length}">${MaxScouts}</td>`
             };
             NewRow +=      `<td>${ItemsInfo[Item.ID].Name}</td>
