@@ -68,7 +68,7 @@ function UpdateModalSelection() {
                     <td
                         type="button"
                         style="text-align: center; width: ${ItemWidth}px; height: 100px; margin-bottom: 1px"
-                        onclick="UpdateScoutPlanningTableSelection(${Item.BannerID}, ${i}, ${CurrentModalCallingRowID}); $(this).toggleClass('ModalCellActive').toggleClass('ModalCellInactive')"
+                        onclick="UpdateScoutPlanningTableSelection(${Item.BannerID}, ${i}, ${CurrentModalCallingRowID}); $(this).toggleClass('ModalCellActive ModalCellInactive')"
                         class="${$(`label[data-item-id="${i}"]`).length == 1 ? 'ModalCellActive' : 'ModalCellInactive'} btn btn-light"
                     >
                         ${Item.Name}
