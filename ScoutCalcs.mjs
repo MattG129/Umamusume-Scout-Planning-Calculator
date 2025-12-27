@@ -488,6 +488,8 @@ function ScoutPlanningCalculator(ScoutConfig) {
                 SumOfItemRates: 0
             };
             for (let j = 0; j < ScoutPlan.Items.length; j++) {
+                ScoutPlan.Goals[ScoutPlan.Items[j]] = Number(ScoutPlan.Goals[ScoutPlan.Items[j]]); // Need to make sure this is converted from a string to a number.
+
                 if (ScoutPlan.Goals[ScoutPlan.Items[j]] > 0) {
                     BannerPlan.Items.push({
                         ID: ScoutPlan.Items[j],
