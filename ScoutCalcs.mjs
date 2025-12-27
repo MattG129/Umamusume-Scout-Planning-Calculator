@@ -42,12 +42,12 @@ for (let i = 0; i < ItemsInfo.length; i++) {
             GenericName = Item.Name;
         }
         else {
-            GenericName += `<br>${Item.Name}`;            
+            GenericName += `<br>${Item.Name}`;
 
             if (OpenIndex < 0 || CurrentItemSuffix != PreviousItemSuffix) {
                 ConsistentSuffix = false;
             };
-        };        
+        };
         FirstBannerItem = false;
         PreviousItemSuffix = CurrentItemSuffix;
     };
