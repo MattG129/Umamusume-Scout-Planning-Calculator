@@ -633,42 +633,53 @@
                         </div>
                     </div>
 
-                    <div style="overflow-x: auto;">
-                        <table id="ScoutPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10%;">
-                                        <!-- Vertical Grip -->
-                                    </th>
-                                    <th style="width: 20%; min-width: 80px;"> <!-- TODO: Make the accel rate dynamic. -->
-                                        Banner <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (00:00). Dates are calculated based on the number of days between the Japanese server's launch and the banner's start date on that server. This number is then divided by the global acceleration rate (1.4) and is used to estimate the banner's global start date, based on the global server's launch date. The banner duration remains unchanged. For banners that have already been announced, the global dates will be entered manually."><i class="bi bi-question-circle" style="color: black;"></i></a>
-                                    </th>
-                                    <th style="width: 20%; min-width: 80px;">
-                                        Copies <a data-toggle="tooltip" title="You can sort items by dragging and dropping them. Exchange points will be used on items in order from highest to lowest."><i class="bi bi-question-circle" style="color: black;"></i></a>
-                                    </th>
-                                    <th style="width: 40%; min-width: 80px;">
-                                        Banner Config
-                                    </th>
-                                    <th style="width: 10%;">
-                                        <!-- Remove Button -->
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="ScoutPlanningTableBody">
-                                <tr id="ScoutPlanningLoadingMessage"><td colspan="5">Loading...</td></tr>
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="ScoutPlanningTableAccordion">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ScoutPlanningTableAccordionContent" aria-expanded="true" aria-controls="ScoutPlanningTableAccordionContent">
+                                    <h4 class="d-block w-100 text-center">Scout Planning Table</h4>
+                                </button>
+                            </h2>
+                            <div id="ScoutPlanningTableAccordionContent" class="accordion-collapse show" aria-labelledby="ScoutPlanningTableAccordion" data-bs-parent="#ScoutPlanningTableAccordion">
+                                <div class="accordion-body" style="overflow-x: auto;">
+                                    <table id="ScoutPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10%;">
+                                                    <!-- Vertical Grip -->
+                                                </th>
+                                                <th style="width: 20%; min-width: 80px;"> <!-- TODO: Make the accel rate dynamic. -->
+                                                    Banner <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (00:00). Dates are calculated based on the number of days between the Japanese server's launch and the banner's start date on that server. This number is then divided by the global acceleration rate (1.4) and is used to estimate the banner's global start date, based on the global server's launch date. The banner duration remains unchanged. For banners that have already been announced, the global dates will be entered manually."><i class="bi bi-question-circle" style="color: black;"></i></a>
+                                                </th>
+                                                <th style="width: 20%; min-width: 80px;">
+                                                    Copies <a data-toggle="tooltip" title="You can sort items by dragging and dropping them. Exchange points will be used on items in order from highest to lowest."><i class="bi bi-question-circle" style="color: black;"></i></a>
+                                                </th>
+                                                <th style="width: 40%; min-width: 80px;">
+                                                    Banner Config
+                                                </th>
+                                                <th style="width: 10%;">
+                                                    <!-- Remove Button -->
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ScoutPlanningTableBody">
+                                            <tr id="ScoutPlanningLoadingMessage"><td colspan="5">Loading...</td></tr>
 
-                                <!--- Rows will be added by the script below. --->
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="7">
-                                        <button id="AddRowButton" type="button" style="width: 100%" class="btn btn-add">
-                                            <b><i class="bi bi-plus-lg" style="font-size: 30px; font-weight: bold; color: white;"></i></b>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                            <!--- Rows will be added by the script below. --->
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="7">
+                                                    <button id="AddRowButton" type="button" style="width: 100%" class="btn btn-add">
+                                                        <b><i class="bi bi-plus-lg" style="font-size: 30px; font-weight: bold; color: white;"></i></b>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <script type="text/javascript">
