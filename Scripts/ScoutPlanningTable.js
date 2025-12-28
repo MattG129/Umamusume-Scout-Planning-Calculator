@@ -6,16 +6,34 @@ function SortScoutPlanningTable() {
 
         TableRowSortingArray.push({
           RowID: $(this).attr('data-scoutplan-rowid'),
+          Priority: $(this).find('.ScoutPlanPriorityBanner').is(':checked'),
           BannerType: BannersInfo[BannerID].Type,
           StartDate: BannersInfo[BannerID].StartDate
         });
     });
 
     TableRowSortingArray.sort((a, b) => {
-      let DateCompare = a.StartDate - b.StartDate;
-      let TypeCompare = a.BannerType - b.BannerType;
-      
-      return DateCompare || TypeCompare;
+        if (a.StartDate < b.StartDate) {
+            return -1;
+        }
+        else if (a.StartDate <= b.StartDate) {
+            if (a.Priority && !b.Priority) {
+                return -1;
+            }
+            else if (!a.Priority && b.Priority) {
+                return +1;
+            }
+            else if (a.BannerType < b.BannerType) {
+                return -1;
+            }
+            else if (a.BannerType > b.BannerType) {
+                return +1;
+            };
+
+            return 0;
+        };
+
+        return +1;
     });
 
     for (let i = 0; i < TableRowSortingArray.length; i++) {

@@ -646,19 +646,16 @@
                                     <th style="width: 20%; min-width: 80px;">
                                         Copies <a data-toggle="tooltip" title="You can sort items by dragging and dropping them. Exchange points will be used on items in order from highest to lowest."><i class="bi bi-question-circle" style="color: black;"></i></a>
                                     </th>
-                                    <th style="width: 35%; min-width: 80px;">
+                                    <th style="width: 40%; min-width: 80px;">
                                         Banner Config
                                     </th>
-                                    <th style="width: 7.5%;">
-                                        Active
-                                    </th>
-                                    <th style="width: 7.5%;">
+                                    <th style="width: 10%;">
                                         <!-- Remove Button -->
                                     </th>
                                 </tr>
                             </thead>
                             <tbody id="ScoutPlanningTableBody">
-                                <tr id="ScoutPlanningLoadingMessage"><td colspan="7">Loading...</td></tr>
+                                <tr id="ScoutPlanningLoadingMessage"><td colspan="5">Loading...</td></tr>
 
                                 <!--- Rows will be added by the script below. --->
                             </tbody>
@@ -707,25 +704,34 @@
                                     <td class="ScoutPlanGoalsCell"></td>
                                     <td>
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-lg-3">
                                                 <label class="form-label">
                                                     Exchange Pts
                                                     <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
                                                 </label>
                                             </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-lg-3">
                                                 <label class="form-label">
                                                     Scout Limit
                                                     <input type="number" class="ScoutPlanLimit form-control" data-parsley-trigger="input" min="1" data-parsley-min="1">
                                                 </label>
                                             </div>
+
+                                            <div class="col-lg-3">
+                                                <label class="form-label">
+                                                    <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); ValidateScoutPlanningTable();" checked>
+                                                    Active
+                                                </label>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <label class="form-label">
+                                                    <input type="checkbox" class="ScoutPlanPriorityBanner form-check-input align-middle">
+                                                    High Priority
+                                                </label>
+                                            </div>
                                         </div>
-                                    </td>
-                                    <td class="td-label">
-                                        <label class="td-label">
-                                            <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); ValidateScoutPlanningTable();" checked>
-                                        </label>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-danger" onclick="$('tr[data-scoutplan-rowid=${NewScoutPlanRowID}]').remove(); ValidateScoutPlanningTable(); CheckForUnsavedChanges();">
@@ -1037,6 +1043,7 @@
                             Goals: Goals,
                             ExchangePoints: Number($(this).find('td .ScoutPlanExchangePoints').val()),
                             Active: $(this).find('td .ScoutPlanActive').is(':checked'),
+                            PriorityBanner: $(this).find('td .ScoutPlanPriorityBanner').is(':checked'),
                             Limit: $(this).find('td .ScoutPlanLimit').val()
                         });
                     };
@@ -1127,6 +1134,7 @@
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanLimit`).val(ScoutPlanBanner.Limit);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanPriorityBanner`).prop('checked', ScoutPlanBanner.PriorityBanner);
 
                                 let GoalsCell = $(`tr[data-scoutplan-rowid=${i}]`).find('.ScoutPlanGoalsCell');
                                 for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {
