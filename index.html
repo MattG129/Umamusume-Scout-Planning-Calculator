@@ -803,6 +803,11 @@
                                         };
 
                                         let TargetRow = $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}]`);
+
+                                        if (TargetRow.find('.ScoutPlanBanner').attr('data-banner-id') == 0) {
+                                            TargetRow.find('.ScoutPlanBanner').attr('data-banner-id', ItemsInfo[i].BannerID).html(BannersInfo[ItemsInfo[i].BannerID].Name);
+                                        };
+
                                         if (TargetRow.find('.ScoutPlanGoalsCell').find('label').length < 3) {
                                             TargetRow.find('.ScoutPlanGoalsCell').append($(`
                                                 <label class="form-label" data-item-id=${i}>
