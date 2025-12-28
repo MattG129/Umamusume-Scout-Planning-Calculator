@@ -21,6 +21,7 @@
         <script src="Scripts/Fields.js" type="text/javascript"></script>
         <script src="Scripts/Parsley.js" type="text/javascript"></script>
         <script src="Scripts/Modal.js" type="text/javascript"></script>
+        <script src="Scripts/ScoutPlanningTable.js" type="text/javascript"></script>
         <script src="StoryEventsInfo.js" type="text/javascript"></script>
         <script src="ChampionsMeetingsInfo.js" type="text/javascript"></script>
 
@@ -112,6 +113,10 @@
 
             .swal-button:not([disabled]):hover {
                 background-color: #5B71BA;
+            }
+
+            .swal-button--cancel {
+                color: white;
             }
 
             .btn-add {
@@ -561,6 +566,22 @@
 
                     <hr><h2>Scout Planning</h2><br>
 
+                    <button type="button" class="btn btn-primary" style="border-width: 1px; border-color: black;" onclick="
+                        swal({
+                            title: 'Are you sure?',
+                            text: 'Are you sure you want to automatically sort all table rows by startdate?',
+                            icon: 'warning',
+                            buttons: true,
+                            dangerMode: true
+                        }).then((Sort) => {
+                            if (Sort) {
+                                SortScoutPlanningTable()
+                                swal({icon: 'success', text: 'Rows sorted successfully.', timer: 2000});
+                            };
+                        });
+                    ">Sort Table</button>
+                    <br><br>
+
                     <div class="modal fade" id="SelectionModal" tabindex="-1" aria-labelledby="SelectionModalLabel" aria-hidden="true">
                         <div id="SelectionModalDialog" class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
                             <div class="modal-content">
@@ -682,7 +703,7 @@
                                             <i class="bi bi-plus-lg" style="font-size: 20px; color: white;"></i>
                                         </button>
 
-                                        <div class="OutOfOrderMessage TableValidation">Banner end dates must be in chronological order.</div>
+                                        <div class="OutOfOrderMessage TableValidation">Banner start dates must be in chronological order.</div>
                                         <div class="DuplicateBannerMessage TableValidation">Duplicate banner.</div>
                                     </td>
                                     <td class="ScoutPlanGoalsCell"></td>
@@ -808,10 +829,8 @@
 
                                     if ($(this).find('.ScoutPlanActive').is(':checked')) {
                                         if (BannerID != 0) {
-                                            if (PreviousRowBannerID != -1) {
-                                                if (BannersInfo[BannerID].EndDate < BannersInfo[PreviousRowBannerID].EndDate) {
-                                                    $(this).find('.OutOfOrderMessage').show();
-                                                };
+                                            if (PreviousRowBannerID != -1 && BannersInfo[BannerID].StartDate < BannersInfo[PreviousRowBannerID].StartDate) {
+                                                $(this).find('.OutOfOrderMessage').show();
                                             };
 
                                             if (!Banners.includes(BannerID)) {
