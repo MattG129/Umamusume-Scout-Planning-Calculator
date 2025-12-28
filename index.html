@@ -671,21 +671,6 @@
                         </table>
                     </div>
 
-                    <!-- Using this as a basis for the various scout planning banner dropdowns to be copied off of. -->
-                    <select id="BannerTemplate" class="form-select" style="display: none;"></select>
-                    <script type="text/javascript">
-                        $(function() {
-                            for (let i = 0; i < ItemsInfo.length; i++) {
-                                if (ItemsInfo[i].GlobalEndDate >= Today && ItemsInfo[i].Disabled != true) {
-                                    $('#BannerTemplate').append($('<option>', {
-                                        value: i,
-                                        text: `${ItemsInfo[i].Name}: ${moment(ItemsInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L')} - ${moment(ItemsInfo[i].GlobalEndDate, "YYYY-MM-DD").format('L')}`,
-                                    }));
-                                };
-                            };
-                        });
-                    </script>
-
                     <script type="text/javascript">
                         function AddScoutPlanRow() {
                             let NewRow = $(
