@@ -48,7 +48,7 @@ function UpdateModalSelection() {
         let ItemWidth = 250;
         let TableColumnLimit = Math.floor($('#SelectionModal').find('.modal-body').width()/ItemWidth);
 
-        let Table = `<center><table><tr>`;
+        let Table = `<table><tr>`;
         let ItemCount = 0;
         for (i = 0; i < ItemsInfo.length; i++) {
             let Item = ItemsInfo[i];
@@ -58,7 +58,7 @@ function UpdateModalSelection() {
                 && Item.Disabled != true
                 && Item.Name.toLowerCase().indexOf($('#ItemNameFilter').val().toLowerCase()) > -1
                 && ($('#BannerTypeFilter').val() == 0 || Item.Type == $('#BannerTypeFilter').val())
-                && [0, Item.BannerID].includes(Number($('#BannerIDFilter').val()))
+                && ($('#BannerIDFilter').val() == 0 || Item.BannerID == $('#BannerIDFilter').val())
             ) {
                 if (ItemCount > 0 && ItemCount % TableColumnLimit == 0) {
                     Table += `</tr><tr>`;
@@ -80,14 +80,7 @@ function UpdateModalSelection() {
             };
         };
 
-        /*TODO: Review this part.*/
-        let Count = 1;
-        while (ItemCount % TableColumnLimit != 0 && Count < 10000) {
-            Count++;
-            ItemCount++;
-        };
-
-        Table += `</tr></table></center>`
+        Table += `</tr></table>`
 
         $('#ModalSelectionResults').html(Table);
     }, 200);
