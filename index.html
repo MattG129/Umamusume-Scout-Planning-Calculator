@@ -38,11 +38,12 @@
             let Page = 'index';
             let NewScoutPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
             let UpdateTableTimeout; // Prevents the import from triggering this function several times.
-            let UpdateModalTimeout; // Prevents the import from triggering this function several times.
+            let UpdateModalTimeout;
             let ImportInProgress = true;
             let UnsavedChanges = false;
-            let PreviousModalCallingRowID = -1; // Will be used to tell the modal if the selector is being opened up from the same row it was last opened for or not.
-            let CurrentModalCallingRowID = -1; // Will be used to tell the modal if the selector is being opened up from the same row it was last opened for or not.
+            // Will be used to tell the modal if the selector is being opened up from the same row it was last opened for or not.
+            let PreviousModalCallingRowID = -1;
+            let CurrentModalCallingRowID = -1;
         </script>
     </head>
     <body>
@@ -722,14 +723,14 @@
 
                                             <div class="col-lg-3">
                                                 <label class="form-label">
-                                                    <input type="checkbox" class="ScoutPlanActive form-check-input align-middle" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); ValidateScoutPlanningTable();" checked>
+                                                    <input type="checkbox" class="ScoutPlanActive form-check-input" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); ValidateScoutPlanningTable();" checked>
                                                     Active
                                                 </label>
                                             </div>
 
                                             <div class="col-lg-3">
                                                 <label class="form-label">
-                                                    <input type="checkbox" class="ScoutPlanPriorityBanner form-check-input align-middle">
+                                                    <input type="checkbox" class="ScoutPlanPriorityBanner form-check-input">
                                                     High Priority
                                                 </label>
                                             </div>
@@ -874,8 +875,6 @@
                         function UpdateScoutPlanningTableSelection(BannerID, ItemID, CurrentModalCallingRowID) {
                             let CallingRow = $(`tr[data-scoutplan-rowid="${CurrentModalCallingRowID}"]`);
                             let TargetRow = CallingRow;
-
-                            $(`tr div[data-banner-id="${BannerID}"]`).parent().parent().attr('data-scoutplan-rowid')
 
                             if ( $(`.ScoutPlanBanner[data-banner-id="${BannerID}"]`).length == 0 ) {
                                 if ( CallingRow.find('.ScoutPlanBanner').attr('data-banner-id') == 0 ) {
