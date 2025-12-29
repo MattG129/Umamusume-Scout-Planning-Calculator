@@ -1098,6 +1098,11 @@
                                 $(this).prop('checked', JSONImport[this.id]);
                             }
                             else {
+                                // The renewal date field used to use a different date format so this will account for that when loading older imports.
+                                if ($(this).hasClass('form-date') && !moment(JSONImport[this.id], "MM/DD/YYYY").isValid() && moment(JSONImport[this.id]).isValid()) {
+                                    JSONImport[this.id] = moment(JSONImport[this.id]).format('L');
+                                };
+
                                 $(this).val(JSONImport[this.id]);
                             };
                         });
