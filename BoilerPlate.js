@@ -1,10 +1,8 @@
 $(function() {
-	$('#Header').html(`
-		<center><h1>Umamusume Scout Planning Calculator</h1></center>
-	`);
-});
+	$('title').html(`Umamusume Scout Planning Calculator`);
 
-$(function() {
+	$('#Header').html(`<center><h1>Umamusume Scout Planning Calculator</h1></center>`);
+
 	let Footer = '<center> <p>&#xA9; All rights reserved by Cygames, Inc. Other properties belong to their respective owners.</p>';
 
 	if (Page != 'index') {
