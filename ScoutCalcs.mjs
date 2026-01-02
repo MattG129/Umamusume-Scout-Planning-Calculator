@@ -5,7 +5,7 @@ Today.setHours(0,0,0,0);
 
 const JPLaunchDate = moment('23 Feb 2021', "DD MMM YYYY").toDate()
 const GlobalLaunchDate = moment('25 Jun 2025', "DD MMM YYYY").toDate()
-const GlobalAccelRate = 1.4;
+const GlobalAccelRate = 1.44;
 
 let FirstBannerItem = true;
 let GenericName;
@@ -389,7 +389,7 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
     let ItemsRemaining = BannerPlan.ItemsRemaining.slice();
     let TotalItemsRemaining = BannerPlan.TotalItemsRemaining;
 
-    let Scouts = 0;
+    let Scouts = -BannerPlan.FreePulls;
     let ExchangePoints = BannerPlan.ExchangePoints;
 
     let MaxFCScouts = BannerPlan.MaxFCScouts - TotalFCScouts;
@@ -448,7 +448,9 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
         };
     };
 
-    CalcFCScouts(BannerPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
+    if (Scouts > 0) {
+        CalcFCScouts(BannerPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
+    };
 
     return ItemsRemaining;
 };
@@ -482,6 +484,7 @@ function ScoutPlanningCalculator(ScoutConfig) {
                 Items: [],
                 Limit: ScoutPlan.Limit,
                 ExchangePoints: ScoutPlan.ExchangePoints,
+                FreePulls: Number(ScoutPlan.FreePulls),
                 ItemsRemaining: [],
                 TotalItemsRemaining: 0,
                 ItemRates: [],
@@ -538,6 +541,7 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
         let MaxScouts;
         let ThisBannerPCScouts = 0;
         let MaxPCScouts = Math.min( DateDiff(Today, BannerPlan.GlobalEndDate), BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - PCScouts );
+        let FreePulls = BannerPlan.FreePulls;
         for (let j = 0; j < BannerPlan.Items.length; j++) {
 
             let Item = BannerPlan.Items[j];
@@ -546,6 +550,7 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
                 MaxScouts = MaxPCScouts;
                 MaxScouts += BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketScouts : CardTicketScouts);
                 MaxScouts += BannerPlan.MaxFCScouts - FCScouts;
+                MaxScouts += BannerPlan.FreePulls;
 
                 if (BannerPlan.Limit != '') {
                     MaxScouts = Math.min(MaxScouts, BannerPlan.Limit)
@@ -553,7 +558,10 @@ function RenderScoutResults(ScoutConfig, ScoutsResults) {
             };
 
             for (let k = 0; k < Item.Goal; k++) {
-                if (MaxPCScouts > ThisBannerPCScouts) {
+                if (FreePulls > 0) {
+                    FreePulls -= 1;
+                }
+                else if (MaxPCScouts > ThisBannerPCScouts) {
                     ThisBannerPCScouts += 1;
                 }
                 else if (BannerPlan.Type == BannerTypes.Uma.Value && BannerPlan.MaxPinkTicketScouts > UmaTicketScouts) {

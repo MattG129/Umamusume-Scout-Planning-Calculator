@@ -656,7 +656,7 @@
                                                     <!-- Vertical Grip -->
                                                 </th>
                                                 <th style="width: 20%; min-width: 80px;"> <!-- TODO: Make the accel rate dynamic. -->
-                                                    Banner <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (00:00). Dates are calculated based on the number of days between the Japanese server's launch and the banner's start date on that server. This number is then divided by the global acceleration rate (1.4) and is used to estimate the banner's global start date, based on the global server's launch date. The banner duration remains unchanged. For banners that have already been announced, the global dates will be entered manually."><i class="bi bi-question-circle" style="color: black;"></i></a>
+                                                    Banner <a data-toggle="tooltip" title="The calculator currently assumes that banners start/end at 12:00 AM (00:00). Dates are calculated based on the number of days between the Japanese server's launch and the banner's start date on that server. This number is then divided by the global acceleration rate (1.44) and is used to estimate the banner's global start date, based on the global server's launch date. The banner duration remains unchanged. For banners that have already been announced, the global dates will be entered manually."><i class="bi bi-question-circle" style="color: black;"></i></a>
                                                 </th>
                                                 <th style="width: 20%; min-width: 80px;">
                                                     Copies <a data-toggle="tooltip" title="You can sort items by dragging and dropping them. Exchange points will be used on items in order from highest to lowest."><i class="bi bi-question-circle" style="color: black;"></i></a>
@@ -707,28 +707,37 @@
                                     <td class="ScoutPlanGoalsCell"></td>
                                     <td>
                                         <div class="row">
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-4">
                                                 <label class="form-label">
                                                     Exchange Pts
-                                                    <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" max="199" data-parsley-range="[0,199]">
+                                                    <input type="number" class="ScoutPlanExchangePoints form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" data-parsley-min="0">
                                                 </label>
                                             </div>
 
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-4">
                                                 <label class="form-label">
                                                     Scout Limit
                                                     <input type="number" class="ScoutPlanLimit form-control" data-parsley-trigger="input" min="1" data-parsley-min="1">
                                                 </label>
                                             </div>
 
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-4">
+                                                <label class="form-label">
+                                                    Free Pulls
+                                                    <input type="number" class="ScoutPlanFreePulls form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0" min="0" data-parsley-min="0">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-lg-6">
                                                 <label class="form-label">
                                                     <input type="checkbox" class="ScoutPlanActive form-check-input" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); ValidateScoutPlanningTable();" checked>
                                                     Active
                                                 </label>
                                             </div>
 
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-6">
                                                 <label class="form-label">
                                                     <input type="checkbox" class="ScoutPlanPriorityBanner form-check-input">
                                                     High Priority
@@ -1009,7 +1018,7 @@
             function CompileForm(){
                 let FormValues = {};
 
-                $('#form input:not(.ScoutPlanField, .BonusTableField), #form select:not(.ScoutPlanField, .BonusTableField)').each(function() {
+                $('#form input:not(.ScoutPlanField, .BonusTableField, .SelectorField), #form select:not(.ScoutPlanField, .BonusTableField, .SelectorField)').each(function() {
                     if ($(this).is(':checkbox')) {
                         FormValues[this.id] = $(this).is(':checked');
                     }
@@ -1050,7 +1059,8 @@
                             ExchangePoints: Number($(this).find('td .ScoutPlanExchangePoints').val()),
                             Active: $(this).find('td .ScoutPlanActive').is(':checked'),
                             PriorityBanner: $(this).find('td .ScoutPlanPriorityBanner').is(':checked'),
-                            Limit: $(this).find('td .ScoutPlanLimit').val()
+                            Limit: $(this).find('td .ScoutPlanLimit').val(),
+                            FreePulls: $(this).find('td .ScoutPlanFreePulls').val()
                         });
                     };
                 });
@@ -1144,6 +1154,7 @@
 
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanLimit`).val(ScoutPlanBanner.Limit);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanFreePulls`).val(ScoutPlanBanner.FreePulls);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanPriorityBanner`).prop('checked', ScoutPlanBanner.PriorityBanner);
 
