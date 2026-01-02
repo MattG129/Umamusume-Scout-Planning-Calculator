@@ -6,7 +6,7 @@ const ChampionsMeetings = [
 	{Name: 'Virgo Cup', 	  JPStartDate: moment('20 Sept 2021', "DD MMM YYYY").toDate()},
 	{Name: 'Libra Cup', 	  JPStartDate: moment('21 Oct  2021', "DD MMM YYYY").toDate(), GlobalStartDate: moment('12 Dec  2025', "DD MMM YYYY").toDate()},
 	{Name: 'Scorpio Cup', 	  JPStartDate: moment('22 Nov  2021', "DD MMM YYYY").toDate(), GlobalStartDate: moment('01 Jan  2026', "DD MMM YYYY").toDate()},
-	{Name: 'Sagittarius Cup', JPStartDate: moment('20 Dec  2021', "DD MMM YYYY").toDate()},
+	{Name: 'Sagittarius Cup', JPStartDate: moment('20 Dec  2021', "DD MMM YYYY").toDate(), GlobalStartDate: moment('23 Jan  2026', "DD MMM YYYY").toDate()},
 	{Name: 'Capricorn Cup',   JPStartDate: moment('21 Jan  2022', "DD MMM YYYY").toDate()},
 	{Name: 'Aquarius Cup', 	  JPStartDate: moment('17 Feb  2022', "DD MMM YYYY").toDate()},
 	{Name: 'Pisces Cup', 	  JPStartDate: moment('21 Mar  2022', "DD MMM YYYY").toDate()},
@@ -42,7 +42,8 @@ const ChampionsMeetings = [
 	{Name: 'CLASSIC', 		  JPStartDate: moment('24 Jul  2025', "DD MMM YYYY").toDate()},
 	{Name: 'CLASSIC', 		  JPStartDate: moment('21 Sept 2025', "DD MMM YYYY").toDate()},
 	{Name: 'SPRINT', 		  JPStartDate: moment('22 Oct  2025', "DD MMM YYYY").toDate()},
-	{Name: 'MILE', 		  	  JPStartDate: moment('20 Dec  2025', "DD MMM YYYY").toDate()}
+	{Name: 'MILE', 		  	  JPStartDate: moment('20 Dec  2025', "DD MMM YYYY").toDate()},
+	{Name: 'LONG', 		  	  JPStartDate: moment('21 Jan  2026', "DD MMM YYYY").toDate()}
 ]
 
 /* For simplicity's sake, we won't calculate how many rewards have already been claimed from a CM, so we will only factor in future

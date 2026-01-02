@@ -26,9 +26,15 @@ const StoryEventRewards = [
 
 const StoryEvents = [
     {
+        Name: "Blue journey, early spring is near.",
+        JPStartDate: moment('26 Dec 2025', "DD MMM YYYY").toDate(),
+        JPEndDate: moment('8 Jan 2026', "DD MMM YYYY").toDate(),
+        PointLimit: 1500000
+    },
+    {
         Name: "Annals!! Golden Holy Night 24 hours",
         JPStartDate: moment('28 Nov 2025', "DD MMM YYYY").toDate(),
-        JPEndDate: moment('10 Oct 2025', "DD MMM YYYY").toDate(),
+        JPEndDate: moment('11 Dec 2025', "DD MMM YYYY").toDate(),
         PointLimit: 1500000
     },
     {
@@ -275,7 +281,10 @@ const StoryEvents = [
         Name: "Miracles of the Holy Night",
         JPStartDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
         JPEndDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
-        PointLimit: 1000000
+        PointLimit: 1000000,
+
+        GlobalStartDate: moment('5 Jan 2026', "DD MMM YYYY").toDate(),
+        GlobalEndDate: moment('20 Jan 2026', "DD MMM YYYY").toDate()
     },
     {
         Name: "The Sounds of Autumn",

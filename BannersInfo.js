@@ -14,6 +14,279 @@ let BannersInfo = {
 let ItemsInfo = [
   {
     Type: BannerTypes['Uma'].Value,
+    Name: 'Orfevre',
+    BannerID: 323,
+    JPStartDate: moment('31 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('18 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: false,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Gentildonna',
+    BannerID: 322,
+    JPStartDate: moment('31 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('18 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: false,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Air Groove (SSR speed)',
+    BannerID: 321,
+    JPStartDate: moment('25 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Fine Motion (SSR power)',
+    BannerID: 321,
+    JPStartDate: moment('25 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Ikuno Dictus (New Year)',
+    BannerID: 320,
+    JPStartDate: moment('25 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },  
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Sakura Laurel (New Year)',
+    BannerID: 320,
+    JPStartDate: moment('25 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Stay Gold',
+    BannerID: 319,
+    JPStartDate: moment('21 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('18 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Mejiro Dober (SR speed)',
+    BannerID: 318,
+    JPStartDate: moment('10 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0225,
+    Disabled: true
+  },  
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Inari One (SSR stamina)',
+    BannerID: 318,
+    JPStartDate: moment('10 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Oguri Cap (Anime Collab)',
+    BannerID: 317,
+    JPStartDate: moment('10 Dec 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('7 Jan 2026', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Gold Ship (SSR stamina)',
+    BannerID: 316,
+    JPStartDate: moment('27 Nov 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('10 Dec 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },  
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Fenomeno (SSR stamina)',
+    BannerID: 316,
+    JPStartDate: moment('27 Nov 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('10 Dec 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Nakayama Festa (Christmas)',
+    BannerID: 315,
+    JPStartDate: moment('27 Nov 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('10 Dec 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Dream Journey (Christmas)',
+    BannerID: 315,
+    JPStartDate: moment('27 Nov 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('10 Dec 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Buena Vista',
+    BannerID: 314,
+    JPStartDate: moment('18 Nov 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('27 Nov 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Hokko Tarumae (SR power)',
+    BannerID: 313,
+    JPStartDate: moment('9 Nov 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('18 Nov 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0225,
+    Disabled: true
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Mihono Bourbon (SSR power)',
+    BannerID: 313,
+    JPStartDate: moment('9 Nov 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('18 Nov 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Wonder Acute (Onsen)',
+    BannerID: 312,
+    JPStartDate: moment('9 Nov 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('18 Nov 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Tokai Teio (SSR speed)',
+    BannerID: 311,
+    JPStartDate: moment('28 Oct 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('18 Nov 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },  
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Kiyoko Hoshina (SSR friend)',
+    BannerID: 311,
+    JPStartDate: moment('28 Oct 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('18 Nov 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Transcend (Onsen)',
+    BannerID: 310,
+    JPStartDate: moment('28 Oct 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('18 Nov 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Jungle Pocket',
+    BannerID: 309,
+    JPStartDate: moment('18 Oct 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('28 Oct 2025', "DD MMM YYYY").toDate(),
+    IsNew: false,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Dantsu Flame',
+    BannerID: 308,
+    JPStartDate: moment('18 Oct 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('28 Oct 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Sakura Chitose O (SR speed)',
+    BannerID: 307,
+    JPStartDate: moment('9 Oct 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('19 Oct 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0225,
+    Disabled: true
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Curren Bouquetd\'or (SSR stamina)',
+    BannerID: 307,
+    JPStartDate: moment('9 Oct 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('19 Oct 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Tosen Jordan (Halloween)',
+    BannerID: 306,
+    JPStartDate: moment('9 Oct 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('19 Oct 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Fuji Kiseki (SSR guts)',
+    BannerID: 305,
+    JPStartDate: moment('28 Sept 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('9 Oct 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Card'].Value,
+    Name: 'Eishin Flash (SSR speed)',
+    BannerID: 305,
+    JPStartDate: moment('28 Sept 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('9 Oct 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Hishi Akebono (Halloween)',
+    BannerID: 304,
+    JPStartDate: moment('28 Sept 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('9 Oct 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
+    Name: 'Marvelous Sunday (Halloween)',
+    BannerID: 304,
+    JPStartDate: moment('28 Sept 2025', "DD MMM YYYY").toDate(),
+    JPEndDate: moment('9 Oct 2025', "DD MMM YYYY").toDate(),
+    IsNew: true,
+    Rate: 0.0075
+  },
+  {
+    Type: BannerTypes['Uma'].Value,
     Name: 'Believe',
     BannerID: 303,
     JPStartDate: moment('18 Sept 2025', "DD MMM YYYY").toDate(),
@@ -4308,7 +4581,10 @@ let ItemsInfo = [
     JPStartDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('29 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('9 Feb 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4317,7 +4593,10 @@ let ItemsInfo = [
     JPStartDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('29 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('9 Feb 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4326,7 +4605,10 @@ let ItemsInfo = [
     JPStartDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('29 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('9 Feb 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4335,7 +4617,10 @@ let ItemsInfo = [
     JPStartDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('10 Jan 2022', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('29 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('9 Feb 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4344,7 +4629,10 @@ let ItemsInfo = [
     JPStartDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('22 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('31 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4353,7 +4641,10 @@ let ItemsInfo = [
     JPStartDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: false,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('22 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('31 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4362,7 +4653,10 @@ let ItemsInfo = [
     JPStartDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('30 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('22 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('31 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4372,7 +4666,10 @@ let ItemsInfo = [
     JPEndDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
     Rate: 0.0225,
-    Disabled: true
+    Disabled: true,
+
+    GlobalStartDate: moment('15 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('23 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4381,7 +4678,10 @@ let ItemsInfo = [
     JPStartDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('15 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('23 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4390,7 +4690,10 @@ let ItemsInfo = [
     JPStartDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('21 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('15 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('23 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4399,7 +4702,10 @@ let ItemsInfo = [
     JPStartDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('5 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('20 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
@@ -4408,7 +4714,10 @@ let ItemsInfo = [
     JPStartDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('5 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('20 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4417,7 +4726,10 @@ let ItemsInfo = [
     JPStartDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('5 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('20 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Uma'].Value,
@@ -4426,7 +4738,10 @@ let ItemsInfo = [
     JPStartDate: moment('28 Nov 2021', "DD MMM YYYY").toDate(),
     JPEndDate: moment('13 Dec 2021', "DD MMM YYYY").toDate(),
     IsNew: true,
-    Rate: 0.0075
+    Rate: 0.0075,
+
+    GlobalStartDate: moment('5 Jan 2026', "DD MMM YYYY").toDate(),
+    GlobalEndDate: moment('20 Jan 2026', "DD MMM YYYY").toDate()
   },
   {
     Type: BannerTypes['Card'].Value,
