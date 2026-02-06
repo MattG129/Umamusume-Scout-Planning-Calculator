@@ -269,7 +269,10 @@ const StoryEvents = [
         Name: "Patisserie Grandeur",
         JPStartDate: moment('27 Jan 2022', "DD MMM YYYY").toDate(),
         JPEndDate: moment('7 Feb 2022', "DD MMM YYYY").toDate(),
-        PointLimit: 1000000
+        PointLimit: 1000000,
+
+        GlobalStartDate: moment('18 Feb 2026', "DD MMM YYYY").toDate(),
+        GlobalEndDate: moment('1 Mar 2026', "DD MMM YYYY").toDate()
     },
     {
         Name: "Blossoming New Year's Karuta Contest",
