@@ -785,7 +785,7 @@
                                             </div>
 
                                             <div class="col-lg-4">
-                                                <label class="form-label">
+                                                <label class="form-label" style="display: none;">
                                                     <input type="checkbox" class="ScoutPlanUseRainbowCrystals form-check-input">
                                                     Use Rainbow Uncap Crystals
                                                 </label>
@@ -869,6 +869,10 @@
 
                                         if (TargetRow.find('.ScoutPlanBanner').attr('data-banner-id') == 0) {
                                             TargetRow.find('.ScoutPlanBanner').attr('data-banner-id', ItemsInfo[i].BannerID).html(BannersInfo[ItemsInfo[i].BannerID].Name);
+
+                                            if (ItemsInfo[i].Type == BannerTypes.Card.Value) {
+                                                TargetRow.find('.ScoutPlanUseRainbowCrystals').parent().show();
+                                            };
                                         };
 
                                         if (TargetRow.find('.ScoutPlanGoalsCell').find('label').length < 3) {
@@ -942,6 +946,10 @@
                                 };
 
                                 TargetRow.find('.ScoutPlanBanner').attr('data-banner-id', BannerID).html(BannersInfo[BannerID].Name);
+
+                                if (ItemsInfo[ItemID].Type == BannerTypes.Card.Value) {
+                                    TargetRow.find('.ScoutPlanUseRainbowCrystals').parent().show();
+                                };
                             }
                             else if (TargetRow.find('.ScoutPlanBanner').attr('data-banner-id') != BannerID) {
                                 TargetRowID = $(`div[data-banner-id="${BannerID}"]`).parent().parent().attr('data-scoutplan-rowid')
@@ -1199,6 +1207,10 @@
                                 let TargetRow = $(`tr[data-scoutplan-rowid=${NewScoutPlanRowID-1}]`);
                                 TargetRow.find('.ScoutPlanBanner').attr('data-banner-id', BannerID);
                                 TargetRow.find('.ScoutPlanBanner').html( BannersInfo[ BannerID ].Name );
+
+                                if (BannersInfo[BannerID].Type == BannerTypes.Card.Value) {
+                                    TargetRow.find('.ScoutPlanUseRainbowCrystals').parent().show();
+                                };
 
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanLimit`).val(ScoutPlanBanner.Limit);
