@@ -149,7 +149,13 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     // Uma/Card tickets, collectively referred to as pink tickets, can be used to make scouts on their corresponding types of banners.
     let UmaTickets = ScoutConfig.UmaTickets;
     let CardTickets = ScoutConfig.CardTickets;
-    
+
+    /* Rainbow crystals can be used to limit break any card. In other words,
+    they can effectively be exchanged for a copy of any card you already have.
+    20 rainbow crystal shards can be used to create a rainbow crystal. */
+    let RainbowCrystals = ScoutConfig.RainbowCrystals;
+    let RainbowCrystalShards = ScoutConfig.RainbowCrystalShards;
+
     // Daily Missions + Daily Carat Pack (if purchased).
     FC += DateDiff(Today, BannerPlan.GlobalEndDate) * ( 75 + (ScoutConfig.HasDailyCaratPack ? 50 : 0) );
 
@@ -204,6 +210,9 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
                 break;
             case StoryEventRewardTypes.CardTicket.Value:
                 CardTickets += NumberOfEvents * Event.Quantity;
+                break;
+            case StoryEventRewardTypes.CrystalShard.Value:
+                RainbowCrystalShards += NumberOfEvents * Event.Quantity;
                 break;
         };
     };
@@ -325,7 +334,8 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     return {
         MaxFCScouts: Math.floor(FC/150),
         MaxPCScouts: MaxPCScouts,
-        MaxPinkTicketScouts: BannerPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets
+        MaxPinkTicketScouts: BannerPlan.Type == BannerTypes.Uma.Value ? UmaTickets : CardTickets,
+        MaxRainbowCrystals: RainbowCrystals + Math.floor(RainbowCrystalShards/20)
     };
 };
 
@@ -333,6 +343,7 @@ let TotalFCScouts;
 let TotalPCScouts;
 let UmaTicketsSpent;
 let CardTicketsSpent;
+let RainbowCrystalsSpent;
 
 function RunAndEvaluateScoutSimulations(ScoutConfig) {
     let Start = Date.now();
@@ -345,6 +356,7 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
         TotalPCScouts = 0;
         UmaTicketsSpent = 0;
         CardTicketsSpent = 0;
+        RainbowCrystalsSpent = 0;
 
         let ScoutItemNumber = 0;
         let MissedScoutItems = false;
@@ -385,12 +397,29 @@ function RunAndEvaluateScoutSimulations(ScoutConfig) {
     });
 };
 
+// TODO: Do we need to pass ScoutConfig?
 function ScoutSimulator(ScoutConfig, BannerPlan) {
     let ItemsRemaining = BannerPlan.ItemsRemaining.slice();
     let TotalItemsRemaining = BannerPlan.TotalItemsRemaining;
 
     let Scouts = -BannerPlan.FreePulls;
     let ExchangePoints = BannerPlan.ExchangePoints;
+    
+    // There is a lot of really annoying/complicated logic for the rainbow crystals since they can't be used unless you own a copy of the card.
+    // We will also take heavy advantage of the fact that no support card banner has had more than two rate up SSRs yet.
+    let arrItemHasAtleastOneCopy;
+    let DistinctOwnedItems = 0;
+    let UseableRainbowCrystals = 0;
+    let MaxUseableRainbowCrystals = 0;
+
+    if (BannerPlan.Type == BannerTypes.Card.Value && BannerPlan.UseRainbowCrystals) {
+        arrItemHasAtleastOneCopy = [BannerPlan.CardOwned1, BannerPlan.CardOwned2];
+        DistinctOwnedItems += BannerPlan.CardOwned1 + BannerPlan.CardOwned2;
+        MaxUseableRainbowCrystals = Math.max(0, BannerPlan.MaxRainbowCrystals - RainbowCrystalsSpent);
+    }
+    else {
+        arrItemHasAtleastOneCopy = new Array(ItemsRemaining.length).fill(false); // Don't care about whats owned if we aren't using crystals.
+    };
 
     let MaxFCScouts = BannerPlan.MaxFCScouts - TotalFCScouts;
     let MaxPCScouts = Math.min( BannerPlan.DaysLeft, BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - TotalPCScouts );
@@ -401,10 +430,34 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
         MaxScouts = Math.min(MaxScouts, BannerPlan.Limit)
     };
 
-    let MaxScoutsRemaining = Math.min(MaxScouts-Scouts, 200*TotalItemsRemaining-ExchangePoints);
+    let MaxScoutsRemaining = Math.min(MaxScouts-Scouts, 200*TotalItemsRemaining - ExchangePoints - 200*UseableRainbowCrystals);
 
     while (MaxScoutsRemaining > 0) {
         let ScoutsNeededForNextItem = Math.ceil( Math.log(Math.random()) / Math.log(1-BannerPlan.SumOfItemRates) );
+
+        // If UseableRainbowCrystals is equal to the max then we either can use them on any copy, or we aren't using them in the first place.
+        if (UseableRainbowCrystals != MaxUseableRainbowCrystals) {
+            let ScoutsTillNextMileStone = Math.min(ScoutsNeededForNextItem, MaxScoutsRemaining);
+            let Exchanges = Math.floor((ScoutsTillNextMileStone + ExchangePoints)/200);
+
+            if (Exchanges + DistinctOwnedItems >= ItemsRemaining.length) {
+                UseableRainbowCrystals = MaxUseableRainbowCrystals;
+            }
+            else {
+                UseableRainbowCrystals = 0;
+                for (let i = 0; i < ItemsRemaining.length; i++) {
+                    if (arrItemHasAtleastOneCopy[i]) {
+                        UseableRainbowCrystals = Math.min(MaxUseableRainbowCrystals, UseableRainbowCrystals + ItemsRemaining[i]);
+                    }
+                    else if (Exchanges > 0) {
+                        UseableRainbowCrystals = Math.min(MaxUseableRainbowCrystals, UseableRainbowCrystals + ItemsRemaining[i]);
+                        Exchanges -= 1
+                    };
+                };
+            };
+
+            MaxScoutsRemaining = Math.min(MaxScouts-Scouts, 200*TotalItemsRemaining - ExchangePoints - 200*UseableRainbowCrystals);
+        };
 
         if (ScoutsNeededForNextItem > MaxScoutsRemaining) {
             Scouts += MaxScoutsRemaining;
@@ -419,6 +472,8 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
             if (ItemsRemaining.length == 1) {
                 ItemsRemaining[0] -= 1;
                 TotalItemsRemaining -= 1;
+                arrItemHasAtleastOneCopy[0] = 1;
+                UseableRainbowCrystals = MaxUseableRainbowCrystals;
             }
             else {
                 let CumulativeItemChance = 0;
@@ -431,20 +486,64 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
                         if (ItemsRemaining[i] > 0) {
                             ItemsRemaining[i] -= 1;
                             TotalItemsRemaining -= 1;
+
+                            if (!arrItemHasAtleastOneCopy[i]) {
+                                arrItemHasAtleastOneCopy[i] = true;
+                                DistinctOwnedItems += 1
+
+                                if (UseableRainbowCrystals != MaxUseableRainbowCrystals) {
+                                    let Exchanges = Math.floor(ExchangePoints/200);
+
+                                    if (Exchanges + DistinctOwnedItems >= ItemsRemaining.length) {
+                                        UseableRainbowCrystals = MaxUseableRainbowCrystals;
+                                    }
+                                    else {
+                                        UseableRainbowCrystals = 0;
+                                        for (let i = 0; i < ItemsRemaining.length; i++) {
+                                            if (arrItemHasAtleastOneCopy[i]) {
+                                                UseableRainbowCrystals = Math.min(MaxUseableRainbowCrystals, UseableRainbowCrystals + ItemsRemaining[i]);
+                                            }
+                                            else if (Exchanges > 0) {
+                                                UseableRainbowCrystals = Math.min(MaxUseableRainbowCrystals, UseableRainbowCrystals + ItemsRemaining[i]);
+                                                Exchanges -= 1
+                                            };
+                                        };
+                                    };
+                                };
+                            };
                         };
                         break;
                     };
                 };
             };
 
-            MaxScoutsRemaining = Math.min(MaxScouts-Scouts, 200*TotalItemsRemaining-ExchangePoints);
+            MaxScoutsRemaining = Math.min(MaxScouts-Scouts, 200*TotalItemsRemaining - ExchangePoints - 200*UseableRainbowCrystals);
         };
     };
 
-    for (let i = 0; i < ItemsRemaining.length; i++) {
-        while (ItemsRemaining[i] > 0 && ExchangePoints >= 200) {
-            ItemsRemaining[i] -= 1;
-            ExchangePoints -= 200;
+    if (Math.floor(ExchangePoints/200) + UseableRainbowCrystals >= TotalItemsRemaining) {
+        RainbowCrystalsSpent += TotalItemsRemaining - Math.floor(ExchangePoints/200);
+
+        for (let i = 0; i < ItemsRemaining.length; i++) {
+            ItemsRemaining[i] = 0;
+        };
+    }
+    else {
+        for (let i = 0; i < ItemsRemaining.length; i++) {
+            // We will only use exchange points and crystals on items if we they will let us hit a goal.
+            if (
+                ItemsRemaining[i] > 0
+                && Math.floor(ExchangePoints/200) + (arrItemHasAtleastOneCopy[i] || ExchangePoints >= 200 ? UseableRainbowCrystals : 0) >= ItemsRemaining[i]
+            ) {
+                while (ItemsRemaining[i] > 0 && ExchangePoints >= 200) {
+                    ItemsRemaining[i] -= 1;
+                    ExchangePoints -= 200;
+                };
+
+                RainbowCrystalsSpent += ItemsRemaining[i];
+                UseableRainbowCrystals = Math.max(0, UseableRainbowCrystals - ItemsRemaining[i]);
+                ItemsRemaining[i] = 0;
+            };
         };
     };
 
@@ -485,6 +584,9 @@ function ScoutPlanningCalculator(ScoutConfig) {
                 Limit: ScoutPlan.Limit,
                 ExchangePoints: ScoutPlan.ExchangePoints,
                 FreePulls: Number(ScoutPlan.FreePulls),
+                UseRainbowCrystals: ScoutPlan.UseRainbowCrystals,
+                CardOwned1: ScoutPlan.CardOwned1,
+                CardOwned2: ScoutPlan.CardOwned2,
                 ItemsRemaining: [],
                 TotalItemsRemaining: 0,
                 ItemRates: [],
