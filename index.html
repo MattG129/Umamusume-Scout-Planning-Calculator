@@ -786,9 +786,19 @@
 
                                             <div class="col-lg-4">
                                                 <label class="form-label" style="display: none;">
-                                                    <input type="checkbox" class="ScoutPlanUseRainbowCrystals form-check-input">
+                                                    <input type="checkbox" class="ScoutPlanUseRainbowCrystals form-check-input"
+                                                        onchange="SkipTableElement(this, 'CardOwnedSkipGroup', ${NewScoutPlanRowID});"
+                                                    >
                                                     Use Rainbow Uncap Crystals
                                                 </label>
+                                                <div id="CardOwnedSkipGroup${NewScoutPlanRowID}" style="display: none;">
+                                                    <label class="form-label">
+                                                        <input type="checkbox" class="ScoutPlanCardOwned1 form-check-input"> Card 1 Owned
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <input type="checkbox" class="ScoutPlanCardOwned2 form-check-input"> Card 2 Owned
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -1115,6 +1125,8 @@
                             Active: $(this).find('td .ScoutPlanActive').is(':checked'),
                             PriorityBanner: $(this).find('td .ScoutPlanPriorityBanner').is(':checked'),
                             UseRainbowCrystals: $(this).find('td .ScoutPlanUseRainbowCrystals').is(':checked'),
+                            CardOwned1: $(this).find('td .ScoutPlanCardOwned1').is(':checked'),
+                            CardOwned2: $(this).find('td .ScoutPlanCardOwned2').is(':checked'),
                             Limit: $(this).find('td .ScoutPlanLimit').val(),
                             FreePulls: $(this).find('td .ScoutPlanFreePulls').val()
                         });
@@ -1212,12 +1224,15 @@
                                     TargetRow.find('.ScoutPlanUseRainbowCrystals').parent().show();
                                 };
 
+                                // TODO: Really need to write some of this dynamically.
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanLimit`).val(ScoutPlanBanner.Limit);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanFreePulls`).val(ScoutPlanBanner.FreePulls);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanPriorityBanner`).prop('checked', ScoutPlanBanner.PriorityBanner);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanUseRainbowCrystals`).prop('checked', ScoutPlanBanner.UseRainbowCrystals);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanCardOwned1`).prop('checked', ScoutPlanBanner.CardOwned1);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanCardOwned2`).prop('checked', ScoutPlanBanner.CardOwned2);
 
                                 let GoalsCell = $(`tr[data-scoutplan-rowid=${i}]`).find('.ScoutPlanGoalsCell');
                                 for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {
