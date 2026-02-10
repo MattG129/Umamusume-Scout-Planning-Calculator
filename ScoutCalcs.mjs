@@ -286,6 +286,31 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     };
     FC += ExpectedClubCarats * BannerPlan.MonthDiff;
 
+    /* Each month certain shops will be restocked with Pink Tickets. We will purchase them every month if we can given the currently held
+    amount of currency. Since there are other valuable resources that can be purchased from these shops, we will factor in their cost as well.
+    The friend point shop will allow you to buy 1 of each type of pink ticket per month, while the cleat shop will allow you to buy 2.*/
+    let TicketCost = {FriendPoints: 20000, RainbowCleats: 2, GoldCleats: 10, SilverCleats: 50};
+
+    let BookHintCost = 4*1000 + 2*2000 + 2*4000 + 6000;
+    // Tickets purchased during months where you can buy out the shop.
+    let WholeMonthTickets = Math.floor(ScoutConfig.FriendPoints/(2*TicketCost.FriendPoints + BookHintCost));
+    let RemainingFriendPoints = ScoutConfig.FriendPoints % (2*TicketCost.FriendPoints + BookHintCost) - BookHintCost;
+    UmaTickets += Math.min(BannerPlan.MonthDiff, WholeMonthTickets + (RemainingFriendPoints > TicketCost.FriendPoints ? 1 : 0));
+    CardTickets += Math.min(BannerPlan.MonthDiff, WholeMonthTickets);
+
+    /* For cleats we will buy one SR Ticket each month in addition
+    to the Pink Tickets and they cost the same as the Pink Tickets. */
+    let CleatTypes = ['Rainbow', 'Gold', 'Silver'];
+    for (let i = 0; i < CleatTypes.length; i++) {
+        let WholeMonthTickets = 2 * Math.floor( ScoutConfig[`${CleatTypes[i]}Cleats`] / (5*TicketCost[`${CleatTypes[i]}Cleats`]) );
+
+        let RemainingCleats = ScoutConfig[`${CleatTypes[i]}Cleats`] % (5*TicketCost[`${CleatTypes[i]}Cleats`]);
+        let RemainingCleatTickets = Math.max(0, Math.floor( RemainingCleats / TicketCost[`${CleatTypes[i]}Cleats`] ) - 1);
+
+        UmaTickets += Math.min(2*BannerPlan.MonthDiff, WholeMonthTickets + Math.min(2, RemainingCleatTickets));
+        CardTickets += Math.min(2*BannerPlan.MonthDiff, WholeMonthTickets + (RemainingCleatTickets > 2 ? 1 : 0));        
+    };
+
     /* When a new Uma comes out, you will be able to view the first 4 chapters of there
     story, even if you haven't pulled them, and will receive 80 FC for doing so. */
     for (let i = 0; i < ItemsInfo.length; i++) {
