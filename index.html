@@ -290,7 +290,47 @@
 
                         <div class="col-md-3">
                             <label for="CardTickets" class="form-label">Support Card Scout Tickets</label>
-                            <input type="number" id="CardTickets" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                            <input type="number" id="CardTickets" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
+                            <label for="RainbowCrystals" class="form-label">Rainbow Uncap Crystals</label>
+                            <input type="number" id="RainbowCrystals" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="RainbowCrystalShards" class="form-label">Rainbow Crystal Shards</label>
+                            <input type="number" id="RainbowCrystalShards" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="FriendPoints" class="form-label">Friend Points</label>
+                            <a data-toggle="tooltip" title="The calculator will assume that Friend Points will be spent at the start of each month to purchase Uma/Card Scout Tickets. It also assumes that Friend Points will be spent on hint books as well. Uma Tickets will be prioritized over Card Tickets."><i class="bi bi-question-circle"></i></a>
+                            <input type="number" id="FriendPoints" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="RainbowCleats" class="form-label">Rainbow Cleats</label>
+                            <a data-toggle="tooltip" title="The calculator will assume that cleats will be spent at the start of each month to purchase Uma/Card Scout Tickets. It also assumes that cleats will be spent on SR Tickets as well. Uma Tickets will be prioritized over Card Tickets."><i class="bi bi-question-circle"></i></a>
+                            <input type="number" id="RainbowCleats" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="GoldCleats" class="form-label">Gold Cleats</label>
+                            <a data-toggle="tooltip" title="The calculator will assume that cleats will be spent at the start of each month to purchase Uma/Card Scout Tickets. It also assumes that cleats will be spent on SR Tickets as well. Uma Tickets will be prioritized over Card Tickets."><i class="bi bi-question-circle"></i></a>
+                            <input type="number" id="GoldCleats" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="SilverCleats" class="form-label">Silver Cleats</label>
+                            <a data-toggle="tooltip" title="The calculator will assume that cleats will be spent at the start of each month to purchase Uma/Card Scout Tickets. It also assumes that cleats will be spent on SR Tickets as well. Uma Tickets will be prioritized over Card Tickets."><i class="bi bi-question-circle"></i></a>
+                            <input type="number" id="SilverCleats" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
                         </div>
                     </div>
 
@@ -620,7 +660,7 @@
                                         </div>
 
                                         <div class="col-lg-4">
-                                            <label for="BannerIDFilter" class="form-label">Banner ID</label>
+                                            <label for="BannerIDFilter" class="form-label">Banner</label>
                                             <button type="button" class=" btn btn-danger" onclick="$('#BannerIDFilter').val(0).trigger('input')"
                                                 style="color: white; font-size: 13px; padding-top: 2px; padding-left: 5px; padding-right: 5px; padding-bottom: 2px;"
                                             >
@@ -730,18 +770,35 @@
                                         </div>
                                         
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-4">
                                                 <label class="form-label">
                                                     <input type="checkbox" class="ScoutPlanActive form-check-input" onchange="ToggleScoutPlanRow(this, ${NewScoutPlanRowID}); ValidateScoutPlanningTable();" checked>
                                                     Active
                                                 </label>
                                             </div>
 
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-4">
                                                 <label class="form-label">
                                                     <input type="checkbox" class="ScoutPlanPriorityBanner form-check-input">
                                                     High Priority
                                                 </label>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <label class="form-label" style="display: none;">
+                                                    <input type="checkbox" class="ScoutPlanUseRainbowCrystals form-check-input"
+                                                        onchange="SkipTableElement(this, 'CardOwnedSkipGroup', ${NewScoutPlanRowID});"
+                                                    >
+                                                    Use Rainbow Uncap Crystals
+                                                </label>
+                                                <div id="CardOwnedSkipGroup${NewScoutPlanRowID}" style="display: none;">
+                                                    <label class="form-label">
+                                                        <input type="checkbox" class="ScoutPlanCardOwned1 form-check-input"> Card 1 Owned
+                                                    </label>
+                                                    <label class="form-label">
+                                                        <input type="checkbox" class="ScoutPlanCardOwned2 form-check-input"> Card 2 Owned
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -822,6 +879,10 @@
 
                                         if (TargetRow.find('.ScoutPlanBanner').attr('data-banner-id') == 0) {
                                             TargetRow.find('.ScoutPlanBanner').attr('data-banner-id', ItemsInfo[i].BannerID).html(BannersInfo[ItemsInfo[i].BannerID].Name);
+
+                                            if (ItemsInfo[i].Type == BannerTypes.Card.Value) {
+                                                TargetRow.find('.ScoutPlanUseRainbowCrystals').parent().show();
+                                            };
                                         };
 
                                         if (TargetRow.find('.ScoutPlanGoalsCell').find('label').length < 3) {
@@ -895,6 +956,10 @@
                                 };
 
                                 TargetRow.find('.ScoutPlanBanner').attr('data-banner-id', BannerID).html(BannersInfo[BannerID].Name);
+
+                                if (ItemsInfo[ItemID].Type == BannerTypes.Card.Value) {
+                                    TargetRow.find('.ScoutPlanUseRainbowCrystals').parent().show();
+                                };
                             }
                             else if (TargetRow.find('.ScoutPlanBanner').attr('data-banner-id') != BannerID) {
                                 TargetRowID = $(`div[data-banner-id="${BannerID}"]`).parent().parent().attr('data-scoutplan-rowid')
@@ -1059,6 +1124,9 @@
                             ExchangePoints: Number($(this).find('td .ScoutPlanExchangePoints').val()),
                             Active: $(this).find('td .ScoutPlanActive').is(':checked'),
                             PriorityBanner: $(this).find('td .ScoutPlanPriorityBanner').is(':checked'),
+                            UseRainbowCrystals: $(this).find('td .ScoutPlanUseRainbowCrystals').is(':checked'),
+                            CardOwned1: $(this).find('td .ScoutPlanCardOwned1').is(':checked'),
+                            CardOwned2: $(this).find('td .ScoutPlanCardOwned2').is(':checked'),
                             Limit: $(this).find('td .ScoutPlanLimit').val(),
                             FreePulls: $(this).find('td .ScoutPlanFreePulls').val()
                         });
@@ -1152,11 +1220,19 @@
                                 TargetRow.find('.ScoutPlanBanner').attr('data-banner-id', BannerID);
                                 TargetRow.find('.ScoutPlanBanner').html( BannersInfo[ BannerID ].Name );
 
+                                if (BannersInfo[BannerID].Type == BannerTypes.Card.Value) {
+                                    TargetRow.find('.ScoutPlanUseRainbowCrystals').parent().show();
+                                };
+
+                                // TODO: Really need to write some of this dynamically.
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanExchangePoints`).val(ScoutPlanBanner.ExchangePoints);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanLimit`).val(ScoutPlanBanner.Limit);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanFreePulls`).val(ScoutPlanBanner.FreePulls);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanActive`).prop('checked', ScoutPlanBanner.Active);
                                 $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanPriorityBanner`).prop('checked', ScoutPlanBanner.PriorityBanner);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanUseRainbowCrystals`).prop('checked', ScoutPlanBanner.UseRainbowCrystals);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanCardOwned1`).prop('checked', ScoutPlanBanner.CardOwned1);
+                                $(`tr[data-scoutplan-rowid=${i}] td .ScoutPlanCardOwned2`).prop('checked', ScoutPlanBanner.CardOwned2);
 
                                 let GoalsCell = $(`tr[data-scoutplan-rowid=${i}]`).find('.ScoutPlanGoalsCell');
                                 for (let j = 0; j < ScoutPlanBanner.Items.length; j++) {

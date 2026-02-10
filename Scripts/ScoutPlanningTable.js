@@ -44,3 +44,12 @@ function SortScoutPlanningTable() {
     ValidateScoutPlanningTable();
     UnsavedChanges = true;
 };
+
+function SkipTableElement(Caller, SkipID, RowNumber) {
+    if ($(Caller).is(':checked')) {
+        $(`#${SkipID}${RowNumber}`).show();
+    }
+    else {
+        $(`#${SkipID}${RowNumber}`).hide();
+    };
+};
