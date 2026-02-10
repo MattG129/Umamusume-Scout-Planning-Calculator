@@ -515,26 +515,6 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
                             if (!arrItemHasAtleastOneCopy[i]) {
                                 arrItemHasAtleastOneCopy[i] = true;
                                 DistinctOwnedItems += 1
-
-                                if (UseableRainbowCrystals != MaxUseableRainbowCrystals) {
-                                    let Exchanges = Math.floor(ExchangePoints/200);
-
-                                    if (Exchanges + DistinctOwnedItems >= ItemsRemaining.length) {
-                                        UseableRainbowCrystals = MaxUseableRainbowCrystals;
-                                    }
-                                    else {
-                                        UseableRainbowCrystals = 0;
-                                        for (let i = 0; i < ItemsRemaining.length; i++) {
-                                            if (arrItemHasAtleastOneCopy[i]) {
-                                                UseableRainbowCrystals = Math.min(MaxUseableRainbowCrystals, UseableRainbowCrystals + ItemsRemaining[i]);
-                                            }
-                                            else if (Exchanges > 0) {
-                                                UseableRainbowCrystals = Math.min(MaxUseableRainbowCrystals, UseableRainbowCrystals + ItemsRemaining[i]);
-                                                Exchanges -= 1
-                                            };
-                                        };
-                                    };
-                                };
                             };
                         };
                         break;
