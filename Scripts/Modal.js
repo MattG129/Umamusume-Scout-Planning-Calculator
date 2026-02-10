@@ -14,14 +14,8 @@ $(function() {
         
         if (PreviousModalCallingRowID != CurrentModalCallingRowID) {
             $('#ItemNameFilter').val('');
+            $('#BannerTypeFilter').val(0);
             $('#BannerIDFilter').val(BannerID);
-
-            if (BannerID != 0) {
-                $('#BannerTypeFilter').val(BannersInfo[BannerID].Type);
-            }
-            else {
-                $('#BannerTypeFilter').val(0);
-            };
         };
 
         PreviousModalCallingRowID = CurrentModalCallingRowID;
@@ -35,7 +29,15 @@ $(function() {
 
     for (const key in BannersInfo) {
         if (BannersInfo[key].EndDate >= Today) {
-            $('#BannerIDFilter').append($('<option>', {value: key, text: key}));
+            let BannerInfo = BannersInfo[key];
+
+            $('#BannerIDFilter').append($('<option>', {
+                value: key,
+                text: `
+                    ${BannerInfo.Type == BannerTypes.Uma.Value ? 'Uma' : 'Card'}: 
+                    ${moment(BannerInfo.StartDate, "YYYY-MM-DD").format('L')} - ${moment(BannerInfo.EndDate, "YYYY-MM-DD").format('L')}
+                `}
+            ));
         };
     };
 });
