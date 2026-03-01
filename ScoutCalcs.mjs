@@ -5,7 +5,7 @@ Today.setHours(0,0,0,0);
 
 const JPLaunchDate = moment('23 Feb 2021', "DD MMM YYYY").toDate()
 const GlobalLaunchDate = moment('25 Jun 2025', "DD MMM YYYY").toDate()
-const GlobalAccelRate = 1.44;
+const GlobalAccelRate = 1.42;
 
 let FirstBannerItem = true;
 let GenericName;
