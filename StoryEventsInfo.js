@@ -263,7 +263,10 @@ const StoryEvents = [
         Name: "Flapping Run-up!",
         JPStartDate: moment('23 Feb 2022', "DD MMM YYYY").toDate(),
         JPEndDate: moment('6 Mar 2022', "DD MMM YYYY").toDate(),
-        PointLimit: 1000000
+        PointLimit: 1000000,
+
+        GlobalStartDate: moment('12 Mar 2026', "DD MMM YYYY").toDate(),
+        GlobalEndDate: moment('23 Mar 2026', "DD MMM YYYY").toDate()
     },
     {
         Name: "Patisserie Grandeur",
