@@ -427,7 +427,7 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
     let ItemsRemaining = BannerPlan.ItemsRemaining.slice();
     let TotalItemsRemaining = BannerPlan.TotalItemsRemaining;
 
-    let Scouts = -BannerPlan.FreePulls;
+    let Scouts = 0;
     let ExchangePoints = BannerPlan.ExchangePoints;
     
     // There is a lot of really annoying/complicated logic for the rainbow crystals since they can't be used unless you own a copy of the card.
@@ -449,10 +449,10 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
     let MaxFCScouts = BannerPlan.MaxFCScouts - TotalFCScouts;
     let MaxPCScouts = Math.min( BannerPlan.DaysLeft, BannerPlan.BannerLength + 1, BannerPlan.MaxPCScouts - TotalPCScouts );
     let MaxPinkTicketScouts = BannerPlan.MaxPinkTicketScouts - (BannerPlan.Type == BannerTypes.Uma.Value ? UmaTicketsSpent : CardTicketsSpent);
-    let MaxScouts = MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts;
+    let MaxScouts = MaxFCScouts + MaxPCScouts + MaxPinkTicketScouts + BannerPlan.FreePulls;
 
     if (BannerPlan.Limit != '') {
-        MaxScouts = Math.min(MaxScouts, BannerPlan.Limit)
+        MaxScouts = Math.min(MaxScouts, BannerPlan.Limit);
     };
 
     let MaxScoutsRemaining = Math.min(MaxScouts-Scouts, 200*TotalItemsRemaining - ExchangePoints - 200*UseableRainbowCrystals);
@@ -552,6 +552,7 @@ function ScoutSimulator(ScoutConfig, BannerPlan) {
         };
     };
 
+    Scouts -= BannerPlan.FreePulls;
     if (Scouts > 0) {
         CalcFCScouts(BannerPlan.Type, Scouts, MaxPCScouts, MaxPinkTicketScouts);
     };
