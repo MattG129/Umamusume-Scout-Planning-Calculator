@@ -1,7 +1,7 @@
 $(function() {
     window.Parsley.addValidator('mmddyyyy', {
         validateString: function(value) {
-            return moment(value, "MM/DD/YYYY").isValid();
+            return moment(value, "MM/DD/YYYY").isValid() && value.length >= 8;
         },
         messages: {en: 'This value must be a valid date in mm/dd/yyyy format.'}
     });
