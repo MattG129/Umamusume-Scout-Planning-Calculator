@@ -543,12 +543,12 @@
                         <table id="BonusTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
                             <thead id="BonusTableHeader" style="display: none;">
                                 <tr>
-                                    <th style="width: 15%; min-width: 120px;"> Reward Frequency           </th>
-                                    <th style="width: 15%; min-width: 100px;"> Free Carats                </th>
-                                    <th style="width: 15%; min-width: 100px;"> Trainee Scout Tickets      </th>
-                                    <th style="width: 15%; min-width: 100px;"> Support Card Scout Tickets </th>
-                                    <th style="width: 15%; min-width: 100px;"> Login Bonuses Remaining    </th>
-                                    <th style="width: 10%; min-width: 100px;"> <!-- Remove button -->     </th>
+                                    <th style="width: 18%; min-width: 100px;"> Starts On              </th>
+                                    <th style="width: 18%; min-width: 120px;"> Reward Frequency       </th>
+                                    <th style="width: 18%; min-width: 100px;"> Reward Type            </th>
+                                    <th style="width: 18%; min-width: 100px;"> Rewards Per Login      </th>
+                                    <th style="width: 18%; min-width: 100px;"> Total Login Bonuses    </th>
+                                    <th style="width: 10%; min-width: 100px;"> <!-- Remove button --> </th>
                                 </tr>
                             </thead>
                             <tbody id="BonusTableBody">
@@ -571,22 +571,28 @@
                             $('#BonusTableBody').append($(
                                 `<tr class="BonusTableRow">
                                     <td>
+                                        <input class="BonusStartDate BonusTableField TableField form-control" type="text" data-parsley-required="true" data-parsley-mmddyyyy>
+                                    </td>
+                                    <td>
                                         <select class="BonusFrequency BonusTableField TableField form-select">
                                             <option value="1">Daily</option>
                                             <option value="2">Weekly</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" class="BonusFC BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                        <select class="BonusItemType BonusTableField TableField form-select">
+                                            <option value="1"> Carat                     </option>
+                                            <option value="2"> Trainee Scout Ticket      </option>
+                                            <option value="3"> Support Card Scout Ticket </option>
+                                            <option value="4"> Rainbow Uncap Crystal     </option>
+                                            <option value="5"> Rainbow Crystal Shard     </option>
+                                        </select>
                                     </td>
                                     <td>
-                                        <input type="number" class="BonusUmaTickets BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                        <input type="number" class="BonusItemQuantity BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">
                                     </td>
                                     <td>
-                                        <input type="number" class="BonusCardTickets BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="BonusRemaining BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                        <input type="number" class="BonusLogins BonusTableField TableField form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-danger" onclick="$(this).closest('tr').remove(); CheckForUnsavedChanges(); ToggleBonusTableHeader();">
@@ -599,6 +605,14 @@
                             SetParsleyValidations();
                             UpdateUnsavedChangesListener();
                             $('#BonusTableHeader').show()
+
+                            $(".BonusTableRow").last().find(".BonusStartDate").mask("00/00/0000", {placeholder: 'mm/dd/yyyy' }).datepicker({
+                                changeMonth: true,
+                                changeYear: true,
+                            }).on('change', function() {
+                                $(this).trigger('input');
+                                $(this).parsley().validate(); // For some reason parsley text won't show up without this.
+                            });
                         };
 
                         function ToggleBonusTableHeader() {
@@ -1100,11 +1114,11 @@
                 FormValues.LoginBonusArray = [];
                 $('tr.BonusTableRow').each(function() {
                     FormValues.LoginBonusArray.push({
-                        Frequency:   $(this).find('td .BonusFrequency').val(),
-                        FC:          $(this).find('td .BonusFC').val(),
-                        UmaTickets:  $(this).find('td .BonusUmaTickets').val(),
-                        CardTickets: $(this).find('td .BonusCardTickets').val(),
-                        Remaining:   $(this).find('td .BonusRemaining').val()
+                        StartDate:           $(this).find('td .BonusStartDate').val(),
+                        Frequency:           $(this).find('td .BonusFrequency').val(),
+                        ItemType:     Number($(this).find('td .BonusItemType').val()),
+                        ItemQuantity:        $(this).find('td .BonusItemQuantity').val(),
+                        Logins:              $(this).find('td .BonusLogins').val()
                     });
                 });
 
@@ -1171,7 +1185,9 @@
                         AddBonusRow();
 
                         for (let Key in JSONImport.LoginBonusArray[i]) {
-                            $(`.BonusTableRow .Bonus${Key}`)[i].value = JSONImport.LoginBonusArray[i][Key];
+                            if ($(`.BonusTableRow .Bonus${Key}`)[i] != undefined) {
+                                $(`.BonusTableRow .Bonus${Key}`)[i].value = JSONImport.LoginBonusArray[i][Key];
+                            };
                         };
                     };
 
@@ -1266,7 +1282,8 @@
                             swal({icon: 'info', text: RemovedRows});
                         };
 
-                        $('input, select').change().trigger('input');
+                        // TODO: This really needs to be removed.
+                        $('input:not(.ui-datepicker-month, .ui-datepicker-year), select:not(.ui-datepicker-month, .ui-datepicker-year)').change().trigger('input');
 
                         if (RunCalcs == true) {
                             $('#Calculate').trigger('click');

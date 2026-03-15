@@ -327,18 +327,31 @@ function SavingsCalculator(ScoutConfig, BannerPlan) {
     };
 
     // The calculator is not preprogrammed for temporary login bonuses, so users will be able to add them in on their own and this code block will handle the calcs for them.
-    let DailyResetsLeft = DateDiff(Today, BannerPlan.GlobalEndDate);
-    let WeeklyResetsLeft = BannerPlan.WeekDiff + (DayOfWeek(Today) > DayOfWeek(BannerPlan.GlobalEndDate) ? 1 : 0);
-
     for (let i = 0; i < ScoutConfig.LoginBonusArray.length; i++) {
         let BonusRow = ScoutConfig.LoginBonusArray[i];
+        let RewardInterval = BonusRow.Frequency == 1 ? 1 : 7; // Frequency: 1=Daily, 2=Weekly
+        let StartDate = moment(BonusRow.StartDate).toDate();
+        let EndDate = DateAdd(StartDate, RewardInterval * (BonusRow.Logins-1));
 
-        // Frequency: 1=Daily, 2=Weekly
-        let Claims = Math.min(BonusRow.Remaining, BonusRow.Frequency == 1 ? DailyResetsLeft : WeeklyResetsLeft);
+        if (StartDate <= BannerPlan.GlobalEndDate && EndDate > Today)  {
+            let Claims = BonusRow.Logins;
 
-        FC          += Claims * BonusRow.FC;
-        UmaTickets  += Claims * BonusRow.UmaTickets;
-        CardTickets += Claims * BonusRow.CardTickets;
+            if (Today >= StartDate) {
+                Claims = Math.ceil(DateDiff(Today, EndDate) / RewardInterval);
+            };
+
+            if (BannerPlan.GlobalEndDate < EndDate) {
+                Claims -= Math.ceil(DateDiff(BannerPlan.GlobalEndDate, EndDate) / RewardInterval);
+            };
+
+            switch (BonusRow.ItemType) {
+                case 1: FC                   += Claims * BonusRow.ItemQuantity; break;
+                case 2: UmaTickets           += Claims * BonusRow.ItemQuantity; break;
+                case 3: CardTickets          += Claims * BonusRow.ItemQuantity; break;
+                case 4: RainbowCrystals      += Claims * BonusRow.ItemQuantity; break;
+                case 5: RainbowCrystalShards += Claims * BonusRow.ItemQuantity; break;
+            };
+        };
     };
 
     /* Paid Carats are a paid currency that can be converted to Free Carats at a 1:1 rate. They can also be used to make a heavily discounted
