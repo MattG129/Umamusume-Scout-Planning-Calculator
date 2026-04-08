@@ -10,7 +10,7 @@ const ChampionsMeetings = [
 	{Name: 'Capricorn Cup',   JPStartDate: moment('21 Jan  2022', "DD MMM YYYY").toDate(), GlobalStartDate: moment('9  Feb  2026', "DD MMM YYYY").toDate()},
 	{Name: 'Aquarius Cup', 	  JPStartDate: moment('17 Feb  2022', "DD MMM YYYY").toDate(), GlobalStartDate: moment('6  Mar  2026', "DD MMM YYYY").toDate()},
 	{Name: 'Pisces Cup', 	  JPStartDate: moment('21 Mar  2022', "DD MMM YYYY").toDate(), GlobalStartDate: moment('30 Mar  2026', "DD MMM YYYY").toDate()},
-	{Name: 'Aries Cup', 	  JPStartDate: moment('21 Apr  2022', "DD MMM YYYY").toDate()},
+	{Name: 'Aries Cup', 	  JPStartDate: moment('21 Apr  2022', "DD MMM YYYY").toDate(), GlobalStartDate: moment('23 Apr  2026', "DD MMM YYYY").toDate()},
 	{Name: 'Taurus Cup', 	  JPStartDate: moment('23 May  2022', "DD MMM YYYY").toDate()},
 	{Name: 'Gemini Cup', 	  JPStartDate: moment('13 Jun  2022', "DD MMM YYYY").toDate()},
 	{Name: 'Cancer Cup', 	  JPStartDate: moment('13 Jul  2022', "DD MMM YYYY").toDate()},

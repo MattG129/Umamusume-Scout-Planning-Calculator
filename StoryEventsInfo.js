@@ -251,13 +251,19 @@ const StoryEvents = [
         Name: "Roar, Tracen Academy Cheerleading Squad!",
         JPStartDate: moment('27 Apr 2022', "DD MMM YYYY").toDate(),
         JPEndDate: moment('9 May 2022', "DD MMM YYYY").toDate(),
-        PointLimit: 1000000
+        PointLimit: 1000000,
+
+        GlobalStartDate: moment('26 Apr 2026', "DD MMM YYYY").toDate(),
+        GlobalEndDate: moment('8 May 2026', "DD MMM YYYY").toDate()
     },
     {
         Name: "Tonight at the Ligne Droite",
         JPStartDate: moment('28 Mar 2022', "DD MMM YYYY").toDate(),
         JPEndDate: moment('10 Apr 2022', "DD MMM YYYY").toDate(),
-        PointLimit: 1000000
+        PointLimit: 1000000,
+
+        GlobalStartDate: moment('5 Apr 2026', "DD MMM YYYY").toDate(),
+        GlobalEndDate: moment('18 Apr 2026', "DD MMM YYYY").toDate()
     },
     {
         Name: "Flapping Run-up!",
