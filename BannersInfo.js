@@ -5997,3 +5997,9 @@ let ItemsInfo = [
     Disabled: true
   }
 ].reverse();
+
+let BannerGlobalDates = {
+    89: ["May 10 2026", "May 20 2026"], 90: ["May 10 2026", "May 20 2026"],
+    91: ["May 18 2026", "May 29 2026"], 92: ["May 18 2026", "May 29 2026"],
+    93: ["May 28 2026", "Jun  7 2026"], 94: ["May 28 2026", "Jun  7 2026"]
+};
