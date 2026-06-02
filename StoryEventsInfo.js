@@ -239,7 +239,10 @@ const StoryEvents = [
         Name: "Seek, Solve, Summer Walk!",
         JPStartDate: moment('29 Jun 2022', "DD MMM YYYY").toDate(),
         JPEndDate: moment('10 Jul 2022', "DD MMM YYYY").toDate(),
-        PointLimit: 1000000
+        PointLimit: 1000000,
+
+        GlobalStartDate: moment('Jun 11 2026', "MMM DD YYYY").toDate(),
+        GlobalEndDate: moment('Jun 22 2026', "MMM DD YYYY").toDate()
     },
     {
         Name: "The Promised Time: Silks & Three Riddles",

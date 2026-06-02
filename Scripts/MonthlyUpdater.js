@@ -5,6 +5,7 @@ function GenerateNewMonthMapping(Schedule) {
 
 	let Dates = {
 		'Scout': [],
+		'Event': [],
 		'CM' : 	 [],
 	};
 
@@ -40,6 +41,7 @@ function GenerateNewMonthMapping(Schedule) {
 		Dates[arrSchedule[i-1]].push([StartDate, EndDate])	
 	};
 
+	let BannerGlobalDates2 = {};
 	let StartingItemIndex = 191; // First item without manually added global dates.
 	for (let i = 0; i < Dates['Scout'].length; i++) {		
 
@@ -49,6 +51,7 @@ function GenerateNewMonthMapping(Schedule) {
 
 			if (
 				!Object.hasOwn(BannerGlobalDates, Item.BannerID)
+				&& !Object.hasOwn(BannerGlobalDates2, Item.BannerID)
 				&& (JPStartDate === undefined || DateDiff(Item.JPStartDate, JPStartDate) == 0)
 			) {
 				if (JPStartDate === undefined) {
@@ -56,10 +59,10 @@ function GenerateNewMonthMapping(Schedule) {
 					StartingItemIndex = j;
 				};
 
-				BannerGlobalDates[Item.BannerID] = [ Dates['Scout'][i][0], Dates['Scout'][i][1] ]
+				BannerGlobalDates2[Item.BannerID] = [ Dates['Scout'][i][0], Dates['Scout'][i][1] ]
 			};
 		};
 	};
 
-	console.log(BannerGlobalDates);
+	console.log(BannerGlobalDates2);
 };
