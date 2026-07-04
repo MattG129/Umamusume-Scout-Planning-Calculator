@@ -17,9 +17,9 @@ let CurrentBannerItemCount = 0;
 for (let i = 0; i < ItemsInfo.length; i++) {
     let Item = ItemsInfo[i];
 
-    if (Object.hasOwn(BannerGlobalDates, Item.BannerID)) {
-        Item.GlobalStartDate = moment(BannerGlobalDates[Item.BannerID][0], "MMM DD YYYY").toDate();
-        Item.GlobalEndDate = moment(BannerGlobalDates[Item.BannerID][1], "MMM DD YYYY").toDate();
+    if (Object.hasOwn(GlobalDates['Scout'], Item.BannerID)) {
+        Item.GlobalStartDate = moment(GlobalDates['Scout'][Item.BannerID][0], "MMM DD YYYY").toDate();
+        Item.GlobalEndDate = moment(GlobalDates['Scout'][Item.BannerID][1], "MMM DD YYYY").toDate();
     }
     else if (!Object.hasOwn(Item, 'GlobalStartDate')) {
         let BannerLength = DateDiff(Item.JPStartDate, Item.JPEndDate);

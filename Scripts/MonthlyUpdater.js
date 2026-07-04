@@ -41,7 +41,6 @@ function GenerateNewMonthMapping(Schedule) {
 		Dates[arrSchedule[i-1]].push([StartDate, EndDate])	
 	};
 
-	let BannerGlobalDates2 = {};
 	let StartingItemIndex = 191; // First item without manually added global dates.
 	for (let i = 0; i < Dates['Scout'].length; i++) {		
 
@@ -50,8 +49,7 @@ function GenerateNewMonthMapping(Schedule) {
 			let Item = ItemsInfo[j];
 
 			if (
-				!Object.hasOwn(BannerGlobalDates, Item.BannerID)
-				&& !Object.hasOwn(BannerGlobalDates2, Item.BannerID)
+				!Object.hasOwn(GlobalDates['Scout'], Item.BannerID)
 				&& (JPStartDate === undefined || DateDiff(Item.JPStartDate, JPStartDate) == 0)
 			) {
 				if (JPStartDate === undefined) {
@@ -59,10 +57,26 @@ function GenerateNewMonthMapping(Schedule) {
 					StartingItemIndex = j;
 				};
 
-				BannerGlobalDates2[Item.BannerID] = [ Dates['Scout'][i][0], Dates['Scout'][i][1] ]
+				GlobalDates['Scout'][Item.BannerID] = [ Dates['Scout'][i][0], Dates['Scout'][i][1] ]
 			};
 		};
 	};
 
-	console.log(BannerGlobalDates2);
+	for (const [key] of Object.entries(Dates)) {
+		if (key != 'Scout') {
+			let StartingIndex = 15 // Index 15 is, coincidentally, the first event and CM that we are using the monthly updater for.
+
+			for (let i = 0; i < Dates[key].length; i++) {
+				for (let j = StartingIndex; j < (key == 'Event' ? StoryEvents.length : ChampionsMeetings.length); j++) {
+					if (!Object.hasOwn(GlobalDates[key], j)) {
+						GlobalDates[key][j] = Dates[key][i][key == 'Event' ? 0 : 1]; /*Events care about start date, CMs care about end date.*/
+						StartingIndex = j;
+						break;
+					};
+				};
+			};
+		};
+	};
+
+	console.log(JSON.stringify(GlobalDates, null, 2));
 };

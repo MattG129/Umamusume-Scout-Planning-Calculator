@@ -55,7 +55,11 @@ for (let i = 0; i < ChampionsMeetings.length; i++) {
 
     CM.JPEndDate = DateAdd(CM.JPStartDate, 6);
     
-    if (!Object.hasOwn(CM, 'GlobalStartDate')) {
+    if (Object.hasOwn(GlobalDates['CM'], i)) {
+        // The listed startdate for the CMs is when registration begins. The races will start 6 days before the end date.
+        CM.GlobalStartDate = DateAdd(moment(GlobalDates['CM'][i], "MMM DD YYYY").toDate(), -6);
+    }
+    else if (!Object.hasOwn(CM, 'GlobalStartDate')) {
         let JPLaunchCMStartDateDiff = DateDiff(JPLaunchDate, CM.JPStartDate);
         let GlobalLaunchCMStartDateDiff = Math.round(JPLaunchCMStartDateDiff/GlobalAccelRate);
 

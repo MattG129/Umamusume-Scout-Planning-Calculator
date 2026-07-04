@@ -355,7 +355,10 @@ let StartingEvent = 0;
 for (let i = 0; i < StoryEvents.length; i++) {
     let Event = StoryEvents[i];
     
-    if (!Object.hasOwn(Event, 'GlobalStartDate')) {
+    if (Object.hasOwn(GlobalDates['Event'], i)) {
+        Event.GlobalStartDate = moment(GlobalDates['Event'][i], "MMM DD YYYY").toDate();
+    }
+    else if (!Object.hasOwn(Event, 'GlobalStartDate')) {
         let JPLaunchEventStartDateDiff = DateDiff(JPLaunchDate, Event.JPStartDate);
         let GlobalLaunchEventStartDateDiff = Math.round(JPLaunchEventStartDateDiff/GlobalAccelRate);
 
