@@ -865,12 +865,6 @@
                             });
 
                             $("#AddRowButton").click(function() {
-                                if ( $('tr[data-scoutplan-rowid]').length >= 100 ) {
-                                    swal({icon: 'error', text: 'Row limit reached.'});
-
-                                    return;
-                                };
-
                                 AddScoutPlanRow();
                             });
 
