@@ -12,38 +12,49 @@ function CalcGlobalAccelRate() {
     let CurrBannerStartDate = moment('25 Jun 2025', "DD MMM YYYY").toDate();
 
     for (let i = 0; i < ItemsInfo.length; i++) {
-        if (Object.hasOwn(ItemsInfo[i], 'GlobalStartDate')) {
-            // console.log(DateDiff(ItemsInfo[i].GlobalStartDate, CurrBannerStartDate));
-            if (DateDiff(ItemsInfo[i].GlobalStartDate, CurrBannerStartDate) != 0) {
 
-                // console.log(ItemsInfo[i].GlobalStartDate, CurrBannerStartDate, ItemsInfo[i].GlobalStartDate == CurrBannerStartDate)
-                // console.log(ItemsInfo[i].Name)
-                CurrBannerStartDate = ItemsInfo[i].GlobalStartDate
+        let Item = ItemsInfo[i];
+        
+        if (Object.hasOwn(GlobalDates['Scout'], Item.BannerID)) {
+            Item.GlobalStartDate = moment(GlobalDates['Scout'][Item.BannerID][0], "MMM DD YYYY").toDate();
+            Item.GlobalEndDate = moment(GlobalDates['Scout'][Item.BannerID][1], "MMM DD YYYY").toDate();
+        }
+        else if (!Object.hasOwn(Item, 'GlobalStartDate')) {
+            continue;
+        };
 
-                let Ratio = DateDiff(JPLaunchDate, ItemsInfo[i].JPStartDate)/DateDiff(GlobalLaunchDate, ItemsInfo[i].GlobalStartDate);
+        if (DateDiff(Item.GlobalStartDate, CurrBannerStartDate) != 0) {
+            // if (i > 27) {
 
-                let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, ItemsInfo[i].JPStartDate);
+            // console.log(Item.GlobalStartDate, CurrBannerStartDate, Item.GlobalStartDate == CurrBannerStartDate)
+            // console.log(Item.Name)
+            CurrBannerStartDate = Item.GlobalStartDate;
+            if (CurrBannerStartDate >= moment('1 Sept 2025', "DD MMM YYYY").toDate() ) {
+
+
+                let Ratio = DateDiff(JPLaunchDate, Item.JPStartDate)/DateDiff(GlobalLaunchDate, Item.GlobalStartDate);
+
+                let JPLaunchBannerStartDateDiff = DateDiff(JPLaunchDate, Item.JPStartDate);
                 let GlobalLaunchBannerStartDateDiff = Math.round(JPLaunchBannerStartDateDiff/GlobalAccelRate);
-                let JPStartDate = DateAdd(GlobalLaunchDate, GlobalLaunchBannerStartDateDiff);
+                let EstGlobalDate = DateAdd(GlobalLaunchDate, GlobalLaunchBannerStartDateDiff);
 
                 console.log()
-                console.log(JPStartDate, ItemsInfo[i].GlobalStartDate);
-                console.log(DateDiff(JPStartDate, ItemsInfo[i].GlobalStartDate));
-                console.log(ItemsInfo[i].Name)
-                console.log(moment(ItemsInfo[i].GlobalStartDate, "YYYY-MM-DD").format('L'));
-                console.log(DateDiff(JPLaunchDate, ItemsInfo[i].JPStartDate), DateDiff(GlobalLaunchDate, ItemsInfo[i].GlobalStartDate));
+                console.log(EstGlobalDate, Item.GlobalStartDate);
+                console.log('Date Diff:', DateDiff(Item.GlobalStartDate, EstGlobalDate));
+                console.log(Item.Name)
+                // console.log(moment(Item.GlobalStartDate, "YYYY-MM-DD").format('L'));
+                // console.log(DateDiff(JPLaunchDate, Item.JPStartDate), DateDiff(GlobalLaunchDate, Item.GlobalStartDate));
 
 
                 // if (![5].includes(i)) {
-                // if (i > 27) {
                     console.log(Ratio);
 
 
-                    AvgNumer += DateDiff(JPLaunchDate, ItemsInfo[i].JPStartDate)/DateDiff(GlobalLaunchDate, ItemsInfo[i].GlobalStartDate);
+                    AvgNumer += DateDiff(JPLaunchDate, Item.JPStartDate)/DateDiff(GlobalLaunchDate, Item.GlobalStartDate);
                     AvgDenom += 1;
-                // }
-            }
-        };
+            // }
+            };
+        }
     };
 
     console.log('Tot', AvgNumer/AvgDenom);
